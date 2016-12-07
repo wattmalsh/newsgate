@@ -1,0 +1,23 @@
+{
+  "name": "newsgate",
+  "version": "0.0.0",
+  "homepage": "https://github.com/tenacioustomatoes/newsgate",
+  "authors": [
+    "Tenacious Tomatoes"
+  ],
+  "moduleType": [
+    "es6"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "directory": "./client/lib",
+  "dependencies": {
+    "underscore": "~1.8.3"
+  }
+}

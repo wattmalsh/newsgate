@@ -1,0 +1,22 @@
+{
+  "name": "newsgate",
+  "version": "1.0.0",
+  "description": "Greenfield Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tenacioustomatoes/newsgate.git"
+  },
+  "author": "Tenacious Tomatoes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tenacioustomatoes/newsgate/issues"
+  },
+  "homepage": "https://github.com/tenacioustomatoes/newsgate#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
