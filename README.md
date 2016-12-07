@@ -1,0 +1,2 @@
+# newsgate
+Sniffing the news
