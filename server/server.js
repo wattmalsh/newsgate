@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 const port = 8000;
 const app = express();
 
-/*// CONNECTION EVENTS
+var dbURI = 'mongodb://localhost/newsgate'
+mongoose.connect(dbURI);
+
+// CONNECTION EVENTS
 mongoose.connection.on('connected', function() {
     console.log('Mongoose connected to ' + dbURI);
 });
@@ -34,9 +37,8 @@ process.on('SIGINT', function() {
     gracefulShutdown('app termination', function() {
         process.exit(0);
     });
-});*/
+});
 
-mongoose.connect('mongodb://localhost/newsgate');
 
 // configure our server with all the middleware and routing
 require('./config/middleware.js')(app, express);
