@@ -16,7 +16,6 @@
     "test",
     "tests"
   ],
-  "directory": "./client/lib",
   "dependencies": {
     "underscore": "~1.8.3"
   }
