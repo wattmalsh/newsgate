@@ -19,7 +19,8 @@ module.exports.getTitle = function(req, res) {
 
 module.exports.getKeywords = function(req, res) {
 	var parameters = {
-		url: req.body.url
+		url: req.body.url, 
+		emotion: 1
 	}
 
 	alchemy_language.keywords(parameters, function (err, response) {
