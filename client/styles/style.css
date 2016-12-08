@@ -1,3 +1,11 @@
+#formContainer {
+  padding: 0px 20% 0px 20%;
+  margin: 0px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
 .centerHeader {
   color: white;
   margin: 0px;
@@ -6,14 +14,6 @@
   justify-content: center;
   font-weight: bolder;
   font-size: 300%;
-}
-
-#formNewsLink {
-  padding: 0px 20% 0px 20%;
-  margin: 0px;
-  align-items: center;
-  display: flex;
-  justify-content: center;
 }
 
 .formNewsLinkHeader {
