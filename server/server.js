@@ -49,7 +49,7 @@ require('./config/routes.js')(app, express);
 
 // start listening to requests on port 8000
 app.listen(port);
-app.post('/apitest', function() {console.log('got post')});
+app.post('/apitest', watson.getTitle);
 app.get('/api/googleTrends', googleTrends.getGoogleTrends);
 app.get('/twitter', twitterSearch.getTweetsOnTopic);
 
