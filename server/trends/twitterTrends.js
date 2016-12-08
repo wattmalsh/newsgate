@@ -12,7 +12,7 @@ var emerson = new Twitter({
 
 emerson = Promise.promisifyAll(emerson);
 
-exports.getTweetsOnTopic = function(req, res) {
+exports.getTweetsOnTopic = function(req, res, next) {
   // var keywords = req.body.keywords;
   emerson.getAsync('search/tweets', {q: 'rigged elections', result_type: 'popular', count: 100})
   .then(function(data) {
@@ -23,5 +23,3 @@ exports.getTweetsOnTopic = function(req, res) {
     console.error('Error with Twitter GET request', err);
   });
 };
-
-
