@@ -3,3 +3,4 @@ node_modules
 bower_components
 client/lib
 server/test/googleTrendsCookie.js
+watson/api_key.txt
