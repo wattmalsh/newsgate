@@ -49,9 +49,6 @@ require('./config/routes.js')(app, express);
 
 // start listening to requests on port 8000
 app.listen(port);
-app.post('/apitest', watson.getTitle);
-app.get('/api/googleTrends', googleTrends.getGoogleTrends);
-app.get('/twitter', twitterSearch.getTweetsOnTopic);
 
 // export our app for testing and flexibility, required by index.js
 module.exports = app;
