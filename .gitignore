@@ -2,6 +2,8 @@
 node_modules
 bower_components
 client/lib
+server/watson/api_key.txt
+server/trends/googleTrendsCookie.js
 
 #PersonalNotes
 notes.txt
