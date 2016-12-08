@@ -29,7 +29,7 @@ module.exports = {
 	  			}
 	  			//sendJSONresponse(res, 200, url);
 					res.compoundContent = {
-						url: url
+						url: url[0]
 					};
 					next();
 	  		});
