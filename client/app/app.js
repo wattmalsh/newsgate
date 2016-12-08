@@ -1,4 +1,5 @@
 angular.module('newsgate', [
+  'newsgate.services',
   'newsgate.form',
   'ngRoute'
 ])
