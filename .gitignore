@@ -2,4 +2,6 @@
 node_modules
 bower_components
 client/lib
-server/test/googleTrendsCookie.js
+
+#PersonalNotes
+notes.txt
