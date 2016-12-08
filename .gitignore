@@ -2,10 +2,6 @@
 node_modules
 bower_components
 client/lib
-<<<<<<< HEAD
 
 #PersonalNotes
 notes.txt
-=======
-server/test/googleTrendsCookie.js
->>>>>>> 2065522a7868bb6052553e9d9b56b4de6e039d3f
