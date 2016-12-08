@@ -1,14 +1,14 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+//var Schema = mongoose.Schema;
 
-var urlSchema = new Schema({
-	url: String,
-	rating: ratingSchema
+var ratingSchema = new mongoose.Schema({
+	score: Number,
+	algorithm: String
 });
 
-var ratingSchema = new Schema({
-	score: Number,
-	algorigthm: String
+var urlSchema = new mongoose.Schema({
+	url: String,
+	rating: ratingSchema
 });
 
 module.exports = mongoose.model('News', urlSchema);
