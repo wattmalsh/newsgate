@@ -3,7 +3,7 @@ var googleTrends = require('google-trends-api');
 var bodyParser = require('body-parser');
 
 
-exports.getGoogleTrends = function(request, response) {
+exports.getGoogleTrends = function(request, response, next) {
   console.log('got request');
   // var keywords = request.body.keywords //array of words
   var keywords = 'trump';
