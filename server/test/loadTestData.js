@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/newsgate');
+//mongoose.connect('mongodb://localhost/newsgate');
 var News = require('../models/newsModel.js');
 
 
@@ -12,5 +12,7 @@ for (var i = 0; i < 25; i++) {
       "algorithm": "v0"
     }
   };
-  News.create( test );
+  News.create(test, function(err){
+    console.log(err);
+  });
 }
