@@ -2,7 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const port = 8000;
 const app = express();
-const googleTrends = require('./googleTrends');
+const googleTrends = require('./trends/googleTrends');
+const watson = require('./watson/watson')
+const twitterSearch = require('./trends/twitterTrends');
 
 var dbURI = 'mongodb://localhost/newsgate'
 mongoose.connect(dbURI);
@@ -48,6 +50,8 @@ require('./config/routes.js')(app, express);
 // start listening to requests on port 8000
 app.listen(port);
 app.get('/googleTrends', googleTrends.getGoogleTrends);
+app.get('/watsonTitle', watson.watsonTitle);
+app.get('/twitter', twitterSearch.getTweetsOnTopic);
 
 // export our app for testing and flexibility, required by index.js
 module.exports = app;
