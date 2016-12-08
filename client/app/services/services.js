@@ -30,4 +30,17 @@ angular.module('newsgate.services', [])
   return {
     sendLink: sendLink
   }
-});
+})
+// .factory('Trends', function() {
+//
+//   var dataGet = function(data) {
+//     var x = [];
+//     var y = [];
+//     var  =
+//     for ()
+//   };
+//
+//   return {
+//     getTestData: dataGet
+//   };
+// });
