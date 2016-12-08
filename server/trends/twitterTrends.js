@@ -17,7 +17,9 @@ exports.getTweetsOnTopic = function(req, res, next) {
   emerson.getAsync('search/tweets', {q: 'rigged elections', result_type: 'popular', count: 100})
   .then(function(data) {
     console.log(data);
-    res.send(data);
+    res.compoundContent['twitter'] = data;
+    next();
+    //res.send(data);
   })
   .catch(function(err) {
     console.error('Error with Twitter GET request', err);
