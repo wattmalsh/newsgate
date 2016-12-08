@@ -11,11 +11,10 @@ angular.module('newsgate.services', [])
         url: url
     };
 
-    $http({
-      url: urlHost.concat(apiPath),
-      type: 'POST',
-      data: message
-    })
+    $http.post(
+      urlHost.concat(apiPath),
+      message
+    )
     .then((res) => {
       console.log('SERVER:', res);
     });
