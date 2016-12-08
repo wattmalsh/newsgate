@@ -1,4 +1,5 @@
 var News = require('../models/newsModel.js');
+var url = require('url');
 // var testData = require('../test/loadTestData.js');
 
 var sendJSONresponse = function (res, status, content) {
@@ -10,7 +11,7 @@ module.exports = {
   isFakeNews: function (req, res, next) {
     // parse domain from url
     // just trims 
-  	var domain = req.body.url.slice(4);
+    var domain = req.body.url.slice(4);
   	domain = domain.split('/')[0];
 
   	if (domain) {
@@ -18,7 +19,7 @@ module.exports = {
 	  		.find({ url: domain})
 	  		.exec(function (err, url) {
 	  			if (!url) {
-	  				sendJSONresponse(res, 404, {
+	  				sendJSONresponse(res, 404, { 
 	  					"message": "url not found"
 	  				});
 	  				return;
