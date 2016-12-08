@@ -27,9 +27,9 @@
     "mongoose": "^4.7.1",
     "nodemon": "^1.11.0",
     "readline": "0.0.x",
-    "watson-developer-cloud": "^2.13.0",
     "request": "^2.79.0",
     "require": "^2.4.20",
-    "twitter": "^1.5.0"
+    "twitter": "^1.5.0",
+    "watson-developer-cloud": "^2.13.0"
   }
 }
