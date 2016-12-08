@@ -17,3 +17,16 @@ module.exports.getTitle = function(req, res) {
 	    console.log(JSON.stringify(response, null, 2));
 	})
 }
+
+module.exports.getKeywords = function(req, res) {
+	var parameters = {
+		url: req.body.url
+	}
+
+	alchemy_language.keywords(parameters, function (err, response) {
+	  if (err)
+	    console.log('error:', err);
+	  else
+	    console.log(JSON.stringify(response, null, 2));
+	})
+}
