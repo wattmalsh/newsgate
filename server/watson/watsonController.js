@@ -1,7 +1,7 @@
 var watson = require('watson-developer-cloud');
 var alchemy_language = watson.alchemy_language({
-	api_key: /* YOUR API KEY HERE*/
-})
+	api_key: '/* YOUR API KEY HERE*/'
+});
 
 
 module.exports.getTitle = function(req, res) {
