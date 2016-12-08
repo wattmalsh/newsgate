@@ -5,7 +5,7 @@ var alchemy_language = watson.alchemy_language({
 });
 
 
-module.exports.getTitle = function(req, res) {
+module.exports.getTitle = function(req, res, next) {
 	console.log('request body', req.body.url);
 	var parameters = {
 		url: req.body.url
@@ -22,7 +22,7 @@ module.exports.getTitle = function(req, res) {
 
 module.exports.getKeywords = function(req, res) {
 	var parameters = {
-		url: req.body.url, 
+		url: req.body.url,
 		emotion: 1
 	}
 

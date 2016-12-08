@@ -8,3 +8,8 @@ module.exports = function (app, express) {
   app.get('/api/googleTrends', googleTrends.getGoogleTrends);
   app.get('/twitter', twitterSearch.getTweetsOnTopic);
 };
+
+// newsController.isFakeNews depends on nothing
+// watson.getTitle depends on nothing
+// googleTrends.getGoogleTrends (input = title from watson) depends on watson.getTitle
+// twitterSearch.getTweetsOnTopic (input = title from watson) depends on watson.getTitle
