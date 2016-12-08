@@ -3,22 +3,22 @@ var data = [{"query":"donald trump","values":[{"date":"2016-12-03T01:00:00.000Z"
 
 angular.module('newsgate.services', [])
 .factory('FormFactory', function($http) {
-  var url = 'http://localhost:8000';
+  var urlHost = 'http://localhost:8000';
 
   var sendLink = function(url) {
-    let apiPath = '/';
+    let apiPath = '/apitest';
     let message = {
         url: url
     };
 
-    // $http({
-    //   url: url.concat(apiPath);
-    //   type: 'GET',
-    //   data: message
-    // })
-    // .then((res) => {
-    //   console.log('SERVER:', res);
-    // });
+    $http({
+      url: urlHost.concat(apiPath),
+      type: 'POST',
+      data: message
+    })
+    .then((res) => {
+      console.log('SERVER:', res);
+    });
 
     console.log('CLIENT SEND MESSAGE:', message);
     console.log('SERVER SENT DATA:', data);

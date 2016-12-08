@@ -4,6 +4,7 @@ const port = 8000;
 const app = express();
 const googleTrends = require('./trends/googleTrends');
 const twitterSearch = require('./trends/twitterTrends');
+const watson = require('./watson/watsonController');
 
 var dbURI = 'mongodb://localhost/newsgate'
 mongoose.connect(dbURI);
@@ -48,7 +49,8 @@ require('./config/routes.js')(app, express);
 
 // start listening to requests on port 8000
 app.listen(port);
-app.get('/googleTrends', googleTrends.getGoogleTrends);
+app.post('/apitest', function() {console.log('got post')});
+app.get('/api/googleTrends', googleTrends.getGoogleTrends);
 app.get('/twitter', twitterSearch.getTweetsOnTopic);
 
 // export our app for testing and flexibility, required by index.js
