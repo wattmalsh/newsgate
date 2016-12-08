@@ -10,7 +10,7 @@ var sendJSONresponse = function (res, status, content) {
 module.exports = {
   isFakeNews: function (req, res, next) {
     // parse domain from url
-    // just trims 
+    // just trims
     var domain = req.body.url.slice(4);
   	domain = domain.split('/')[0];
 
@@ -19,7 +19,7 @@ module.exports = {
 	  		.find({ url: domain})
 	  		.exec(function (err, url) {
 	  			if (!url) {
-	  				sendJSONresponse(res, 404, { 
+	  				sendJSONresponse(res, 404, {
 	  					"message": "url not found"
 	  				});
 	  				return;
@@ -27,7 +27,11 @@ module.exports = {
 	  				sendJSONresponse(res, 404, err);
 	  				return;
 	  			}
-	  			sendJSONresponse(res, 200, url);
+	  			//sendJSONresponse(res, 200, url);
+					res.compoundContent = {
+						url: url
+					};
+					next();
 	  		});
   	} else {
   		console.log('No url specified');
