@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 
 var ratingSchema = new mongoose.Schema({
 	score: Number,
+  type: String,
 	algorithm: String
 });
 
