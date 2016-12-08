@@ -4,5 +4,6 @@ angular.module('newsgate.form', [])
   // Invoke get request to server
   $scope.sendLink = function() {
     console.log('Getting Link:', $scope.inputLink);
+    FormFactory.sendLink($scope.inputLink);
   }
 });
