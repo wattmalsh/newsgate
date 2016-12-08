@@ -1,6 +1,7 @@
 var watson = require('watson-developer-cloud');
+var watsonKey = require('./watson_api_key.js');
 var alchemy_language = watson.alchemy_language({
-	api_key: '/* YOUR API KEY HERE*/'
+	api_key: watsonKey.watsonKey
 });
 
 
