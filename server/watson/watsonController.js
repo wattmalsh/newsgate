@@ -6,6 +6,7 @@ var alchemy_language = watson.alchemy_language({
 
 
 module.exports.getTitle = function(req, res) {
+	console.log('request body', req.body.url);
 	var parameters = {
 		url: req.body.url
 	}
@@ -15,8 +16,9 @@ module.exports.getTitle = function(req, res) {
 	    console.log('error:', err);
 	  else
 	    console.log(JSON.stringify(response, null, 2));
+	  	res.send(response);
 	})
-}
+};
 
 module.exports.getKeywords = function(req, res) {
 	var parameters = {
