@@ -6,6 +6,13 @@
   justify-content: center;
 }
 
+#trendsContainer {
+  margin: 0px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
 .centerHeader {
   color: white;
   margin: 0px;
