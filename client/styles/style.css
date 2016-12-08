@@ -48,6 +48,7 @@
   color: rgb(237, 237, 237);
 }
 
+
 body {
   /*background: -webkit-linear-gradient(left top, rgb(22, 140, 224), rgb(22, 170, 224));*/
   background-color: white;
@@ -58,4 +59,9 @@ body {
   fill: none;
   stroke: steelblue;
   stroke-width: 2px;
+}
+
+.area {
+  fill: lightsteelblue;
+  stroke-width: 0;
 }
