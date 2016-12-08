@@ -1,0 +1,16 @@
+.centerHeader {
+  margin: 0px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  font-weight: bolder;
+  font-size: 300%;
+}
+
+#formNewsLink {
+  padding: 0px 20% 0px 20%;
+  margin: 0px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
