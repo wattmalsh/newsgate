@@ -12,7 +12,7 @@ exports.getGoogleTrends = function(request, response) {
     type: 'day',   //resolution of returned data
     value: 5       //need to figure out what this is...
   }
-  googleTrends.trendData({keywords: 'donald trump', timePeriod: timePeriod})
+  googleTrends.trendData({keywords: ['donald trump', 'is obama muslim'], timePeriod: timePeriod})
   .then(function(results) {
     console.log(results);
     response.send(results);
