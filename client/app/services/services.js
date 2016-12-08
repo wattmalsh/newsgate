@@ -32,11 +32,11 @@ angular.module('newsgate.services', [])
 })
 .factory('Data', function() {
 
-  var dataSet1 = dataSet1;
-  var dataSet2 = dataSet2;
+  // var dataSet1 = dataSet1;
+  // var dataSet2 = dataSet2;
 
   var dataGet = function(data) {
-    // if (!data) data = dataSet1[0];
+    if (!data) data = dataSet1[0];
     console.log('invoked data get');
     var columns = ['date', 'value'];
     // var y = [];
@@ -54,8 +54,8 @@ angular.module('newsgate.services', [])
   };
 
   return {
-    process: dataGet,
-    test1: dataSet1,
-    test2: dataSet2
+    process: dataGet
+    // test1: dataSet1,
+    // test2: dataSet2
   };
 });

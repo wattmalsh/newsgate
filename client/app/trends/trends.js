@@ -1,7 +1,7 @@
 angular.module('newsgate.trends', [])
 .controller('TrendsController', function($scope, Data) {
   console.log('yoyo before', Data);
-  $scope.data = Data.process(Data.test2);
+  $scope.data = Data.process();
   console.log('yoyo after', Data);
 })
 .directive('trendGraph', function(Data) {
