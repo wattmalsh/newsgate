@@ -2,6 +2,7 @@ angular.module('newsgate', [
   'newsgate.services',
   'newsgate.form',
   'newsgate.trends',
+  'newsgate.test',
   'ngRoute'
 ])
 .config(function($routeProvider) {
@@ -13,5 +14,8 @@ angular.module('newsgate', [
   .when('/trends', {
     templateUrl : 'app/trends/trends.html',
     controller: 'TrendsController'
+  })
+  .when('/test', {
+    templateUrl : 'app/test/test.html'
   });
 });
