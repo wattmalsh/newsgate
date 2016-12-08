@@ -22,6 +22,9 @@ angular.module('newsgate.services', [])
 
     console.log('CLIENT SEND MESSAGE:', message);
     console.log('SERVER SENT DATA:', data);
+
+    // testing
+    return data;
   };
 
   return {
