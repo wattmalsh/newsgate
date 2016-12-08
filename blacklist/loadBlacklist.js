@@ -10,12 +10,21 @@ fs.readFile('./blacklist/blacklist.js', function(err, data){
     console.log('Error reading from blacklist file: ' + err);
     process.exit();
   } else {
-    var blacklist = JSON.parse(data);
+    var blacklistObject = JSON.parse(data);
+    var blacklist = Object.keys(blacklistObject);
     var newsToAdd = blacklist.length;
     var newsAdded = 0;
     console.log(newsToAdd + ' known fake news sites to add...');
     blacklist.forEach(function(badSite){
-      News.create(badSite, function(err){
+      var item = {
+                    url: badSite,
+                    rating: {
+                        "score" : blacklistObject[badSite].score,
+                        "type" : blacklistObject[badSite].type,
+                        "algorithm" : blacklistObject[badSite].algorithm
+                    }
+                 };
+      News.create(item, function(err){
         if (err) {
           console.log('Error writing to DB: ' + err);
           process.exit();
