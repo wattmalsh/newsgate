@@ -2,7 +2,7 @@ angular.module('newsgate.trends', [])
 .controller('TrendsController', function($scope) {
 
 })
-.directive('trendGraph', function() {
+.directive('trendGraph', function(Trends) {
   console.log('isD3 Loaded?', d3);
   return {
     restrict: 'E',
@@ -22,7 +22,7 @@ angular.module('newsgate.trends', [])
       // define the line
       var valueline = d3.line()
           .x(function(d) { return x(d.date); })
-          .y(function(d) { return y(d.close); });
+          .y(function(d) { return y(d['value']); });
 
       // append the svg obgect to the body of the page
       // appends a 'group' element to 'svg'
@@ -30,14 +30,14 @@ angular.module('newsgate.trends', [])
       var svg = d3.select(element[0]).append("svg")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
-        .append("g")
+          .append("g")
           .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
 
       // Get the data
       d3.csv("/app/test/data.csv", function(error, data) {
         if (error) throw error;
-
+        console.log('original data', data);
         // format the data
         data.forEach(function(d) {
             d.date = parseTime(d.date);
@@ -45,11 +45,13 @@ angular.module('newsgate.trends', [])
             // console.log('d.date:', d.date);
             // console.log('d.close:', d.close);
         });
+        console.log('original data after formating', data);
+        data = Trends.getTestData();
         console.log(data);
 
         // Scale the range of the data
         x.domain(d3.extent(data, function(d) { return d.date; }));
-        y.domain([0, d3.max(data, function(d) { return d.close; })]);
+        y.domain([0, d3.max(data, function(d) { return d['value']; })]);
 
         // Add the valueline path.
         svg.append("path")
