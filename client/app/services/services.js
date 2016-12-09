@@ -6,6 +6,8 @@ angular.module('newsgate.services', [])
 .factory('Response', function($http, Data) {
   var urlHost = 'http://localhost:8000';
 
+  var url, title, keywords, twitter;
+
   var sendLink = function(url) {
     let apiPath = '/api';
     let message = {
@@ -18,21 +20,22 @@ angular.module('newsgate.services', [])
     )
     .then((res) => {
       console.log('SERVER:', res);
+	  url = res.data.url,
+	  title = res.data.title,
+	  keywords = res.data.keywords,
+	  twitter = res.data.twitter
     });
 
     console.log('CLIENT SEND MESSAGE:', message);
-
-   	var url = message.url;
-   	var title = message.title;
-   	var keywords = message.keywords;
-   	var twitter = message.twitter;
-
-    // testing
-    return data;
   };
 
+  // responses stored here 
   return {
     sendLink: sendLink
+    url: url,
+    title: title,
+    keywords: keywords,
+    twitter: twitter
   }
 })
 .factory('Data', function() {
