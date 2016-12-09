@@ -22,16 +22,17 @@ module.exports.getTitle = function(req, res, next) {
 	})
 };
 
-module.exports.getKeywords = function(req, res) {
+module.exports.getKeywords = function(req, res, next) {
 	var parameters = {
-		url: req.body.url,
-		emotion: 1
+		url: req.body.url
 	}
 
 	alchemy_language.keywords(parameters, function (err, response) {
 	  if (err)
 	    console.log('error:', err);
 	  else
+	  	res.compoundContent['keywords'] = response;
+		next();
 	    console.log(JSON.stringify(response, null, 2));
 	})
 }
