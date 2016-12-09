@@ -41,15 +41,16 @@ function getCurrentTabUrl(callback) {
 };
 
 
-getCurrentTabUrl(function(url) { 
+getCurrentTabUrl(function(tabUrl) { 
   var urlData = $.ajax({
     url: 'http://localhost:8000/api',
     type: 'POST',
-    data: url,
-    dataType: 'text'
+    data: {'url': tabUrl},
+    dataType: 'json'
   })
   .done(function (json) { 
-    $("<h1>").text(json.url.score).appendTo('body');
+    console.log(json);
+    $("<h1>").text(json.url.rating.score).appendTo('body');
   })
   .fail(function( xhr, status, errorThrown ) {
     console.log( "Error: " + errorThrown );
