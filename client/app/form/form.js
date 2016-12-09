@@ -1,9 +1,9 @@
 angular.module('newsgate.form', [])
-.controller('FormController', function($scope, FormFactory) {
+.controller('FormController', function($scope, Response) {
 
   // Invoke get request to server
   $scope.sendLink = function() {
     console.log('Getting Link:', $scope.inputLink);
-    FormFactory.sendLink($scope.inputLink);
+    Response.sendLink($scope.inputLink);
   }
 });
