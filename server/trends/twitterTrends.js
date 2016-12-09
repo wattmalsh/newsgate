@@ -3,18 +3,19 @@ var Promise = require('bluebird');
 var keys = require('./twitterAPIKey');
 var bodyParser = require('body-parser');
 
-var emerson = new Twitter({
+var twitter = new Twitter({
   'consumer_key': keys.consumer_key,
   'consumer_secret': keys.consumer_secret,
   'access_token_key': keys.access_token_key,
   'access_token_secret': keys.access_token_secret
 });
 
-emerson = Promise.promisifyAll(emerson);
+twitter = Promise.promisifyAll(twitter);
 
 exports.getTweetsOnTopic = function(req, res, next) {
   // var keywords = req.body.keywords;
-  emerson.getAsync('search/tweets', {q: 'rigged elections', result_type: 'popular', count: 100})
+  console.log(res.compoundContent.title)
+  twitter.getAsync('search/tweets', {q: res.compoundContent.title.title, result_type: 'popular', count: 100})
   .then(function(data) {
     console.log(data);
     res.compoundContent['twitter'] = data;

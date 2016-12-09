@@ -8,6 +8,7 @@ module.exports = function (app, express) {
   app.post('/api', [newsController.isFakeNews,
                     watsonController.getTitle,
                     //googleTrends.getGoogleTrends,
+                    watsonController.getKeywords,
                     twitterSearch.getTweetsOnTopic
                     ], function(req,res,next){
     res.json(res.compoundContent);
