@@ -1,7 +1,11 @@
-<div id="testContainer" ng-controller='tweetsController'>
-  <h1>Test Tweet Chart</h1>
-  <div ng-repeat="tweet in tweets">
-    <twitter-widget twitter-widget-id='tweet["id_str"]' twitter-widget-options='{"cards":"hidden", "align":"left", "conversation":"none"}'>
-    </twitter-widget>
+<div>
+  <div class="centerGeneric">Test Tweet Chart</div>
+  <div id="testContainer" ng-controller='tweetsController'>
+    <div class='twitterContainer'>
+      <div ng-repeat="tweet in tweets" class=>
+        <twitter-widget twitter-widget-id='tweet["id_str"]' twitter-widget-options='{"cards":"hidden", "align":"left", "conversation":"none"}'>
+        </twitter-widget>
+      </div>
+    </div>
   </div>
 </div>
