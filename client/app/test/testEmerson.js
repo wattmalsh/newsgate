@@ -6,4 +6,23 @@ angular.module('newsgate.testEmerson', ['ngtweet'])
     $scope.tweets = sampleTweets['statuses'].slice(0,3);
     console.log($scope.tweets[0]['id_str']);
 
+    var tweetMetrics = sampleTweets['statuses'].map(function(tweet) {
+      var favorite_count = tweet.favorite_count || tweet.favourites_count;
+      var interactionSum = favorite_count + tweet.retweet_count;
+      if (interactionSum > 1000) {
+        var viralScore = 100;
+      } else {
+        var viralScore = interactionSum / 1000 * 100;
+      }
+      return {'date': tweet.created_at,
+              'text': tweet.text,
+              'user': tweet.user.name,
+              'favorite_count': favorite_count,
+              'retweet_count': tweet.retweet_count,
+              'values': viralScore
+      }; 
+    });
+    $scope.compiledTweets = [{'query': 'TITLE FROM SERVER', 'values': tweetMetrics}];
+
+
 });
