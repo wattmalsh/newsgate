@@ -31,46 +31,76 @@ angular.module('newsgate.trends', [])
       var x = d3.scaleTime().range([0, width]);
       var y = d3.scaleLinear().range([height, 0]);
 
+      var svg = d3.select(element[0]).append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform",
+      "translate(" + margin.left + "," + margin.top + ")");
+
+      // create area path under curve
+      svg.append("path")
+        .datum(data)
+        .attr("class", "area");
+
+      // draw the valueline path
+      svg.append("path")
+        .data([data])
+        .attr("class", "line");
+
+      // draw the x Axis
+      svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x).ticks(d3.timeDay, 1).tickFormat(d3.timeFormat("%b %d")));
+
+      // draw the y Axis
+      svg.append("g")
+        .call(d3.axisLeft(y).ticks(5));
+
+
       scope.$watch('data', function(newData, currentData) {
         console.log('data was updated!');
         data = scope.data;
-        var valueline = d3.line()
+        console.log('after slice data', data);
+
+        var valueLine = d3.line()
             .x(function(d) { return x(d.date); })
             .y(function(d) { return y(d.value); });
+
         var area = d3.area()
           .x(function(d) { return x(d.date); })
           .y0(height)
           .y1(function(d) { return y(d.value); });
+
         // scale the range of the data
         x.domain(d3.extent(data, function(d) { return d.date; }));
         y.domain([0, d3.max(data, function(d) { return d.value; })]);
-        d3.select("svg").remove();
-        var svg = d3.select(element[0]).append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform",
-                  "translate(" + margin.left + "," + margin.top + ")");
-        // draw area under curve
-        svg.append("path")
-          .datum(data)
-          .attr("class", "area")
-          .attr("d", area);
 
-        // draw the valueline path
-        svg.append("path")
-            .data([data])
-            .attr("class", "line")
-            .attr("d", valueline);
+        var oldLine = svg.selectAll(".line").attr("d");
+        var path = svg.selectAll(".line").data([data]);
+        var pathLine = path.attr("d", valueLine).attr("d").slice();
 
-        // draw the x Axis
-        svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x).ticks(d3.timeDay, 1).tickFormat(d3.timeFormat("%b %d")));
+        if (!oldLine) {
+          var dataCopy = data.slice();
+          dataCopy.forEach((point) => {
+            point.value = 0;
+          });
 
-        // draw the y Axis
-        svg.append("g")
-            .call(d3.axisLeft(y).ticks(5));
+          var oldLine = svg.selectAll(".line").data([dataCopy]).attr("d", valueLine).attr("d").slice();
+        }
+
+        path
+        .transition()
+          .duration(2000)
+          .attrTween("d", function(d) {
+            return d3.interpolatePath(oldLine, pathLine);
+          });
+
+        // svg.selectAll("path").transition().duration(2000)
+        //   .datum(data)
+        //   .attr
+
+
       });
 
     }
