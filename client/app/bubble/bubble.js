@@ -16,14 +16,12 @@ angular.module('newsgate.bubble', [])
       // define the space that holds the graph
       var margin = {top: 20, right: 20, bottom: 30, left: 50},
           width = 960 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
+          height = 640 - margin.top - margin.bottom;
 
       // define scale
       var scale = d3.scaleLog() // automatically converts to log scale
         .domain([0.6, 1]) // range of input data
-        .range([6, 60]); // range of output data
-
-
+        .range([18, 100]); // range of output data
 
       // create svg
       var svg = d3.select(element[0]).append("svg")
@@ -39,15 +37,18 @@ angular.module('newsgate.bubble', [])
         if (!data) data = [];
 
         var bubbles = svg.selectAll(".keyword").data(data);
+        console.log('bubbles:', bubbles);
 
         var allBubbles = bubbles.enter().append("circle")
           .attr("class", ".keyword")
           .attr("r", function(d) {
             return scale(+d.relevance);
           })
-          .attr("fill", "lightblue");
-          // .attr("cx", 100)
-          // .attr("cy", 300);
+          .attr("fill", "steelblue");
+
+        // var textBox = bubbles.enter().append('text')
+        //   .attr('dx', function(d) { return -20;})
+        //   .text(function(d) { return d.text});
 
         // define simulation
         var simulation = d3.forceSimulation()
@@ -62,6 +63,7 @@ angular.module('newsgate.bubble', [])
           allBubbles
           .attr("cx", function(d) { return d.x;} )
           .attr("cy", function(d) { return d.y;} );
+
         };
 
         // apply simulation
