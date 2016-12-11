@@ -19,7 +19,11 @@ angular.module('newsgate.bubble', [])
           height = 500 - margin.top - margin.bottom;
 
       // define scale
-      // var scale = d3.scaleSqrt()
+      var scale = d3.scaleLog() // automatically converts to log scale
+        .domain([0.6, 1]) // range of input data
+        .range([6, 60]); // range of output data
+
+
 
       // create svg
       var svg = d3.select(element[0]).append("svg")
@@ -36,12 +40,33 @@ angular.module('newsgate.bubble', [])
 
         var bubbles = svg.selectAll(".keyword").data(data);
 
-        bubbles.enter().append("circle")
+        var allBubbles = bubbles.enter().append("circle")
           .attr("class", ".keyword")
-          .attr("r", 10)
-          .attr("fill", "lightblue")
-          .attr("cx", 100)
-          .attr("cy", 300);
+          .attr("r", function(d) {
+            return scale(+d.relevance);
+          })
+          .attr("fill", "lightblue");
+          // .attr("cx", 100)
+          // .attr("cy", 300);
+
+        // define simulation
+        var simulation = d3.forceSimulation()
+         .force('x', d3.forceX(width / 2).strength(0.05))
+         .force('y', d3.forceY(height / 2).strength(0.05))
+         .force('collide', d3.forceCollide(function(d) {
+           return scale(+d.relevance) + 1;
+         }));
+
+        // reset position every interval during simulation
+        var ticked = function() {
+          allBubbles
+          .attr("cx", function(d) { return d.x;} )
+          .attr("cy", function(d) { return d.y;} );
+        };
+
+        // apply simulation
+        simulation.nodes(data)
+          .on('tick', ticked);
 
       });
 
