@@ -1,13 +1,11 @@
 angular.module('newsgate.trends', [])
 .controller('TrendsController', function($scope, Data, $interval) {
-  console.log('before process', Data);
   $scope.data = Data.process(Data.test1);
-  console.log('after process', Data);
 
   // test
   $interval(() => {
     $scope.data = Data.process(Data.test2);
-    console.log('updated data!');
+    console.log('INTERVAL TRIGGER: updated data!');
   }, 6000, 1);
 })
 .directive('trendGraph', function() {
@@ -37,6 +35,7 @@ angular.module('newsgate.trends', [])
       .attr("transform",
       "translate(" + margin.left + "," + margin.top + ")");
 
+      // Turn off area shade - it is broken
       // create area path under curve
       // svg.append("path")
       //   .datum(data)
@@ -58,8 +57,8 @@ angular.module('newsgate.trends', [])
         .attr("class", "yAxis")
         .call(d3.axisLeft(y).ticks(5));
 
-
-      scope.$watch('data', function(newData, currentData) {
+      // render data whenever it changes
+      scope.$watch('data', function(currentData, previousData) {
         console.log('data was updated!');
         data = scope.data;
 
@@ -68,6 +67,7 @@ angular.module('newsgate.trends', [])
             .x(function(d) { return x(d.date); })
             .y(function(d) { return y(d.value); });
 
+        // Turn off area shade - it is broken
         // var area = d3.area()
         //   .x(function(d) { return x(d.date); })
         //   .y0(height)
@@ -81,6 +81,7 @@ angular.module('newsgate.trends', [])
         var path = svg.selectAll(".line").data([data]);
         var pathLine = path.attr("d", valueLine).attr("d").slice();
 
+        // On first load, create a straight line on xaxis
         if (!oldLine) {
           var dataCopy = data.slice();
           dataCopy.forEach((point) => {
@@ -90,6 +91,7 @@ angular.module('newsgate.trends', [])
           var oldLine = svg.selectAll(".line").data([dataCopy]).attr("d", valueLine).attr("d").slice();
         }
 
+        // animate path change to new render
         path
         .transition()
           .duration(2000)
@@ -97,9 +99,11 @@ angular.module('newsgate.trends', [])
             return d3.interpolatePath(oldLine, pathLine);
           });
 
+        // animate xaxis change to new render
         svg.select(".xAxis").transition().duration(2000)
           .call(d3.axisBottom(x).ticks(d3.timeDay, 1).tickFormat(d3.timeFormat("%b %d")));
 
+        // animate yaxis change to new render
         svg.select(".yAxis").transition().duration(2000)
           .call(d3.axisLeft(y).ticks(5));
 
