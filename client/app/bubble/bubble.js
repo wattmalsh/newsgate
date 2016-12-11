@@ -32,17 +32,31 @@ angular.module('newsgate.bubble', [])
       "translate(" + margin.left + "," + margin.top + ")");
 
       // render data whenever it changes
+      var simulation;
       scope.$watch('data', function(currentData, previousData) {
+        if (simulation) {
+          console.log('stopped simulation', simulation);
+          simulation.stop();
+        }
+
         data = scope.data;
         if (!data) data = [];
 
-        var bubbles = svg.selectAll(".keyword").data(data);
-        console.log('bubbles:', bubbles);
+        var bubbles = svg.selectAll('circle');
 
-        var allBubbles = bubbles.enter().append("circle")
+        bubbles.transition().duration(800)
+          .attr('fill', 'rgba(0,0,0,0)')
+          .remove();
+
+        var allBubbles = svg.selectAll('circles').data(data)
+        .enter().append("circle")
           .attr("class", ".keyword")
           .attr("r", function(d) {
-            return scale(+d.relevance);
+            let relevance = +d.relevance;
+            if (relevance < 0.6) {
+              relevance = 0.6;
+            }
+            return scale(relevance);
           })
           .attr("fill", "steelblue");
 
@@ -51,11 +65,15 @@ angular.module('newsgate.bubble', [])
         //   .text(function(d) { return d.text});
 
         // define simulation
-        var simulation = d3.forceSimulation()
+        simulation = d3.forceSimulation()
          .force('x', d3.forceX(width / 2).strength(0.05))
          .force('y', d3.forceY(height / 2).strength(0.05))
          .force('collide', d3.forceCollide(function(d) {
-           return scale(+d.relevance) + 1;
+           let relevance = +d.relevance;
+           if (relevance < 0.6) {
+             relevance = 0.6;
+           }
+           return scale(relevance) + 1;
          }));
 
         // reset position every interval during simulation
