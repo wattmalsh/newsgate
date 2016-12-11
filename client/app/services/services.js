@@ -29,13 +29,8 @@ angular.module('newsgate.services', [])
     console.log('CLIENT SEND MESSAGE:', message);
   };
 
-  // responses stored here
   return {
-    sendLink: sendLink,
-    url: url,
-    title: title,
-    keywords: keywords,
-    twitter: twitter
+    sendLink: sendLink
   };
 })
 .factory('Data', function() {
@@ -61,6 +56,7 @@ angular.module('newsgate.services', [])
 
   };
 
+  // store responses here... easier to access
   return {
     process: dataGet,
     test1: dataSet1[0],
