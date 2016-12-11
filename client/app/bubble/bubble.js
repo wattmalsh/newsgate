@@ -58,11 +58,20 @@ angular.module('newsgate.bubble', [])
             }
             return scale(relevance);
           })
-          .attr("fill", "steelblue");
+          .attr('fill', 'steelblue')
+          .attr('opacity', 1)
+          .on('mouseover', function(d) {
+            d3.select(this).transition().duration(250).attr('opacity', 0.6);
+          })
+          .on('mouseout', function(d) {
+            d3.select(this).transition().duration(250).attr('opacity', 1);
+          });
 
-        // var textBox = bubbles.enter().append('text')
-        //   .attr('dx', function(d) { return -20;})
-        //   .text(function(d) { return d.text});
+        // not working
+        var textBoxes = allBubbles.append('text')
+          .attr('dx', function(d) { return -20;})
+          .attr('class', 'bubbleText')
+          .text(function(d) { return d.text});
 
         // define simulation
         simulation = d3.forceSimulation()
@@ -82,6 +91,9 @@ angular.module('newsgate.bubble', [])
           .attr("cx", function(d) { return d.x;} )
           .attr("cy", function(d) { return d.y;} );
 
+          textBoxes
+          .attr("cx", function(d) { return d.x;} )
+          .attr("cy", function(d) { return d.y;} );
         };
 
         // apply simulation
