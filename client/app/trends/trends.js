@@ -1,8 +1,8 @@
 angular.module('newsgate.trends', [])
 .controller('TrendsController', function($scope, Data, $interval) {
-  console.log('yoyo before', Data);
+  console.log('before process', Data);
   $scope.data = Data.process(Data.test1);
-  console.log('yoyo after', Data);
+  console.log('after process', Data);
 
   // test
   $interval(() => {
@@ -30,17 +30,6 @@ angular.module('newsgate.trends', [])
       // define ranges for axis
       var x = d3.scaleTime().range([0, width]);
       var y = d3.scaleLinear().range([height, 0]);
-
-      // define area under the line that was drawn
-
-
-      // define the line
-
-
-      // find the custom tag and append svg and attributes
-
-
-
 
       scope.$watch('data', function(newData, currentData) {
         console.log('data was updated!');
