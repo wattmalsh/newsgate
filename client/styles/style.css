@@ -54,13 +54,18 @@ body {
   background-color: white;
 }
 
-/*TEST*/
+.bubbleText {
+  color: black;
+  font-size: 200%;
+}
+
 .line {
   fill: none;
   stroke: steelblue;
   stroke-width: 2px;
 }
 
+/*TEST*/
 .area {
   fill: lightsteelblue;
   stroke-width: 0;
