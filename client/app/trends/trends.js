@@ -19,8 +19,6 @@ angular.module('newsgate.trends', [])
       // HardCoded data input
       // Import from scope
       data = scope.data;
-      console.log(data);
-
 
       // define the space that holds the graph
       var margin = {top: 20, right: 20, bottom: 30, left: 50},
@@ -31,6 +29,7 @@ angular.module('newsgate.trends', [])
       var x = d3.scaleTime().range([0, width]);
       var y = d3.scaleLinear().range([height, 0]);
 
+      // create svg
       var svg = d3.select(element[0]).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
@@ -39,38 +38,40 @@ angular.module('newsgate.trends', [])
       "translate(" + margin.left + "," + margin.top + ")");
 
       // create area path under curve
-      svg.append("path")
-        .datum(data)
-        .attr("class", "area");
+      // svg.append("path")
+      //   .datum(data)
+      //   .attr("class", "area");
 
-      // draw the valueline path
+      // add line path
       svg.append("path")
         .data([data])
         .attr("class", "line");
 
       // draw the x Axis
       svg.append("g")
+        .attr("class", "xAxis")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x).ticks(d3.timeDay, 1).tickFormat(d3.timeFormat("%b %d")));
 
       // draw the y Axis
       svg.append("g")
+        .attr("class", "yAxis")
         .call(d3.axisLeft(y).ticks(5));
 
 
       scope.$watch('data', function(newData, currentData) {
         console.log('data was updated!');
         data = scope.data;
-        console.log('after slice data', data);
 
+        // line function
         var valueLine = d3.line()
             .x(function(d) { return x(d.date); })
             .y(function(d) { return y(d.value); });
 
-        var area = d3.area()
-          .x(function(d) { return x(d.date); })
-          .y0(height)
-          .y1(function(d) { return y(d.value); });
+        // var area = d3.area()
+        //   .x(function(d) { return x(d.date); })
+        //   .y0(height)
+        //   .y1(function(d) { return y(d.value); });
 
         // scale the range of the data
         x.domain(d3.extent(data, function(d) { return d.date; }));
@@ -96,9 +97,11 @@ angular.module('newsgate.trends', [])
             return d3.interpolatePath(oldLine, pathLine);
           });
 
-        // svg.selectAll("path").transition().duration(2000)
-        //   .datum(data)
-        //   .attr
+        svg.select(".xAxis").transition().duration(2000)
+          .call(d3.axisBottom(x).ticks(d3.timeDay, 1).tickFormat(d3.timeFormat("%b %d")));
+
+        svg.select(".yAxis").transition().duration(2000)
+          .call(d3.axisLeft(y).ticks(5));
 
 
       });
