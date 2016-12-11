@@ -21,7 +21,7 @@ angular.module('newsgate.bubble', [])
       // define scale
       var scale = d3.scaleLog() // automatically converts to log scale
         .domain([0.6, 1]) // range of input data
-        .range([18, 100]); // range of output data
+        .range([16, 80]); // range of output data
 
       // create svg
       var svg = d3.select(element[0]).append("svg")
@@ -58,13 +58,15 @@ angular.module('newsgate.bubble', [])
             }
             return scale(relevance);
           })
+          .attr('stroke', 'steelblue')
+          .attr('stroke-width', 5)
           .attr('fill', 'steelblue')
-          .attr('opacity', 1)
+          .attr('fill-opacity', 1)
           .on('mouseover', function(d) {
-            d3.select(this).transition().duration(250).attr('opacity', 0.6);
+            d3.select(this).transition().duration(200).attr('fill-opacity', 0.6);
           })
           .on('mouseout', function(d) {
-            d3.select(this).transition().duration(250).attr('opacity', 1);
+            d3.select(this).transition().duration(200).attr('fill-opacity', 1);
           });
 
         // not working
@@ -82,7 +84,7 @@ angular.module('newsgate.bubble', [])
            if (relevance < 0.6) {
              relevance = 0.6;
            }
-           return scale(relevance) + 1;
+           return scale(relevance) + 4;
          }));
 
         // reset position every interval during simulation
