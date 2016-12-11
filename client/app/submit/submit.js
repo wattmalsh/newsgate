@@ -1,5 +1,5 @@
-angular.module('newsgate.form', [])
-.controller('FormController', function($scope, Response) {
+angular.module('newsgate.submit', [])
+.controller('SubmitController', function($scope, Response) {
 
   // Invoke get request to server
   $scope.sendLink = function() {
