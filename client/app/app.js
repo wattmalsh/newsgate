@@ -13,6 +13,9 @@ angular.module('newsgate', [
   .when('/', {
     // leave this empty
   })
+  .when('/main', {
+    templateUrl: 'app/main/main.html'
+  })
   .when('/trends', {
     templateUrl : 'app/trends/trends.html',
     controller: 'TrendsController'
