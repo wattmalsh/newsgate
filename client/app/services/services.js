@@ -4,7 +4,7 @@ var dataSet2 = [{"query":"john glenn","values":[{"date":"2016-12-01T23:00:00.000
 angular.module('newsgate.services', [])
 .factory('Response', function($http, $rootScope, $location, Data, State) {
   var urlHost = 'http://localhost:8000';
-
+  var toggle = true;
   var sendLink = function(url) {
     State.hideSpinner = false;
     State.hideNav = true;
@@ -29,6 +29,18 @@ angular.module('newsgate.services', [])
       Data.fake = res.data.fake,
       State.hideSpinner = true;
       State.hideNav = false;
+
+      // work around for googleTrends to use hardcoded data
+      if (false) {
+        if (toggle) {
+          Data.google = dataSet1;
+          toggle = false;
+        } else {
+          Data.google = dataSet2;
+          toggle = true;
+        }
+      }
+
       $rootScope.$emit('updateSpinner');
       $rootScope.$emit('updateNav');
       $rootScope.$emit('newTopThree');

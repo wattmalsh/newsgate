@@ -58,7 +58,7 @@ angular.module('newsgate.trends', [])
       scope.$watch('data', function(currentData, previousData) {
         console.log('data was updated!');
         data = scope.data;
-
+        console.log('GOT DATA:', data);
         // scale the range of the data
         x.domain(d3.extent(data, function(d) { return d.date; }));
         y.domain([0, d3.max(data, function(d) { return d.value; })]);
@@ -96,7 +96,7 @@ angular.module('newsgate.trends', [])
           oldLine === null;
         }
 
-        // On first load, create a straight line on xaxis
+        // On first load or if oldLine is invalid, create a straight line on xaxis
         if (!oldLine) {
           console.log('create init oldLine');
           var dataCopy = data.slice();
@@ -112,6 +112,9 @@ angular.module('newsgate.trends', [])
         if (oldArea) {
           oldArea.transition().duration(500).attr('fill-opacity', 0).remove();
         }
+
+        // console.log('oldLine:', oldLine);
+        // console.log('pathLine:', pathLine);
 
         path
         .transition()
