@@ -20,6 +20,13 @@
   justify-content: center;
 }
 
+#spinnerContainer {
+  margin: 0px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
 .centerGeneric {
   margin: 0px;
   align-items: center;
