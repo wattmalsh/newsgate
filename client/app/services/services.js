@@ -26,6 +26,7 @@ angular.module('newsgate.services', [])
 	    Data.keywords = res.data.keywords,
 	    Data.twitter = res.data.twitter,
       Data.google = res.data.google,
+      Data.fake = res.data.fake,
       State.hideSpinner = true;
       State.hideNav = false;
       $rootScope.$emit('updateSpinner');
@@ -72,6 +73,7 @@ angular.module('newsgate.services', [])
     process: dataGet,
     url: {},
     title: {},
+    fake: {},
     keywords: {keywords:[]},
     twitter: {},
     google: [[], dataSet1[0]],
