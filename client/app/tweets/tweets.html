@@ -1,6 +1,7 @@
 <div>
+  <div ng-include="'/app/submit/submit.html'"></div>
   <div class="centerGeneric">Top 3 Tweets</div>
-  <div id="testContainer" ng-controller='tweetsController'>
+  <div id="testContainer" ng-controller='TweetsController'>
     <div class='twitterContainer'>
       <div ng-repeat="tweet in tweets" class=>
         <twitter-widget twitter-widget-id='tweet' twitter-widget-options='{"cards":"hidden", "align":"left", "conversation":"none"}'>

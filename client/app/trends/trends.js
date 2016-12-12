@@ -1,12 +1,11 @@
 angular.module('newsgate.trends', [])
-.controller('TrendsController', function($scope, Data, $interval) {
-  $scope.data = Data.process(Data.test1);
+.controller('TrendsController', function($scope, $rootScope, Data) {
+  $scope.data = Data.process(Data.test2, 'init');
 
-  // test
-  $interval(() => {
-    $scope.data = Data.process(Data.test2);
-    console.log('INTERVAL TRIGGER: updated data!');
-  }, 6000, 1);
+  $rootScope.$on('updateData', () => {
+    console.log('Queried Trend Term:', Data.google[1].query);
+    $scope.data = Data.process(Data.google[1]);
+  });
 })
 .directive('trendGraph', function() {
   console.log('isD3 Loaded?', d3);
