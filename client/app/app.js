@@ -9,7 +9,7 @@ angular.module('newsgate', [
   'newsgate.nav',
   'ngRoute'
 ])
-.config(function($routeProvider, $locationProvider) {
+.config(function($routeProvider) {
   $routeProvider
   .when('/', {
     // leave this empty
@@ -30,5 +30,4 @@ angular.module('newsgate', [
     controller: 'TweetsController'
   });
 
-  $locationProvider.html5Mode(true);
 });
