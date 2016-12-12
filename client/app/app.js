@@ -1,5 +1,6 @@
 angular.module('newsgate', [
   'newsgate.services',
+  'newsgate.main',
   'newsgate.submit',
   'newsgate.trends',
   'newsgate.bubble',
