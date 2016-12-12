@@ -4,7 +4,6 @@ angular.module('newsgate', [
   'newsgate.trends',
   'newsgate.bubble',
   'newsgate.test',
-  'newsgate.testEmerson',
   'ngRoute'
 ])
 .config(function($routeProvider) {

@@ -13,8 +13,8 @@ var twitter = new Twitter({
 twitter = Promise.promisifyAll(twitter);
 
 exports.getTweetsOnTopic = function(req, res, next) {
-  // var keywords = req.body.keywords;
-  console.log(res.compoundContent.title)
+  // var keywords = res.compoundContent.title.title.slice(0,20);
+  // console.log('twitter search titel: ', typeof res.compoundContent.title.title);
   twitter.getAsync('search/tweets', {q: res.compoundContent.title.title, result_type: 'popular', count: 100})
   .then(function(data) {
     console.log(data);
