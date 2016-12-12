@@ -30,4 +30,8 @@ angular.module('newsgate', [
     controller: 'TweetsController'
   });
 
-});
+})
+.run(['$anchorScroll', function($anchorScroll) {
+  $anchorScroll.yOffset = 50;
+  }
+]);
