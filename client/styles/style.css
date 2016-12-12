@@ -90,6 +90,6 @@ body {
 
 /*TEST*/
 .area {
-  fill: lightsteelblue;
+  fill: steelblue;
   stroke-width: 0;
 }
