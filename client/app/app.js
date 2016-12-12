@@ -26,5 +26,8 @@ angular.module('newsgate', [
     controller: 'TweetsController'
   });
 
-  $locationProvider.html5Mode(true);
-});
+})
+.run(['$anchorScroll', function($anchorScroll) {
+  $anchorScroll.yOffset = 50;
+  }
+]);
