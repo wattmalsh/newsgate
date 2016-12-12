@@ -43,6 +43,12 @@
   position: fixed;
 }
 
+.top-pad {
+  padding-top: 20%;
+  position: relative;
+  z-index: -1;
+}
+
 .chartTitle {
   margin-left: 50px;
   font-weight: bolder;
