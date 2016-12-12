@@ -2,10 +2,12 @@ angular.module('newsgate.trends', [])
 .controller('TrendsController', function($scope, $rootScope, Data) {
   // $scope.data = Data.process(Data.google[1],'init');
   $scope.data = Data.process(Data.google[1]);
+  $scope.title = Data.google[1].query;
 
   $rootScope.$on('updateData', () => {
     console.log('Queried Trend Term:', Data.google[1].query);
     $scope.data = Data.process(Data.google[1]);
+    $scope.title = Data.google[1].query;
   });
 })
 .directive('trendGraph', function() {
