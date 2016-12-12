@@ -55,8 +55,8 @@ body {
 }
 
 .bubbleText {
-  color: black;
-  font-size: 200%;
+  font-size: 65%;
+  fill: white;
 }
 
 .line {
