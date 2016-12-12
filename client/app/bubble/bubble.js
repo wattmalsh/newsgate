@@ -32,8 +32,9 @@ angular.module('newsgate.bubble', [])
       "translate(" + margin.left + "," + margin.top + ")");
 
       // render data whenever it changes
-      var simulation;
+      var simulation, textBoxes;
       scope.$watch('data', function(currentData, previousData) {
+        console.log('rendering');
         if (simulation) {
           console.log('stopped simulation', simulation);
           simulation.stop();
@@ -66,6 +67,7 @@ angular.module('newsgate.bubble', [])
           .attr('fill', 'steelblue')
           .attr('fill-opacity', 1)
           .on('mouseover', function(d) {
+            console.log('hovered d:', d);
             d3.select(this).transition().duration(200).attr('fill-opacity', 0.6);
           })
           .on('mouseout', function(d) {
@@ -73,10 +75,15 @@ angular.module('newsgate.bubble', [])
           });
 
         // remove old text boxes
-        svg.selectAll('.bubbleText').transition().duration(800).remove();
+        if (textBoxes) {
+          textBoxes
+          .transition()
+          .duration(100)
+          .remove();
+        }
 
         // generate new text boxes
-        var textBoxes = svg.selectAll('.bubbleText').data(data)
+        textBoxes = svg.selectAll('text').data(data)
         .enter().append('text')
           .attr('class', 'bubbleText')
           .attr('text-anchor', 'middle')
