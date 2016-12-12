@@ -51,14 +51,10 @@
 }
 
 .titlebarTitle {
-  margin-left: 50px;
+  /*margin-left: 50px;*/
   font-weight: bolder;
   font-size: 120%;
   color: steelblue;
-}
-
-.paddingForMainController {
-  padding-top: 10%;
 }
 
 #formContainer {
