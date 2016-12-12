@@ -14,18 +14,21 @@
     <script src="lib/ngtweet/dist/ngtweet.min.js"></script>
   </head>
   <body twitter-widget-initialize>
-    <div>
-      <div class="centerHeader">NewsGate</div>
+
+    <div id="app" ng-controller="MainController">
+      <div id="mainContainer" ng-class="{'vert-center': !isLoaded, 'vert-center-disabled': isLoaded}">
+        <div>
+          <div class="centerHeader" ng-class="{'loaded-header-disable': !isLoaded, 'loaded-header': isLoaded}">NewsGate</div>
+        </div>
+        <div>
+          <div ng-include="'/app/submit/submit.html'"></div>
+        </div>
+      </div>
+
+      <div ng-view></div>
     </div>
 
-    <div ng-include="'/app/submit/submit.html'"></div>
-
-    <div ng-view></div>
-
-
-    <script src="app/test/test.js"></script>
-    <!-- <script src="app/test/testEmerson.js"></script> -->
-
+    <script src="app/main/main.js"></script>
     <script src="app/nav/nav.js"></script>
     <script src="app/submit/submit.js"></script>
     <script src="app/tweets/tweets.js"></script>

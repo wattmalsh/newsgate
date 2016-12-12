@@ -1,17 +1,17 @@
 angular.module('newsgate', [
   'newsgate.services',
+  'newsgate.main',
   'newsgate.submit',
   'newsgate.trends',
   'newsgate.bubble',
   'newsgate.tweets',
   'newsgate.nav',
-  'ngRoute',
-  'newsgate.test'
+  'ngRoute'
 ])
 .config(function($routeProvider) {
   $routeProvider
   .when('/', {
-    // templateUrl : 'app/submit/submit.html'
+    // leave this empty
   })
   .when('/trends', {
     templateUrl : 'app/trends/trends.html',
@@ -24,8 +24,5 @@ angular.module('newsgate', [
   .when('/tweets', {
     templateUrl : 'app/tweets/tweets.html',
     controller: 'TweetsController'
-  })
-  .when('/test', {
-    templateUrl : 'app/test/test.html'
-  })
+  });
 });
