@@ -1,11 +1,13 @@
 <div id="nav" ng-controller="NavController" ng-hide="hideNav">
   <nav class="navbar navbar-default">
     <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="/#!/trends" class="unselectable">Trends</a></li>
-        <li><a href="/#!/bubble" class="unselectable">Bubble</a></li>
-        <li><a href="/#!/tweets" class="unselectable">Tweets</a></li>
-      </ul>
+    	<ul class="nav navbar-nav">
+    		<li ng-repeat="x in ['Tweets', 'Bubble', 'Trends']">
+	          <a href="" ng-click="gotoAnchor(x)">
+	        	{{ x }}
+	          </a>
+           </li>
+        </ul>
     </div>
   </nav>
 </div>
