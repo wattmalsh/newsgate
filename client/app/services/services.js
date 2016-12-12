@@ -5,8 +5,6 @@ angular.module('newsgate.services', [])
 .factory('Response', function($http, $rootScope, Data) {
   var urlHost = 'http://localhost:8000';
 
-  var url, title, keywords, twitter;
-
   var sendLink = function(url) {
     Data.hideSpinner = false;
     $rootScope.$emit('updateSpinner');
@@ -24,9 +22,11 @@ angular.module('newsgate.services', [])
 	    Data.url = res.data.url,
 	    Data.title = res.data.title,
 	    Data.keywords = res.data.keywords,
-	    Data.twitter = res.data.twitter
+	    Data.twitter = res.data.twitter,
+      Data.google = res.data.google,
       Data.hideSpinner = true;
       $rootScope.$emit('updateSpinner');
+      $rootScope.$emit('newTopThree');
       $rootScope.$emit('updateData');
     });
 
@@ -42,20 +42,23 @@ angular.module('newsgate.services', [])
   // var dataSet1 = dataSet1[0];
   // var dataSet2 = dataSet2[0];
 
-  var dataGet = function(data) {
+  var dataGet = function(data, status) {
     if (!data) data = dataSet1[0];
-    console.log('invoked data get');
+    // console.log('invoked data get with:', data);
     var columns = ['date', 'value'];
     // var y = [];
-    var processedData = []
+    var processedData = [];
 
     for (let i = 0; i < data.values.length; i++) {
       data.values[i].date = new Date(data.values[i].date);
+      if (status === 'init') {
+        data.values[i].value = 0;
+      }
       processedData.push(data.values[i]);
     }
 
     processedData['columns'] = columns;
-
+    console.log('processed data:', processedData);
     return processedData;
 
   };
@@ -67,6 +70,7 @@ angular.module('newsgate.services', [])
     title: {},
     keywords: {},
     twitter: {},
+    google: {},
     hideSpinner: null,
     test1: dataSet1[0],
     test2: dataSet2[0]

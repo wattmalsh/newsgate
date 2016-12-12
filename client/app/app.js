@@ -3,6 +3,7 @@ angular.module('newsgate', [
   'newsgate.submit',
   'newsgate.trends',
   'newsgate.bubble',
+  'newsgate.tweets',
   'newsgate.test',
   'ngRoute'
 ])
