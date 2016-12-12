@@ -8,6 +8,7 @@ angular.module('newsgate.nav', [])
 
   $scope.gotoAnchor = function(x) {
   	var newHash = 'anchor' + x;
+    console.log(x);
   	if ($location.hash() !== newHash) {
   		// set the $location.hash to 'newHash' and 
   		// $anchorScroll will automatically scroll to it
