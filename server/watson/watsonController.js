@@ -16,7 +16,7 @@ module.exports.getTitle = function(req, res, next) {
 	    console.log('error:', err);
 	  else
 	    console.log(JSON.stringify(response, null, 2));
-			res.compoundContent = {};
+			res.compoundContent = res.compoundContent || {};
 			res.compoundContent['title'] = response;
 			next();
 	  	//res.send(response);

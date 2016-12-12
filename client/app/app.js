@@ -1,6 +1,7 @@
 angular.module('newsgate', [
   'newsgate.services',
   'newsgate.main',
+  'newsgate.titlebar',
   'newsgate.submit',
   'newsgate.trends',
   'newsgate.bubble',
@@ -12,6 +13,9 @@ angular.module('newsgate', [
   $routeProvider
   .when('/', {
     // leave this empty
+  })
+  .when('/main', {
+    templateUrl: 'app/main/main.html'
   })
   .when('/trends', {
     templateUrl : 'app/trends/trends.html',

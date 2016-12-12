@@ -39,8 +39,16 @@
   border-color: rgba(153,153,153, 0);
 }
 
+
 .fixed-header {
   position: fixed;
+}
+
+.chartTitle {
+  margin-left: 50px;
+  font-weight: bolder;
+  font-size: 200%;
+  color: white;
 }
 
 #formContainer {

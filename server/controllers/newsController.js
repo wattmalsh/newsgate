@@ -30,9 +30,8 @@ module.exports = {
 						});
 					}
 					//sendJSONresponse(res, 200, url);
-					res.compoundContent = {
-						url: url[0]
-					};
+					res.compoundContent = res.compoundContent || {};
+					res.compoundContent['fake'] = url[0];
 					next();
 				});
 			} else {
