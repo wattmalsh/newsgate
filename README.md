@@ -43,7 +43,14 @@ To make numerous requests to the Google Trends website, a cookie needs to be sup
 
 ### Implementing Twitter Search API - REQUIRED
 
-1) Obtain Twitter API keys and access tokens<br>
-2) Rename 'twitterAPIKey.example.js' file to 'twitterAPIKey.js'<br>
+1) Obtain Twitter API keys and access tokens from Twitter Developer<br>
+2) Rename 'server/trends/twitterAPIKey.example.js' file to 'server/trends/twitterAPIKey.js'<br>
 3) Overwrite the values with your API keys and access tokens<br>
 4) Save twitterAPIKey.js file
+
+### Implementing Watson API - REQUIRED
+
+1) Obtain Watson API key from Watson Developer Cloud<br>
+2) Rename 'server/watson/watson_api_key_example.js' to 'server/watson/watson_api_key.js'<br>
+3) Overwrite the 'watsonKey' value with your API key<br>
+4) Save 'watson_api_key.js' file
