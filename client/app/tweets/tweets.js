@@ -8,18 +8,18 @@ angular.module('newsgate.tweets', ['ngtweet'])
   });
 
 })
-.factory('Tweets', function() {
+.factory('Tweets', function(Data, $rootScope) {
 
-  var topThreeTweets = function(serverResponse, $rootScope) {
-    $rootScope.$emit('newTopThree');
-    return serverResponse.data.twitter.statuses.slice(0,3)
+  var topThreeTweets = function() {
+    // $rootScope.$emit('newTopThree');
+    return Data.twitter.statuses.slice(0,3)
       .map(function(tweet) {
         return tweet['id_str'];
       });
   };
 
-  var tweetTrend = function(serverResponse) {
-    var tweetMetrics = serverResponse.data.twitter.statuses
+  var tweetTrend = function() {
+    var tweetMetrics = Data.twitter.statuses
       .map(function(tweet) {
         var favorite_count = tweet.favorite_count || tweet.favourites_count;
         var interactionSum = favorite_count + tweet.retweet_count;
@@ -36,13 +36,11 @@ angular.module('newsgate.tweets', ['ngtweet'])
              'values': viralScore
         };
       });
-    var queryTitle = serverResponse.data.title.title;
+    var queryTitle = Data.title.title;
 
     return [{'query': queryTitle, 'values': tweetMetrics}];
 
   };
-
-
 
   return {
     topThreeTweets: topThreeTweets,
