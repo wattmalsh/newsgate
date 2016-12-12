@@ -3,19 +3,23 @@ var googleTrends = require('google-trends-api');
 var bodyParser = require('body-parser');
 
 
-exports.getGoogleTrends = function(request, response, next) {
+exports.getGoogleTrends = function(req, res, next) {
   console.log('got request');
   // var keywords = request.body.keywords //array of words
-  var keywords = 'trump';
+  var searchWords = res.compoundContent.keywords.keywords.map(function(word) { return word.text; }).slice(0,4);
+  var articleTitle = searchWords.join(' ');
+
+  console.log(searchWords);
+
   var timePeriod = {
-    // date: '201601', //YYYYMM starting date for how far back to retrieve data
     type: 'day',   //resolution of returned data
-    value: 5       //need to figure out what this is...
+    value: 7       //goes back 7 days
   }
-  googleTrends.trendData({keywords: ['donald trump', 'is obama muslim'], timePeriod: timePeriod})
-  .then(function(results) {
-    console.log(results);
-    response.send(results);
+  googleTrends.trendData({keywords: [articleTitle].concat(searchWords), timePeriod: timePeriod})
+  .then(function(data) {
+    res.compoundContent['google'] = data;
+    // console.log(data);
+    next();
   })
   .catch(function(err) {
     console.error('Error with google trends get request', err);
