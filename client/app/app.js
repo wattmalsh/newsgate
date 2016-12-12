@@ -4,13 +4,14 @@ angular.module('newsgate', [
   'newsgate.trends',
   'newsgate.bubble',
   'newsgate.tweets',
-  'newsgate.test',
-  'ngRoute'
+  'newsgate.nav',
+  'ngRoute',
+  'newsgate.test'
 ])
 .config(function($routeProvider) {
   $routeProvider
   .when('/', {
-    templateUrl : 'app/submit/submit.html'
+    // templateUrl : 'app/submit/submit.html'
   })
   .when('/trends', {
     templateUrl : 'app/trends/trends.html',
