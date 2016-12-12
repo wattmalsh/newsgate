@@ -1,7 +1,7 @@
 #app {
   background-color: rgb(74, 92, 122);
   padding: 0px 0px 0px 0px;
-  height: 100%;
+  height: 140em;
   margin: 0px;
   margin-left: 10%;
   width: 80%;
@@ -43,12 +43,6 @@
   position: fixed;
 }
 
-.top-pad {
-  padding-top: 20%;
-  position: relative;
-  z-index: -1;
-}
-
 .chartTitle {
   margin-left: 50px;
   font-weight: bolder;
@@ -64,7 +58,13 @@
 }
 
 .top-pad {
-  padding-top: 20%;
+  padding-top: 10%;
+  position: relative;
+  z-index: -1;
+}
+
+.mid-pad {
+  padding-top: 5%;
   position: relative;
   z-index: -1;
 }
