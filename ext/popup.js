@@ -43,14 +43,20 @@ function getCurrentTabUrl(callback) {
 
 getCurrentTabUrl(function(tabUrl) {
   var urlData = $.ajax({
-    url: 'http://localhost:8000/api',
+    url: 'http://localhost:8000/api/ext',
     type: 'POST',
     data: {'url': tabUrl},
     dataType: 'json'
   })
   .done(function (json) {
     console.log(json);
-    $("<h1>").text(json.fake.rating.score).appendTo('body');
+    var rating = '';
+    if ((json.fake.rating.score + '') === '0') {
+      rating = 'This page does not exist in our Fake News blacklist.';
+    } else if ((json.fake.rating.score + '') === '100') {
+      rating = 'WARNING: This page is hosted on a domain that has been blacklisted because of fake news.';
+    }
+    $("<h1>").text(rating).appendTo('body');
   })
   .fail(function( xhr, status, errorThrown ) {
     console.log( "Error: " + errorThrown );
