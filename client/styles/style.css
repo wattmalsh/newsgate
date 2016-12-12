@@ -11,26 +11,29 @@
 #mainContainer {
   transform: translate(-50%, -50%);
   position: relative;
-  border-width: 6px;
-  border-radius: 1em;
-  border-style: solid;
   padding: 1em;
   left: 50%;
   margin-right: -50%;
   width: 60%;
   height: 20%;
-  transition-property: top, background-color, border-color;
-  transition-duration: 350ms, 0.8s, 0.8s;
+  transition-property: top, background-color, border-color, transform;
+  transition-duration: 350ms, 0.8s, 0.8s, 0.1s;
   transition-timing-function: ease-out, linear, linear;
 }
 
 .vert-center {
+  border-width: 6px;
+  border-radius: 1em;
+  border-style: solid;
   top: 50%;
   background-color: rgba(255,255,255,1);
   border-color: rgba(153,153,153,1);
 }
 
 .vert-center-disabled {
+  border-width: 6px;
+  border-radius: 1em;
+  border-style: solid;
   top: 9%;
   background-color: rgba(255,255,255,0);
   border-color: rgba(153,153,153, 0);
