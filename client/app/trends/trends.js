@@ -14,7 +14,6 @@ angular.module('newsgate.trends', [])
     restrict: 'E',
     scope: { data: '=' },
     link: function(scope, element) {
-      // HardCoded data input
       // Import from scope
       data = scope.data;
 
@@ -29,17 +28,11 @@ angular.module('newsgate.trends', [])
 
       // create svg
       var svg = d3.select(element[0]).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform",
-      "translate(" + margin.left + "," + margin.top + ")");
-
-      // Turn off area shade - it is broken
-      // create area path under curve
-      // svg.append("path")
-      //   .datum(data)
-      //   .attr("class", "area");
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom)
+      .append('g')
+      .attr('transform',
+      'translate(' + margin.left + ',' + margin.top + ')');
 
       // add line path
       svg.append("path")
@@ -47,41 +40,53 @@ angular.module('newsgate.trends', [])
         .attr("class", "line");
 
       // draw the x Axis
-      svg.append("g")
-        .attr("class", "xAxis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).ticks(d3.timeDay, 1).tickFormat(d3.timeFormat("%b %d")));
+      svg.append('g')
+        .attr('class', 'xAxis')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(d3.axisBottom(x).ticks(d3.timeDay, 1).tickFormat(d3.timeFormat('%b %d')));
 
       // draw the y Axis
-      svg.append("g")
-        .attr("class", "yAxis")
+      svg.append('g')
+        .attr('class', 'yAxis')
         .call(d3.axisLeft(y).ticks(5));
 
       // render data whenever it changes
-      var nextOldLine;
+      var nextOldLine, nextOldArea;
       scope.$watch('data', function(currentData, previousData) {
         console.log('data was updated!');
         data = scope.data;
-
-        // line function
-        var valueLine = d3.line()
-            .x(function(d) { return x(d.date); })
-            .y(function(d) { return y(d.value); });
-
-        // Turn off area shade - it is broken
-        // var area = d3.area()
-        //   .x(function(d) { return x(d.date); })
-        //   .y0(height)
-        //   .y1(function(d) { return y(d.value); });
 
         // scale the range of the data
         x.domain(d3.extent(data, function(d) { return d.date; }));
         y.domain([0, d3.max(data, function(d) { return d.value; })]);
 
+        // area function
+        var area = d3.area()
+          .x(function(d) { return x(d.date); })
+          .y0(height)
+          .y1(function(d) { return y(d.value); });
+
+        // line function
+        var valueLine = d3.line()
+          .x(function(d) { return x(d.date); })
+          .y(function(d) { return y(d.value); });
+
+        // find before and after line/area
         var oldLine = nextOldLine;
-        var path = svg.selectAll(".line").data([data]);
-        var pathLine = path.attr("d", valueLine).attr("d").slice();
-        nextOldLine = svg.selectAll(".line").attr("d");
+        var oldArea = nextOldArea;
+
+        // create area path under curve
+        var drawnArea = svg.append('path').datum(data)
+        .attr('class', 'area')
+        .attr('fill-opacity', 0)
+        .attr('d', area);
+
+        nextOldArea = drawnArea;
+
+
+        var path = svg.selectAll('.line').data([data]);
+        var pathLine = path.attr('d', valueLine).attr('d').slice();
+        nextOldLine = svg.selectAll('.line').attr('d');
 
         if (oldLine === pathLine) {
           console.log('same line was rendered!');
@@ -96,23 +101,32 @@ angular.module('newsgate.trends', [])
             point.value = 0;
           });
 
-          var oldLine = svg.selectAll(".line").data([dataCopy]).attr("d", valueLine).attr("d").slice();
+          var oldLine = svg.selectAll('.line').data([dataCopy]).attr('d', valueLine).attr("d").slice();
         }
 
-        // animate path change to new render
+
+        // remove previous area then chain animate path to new render
+        if (oldArea) {
+          oldArea.transition().duration(500).attr('fill-opacity', 0).remove();
+        }
+
         path
         .transition()
           .duration(2000)
-          .attrTween("d", function(d) {
+          .attrTween('d', function(d) {
             return d3.interpolatePath(oldLine, pathLine);
+          })
+          .on('end', function() {
+            drawnArea.transition().duration(500).attr('fill-opacity', 1);
           });
 
+
         // animate xaxis change to new render
-        svg.select(".xAxis").transition().duration(2000)
+        svg.select('.xAxis').transition().duration(2000)
           .call(d3.axisBottom(x).ticks(d3.timeDay, 1).tickFormat(d3.timeFormat("%b %d")));
 
         // animate yaxis change to new render
-        svg.select(".yAxis").transition().duration(2000)
+        svg.select('.yAxis').transition().duration(2000)
           .call(d3.axisLeft(y).ticks(5));
 
 
