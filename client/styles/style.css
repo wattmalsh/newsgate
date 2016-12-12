@@ -37,10 +37,16 @@
   top: 9%;
   background-color: rgba(255,255,255,0);
   border-color: rgba(153,153,153, 0);
-
+}
 
 .fixed-header {
   position: fixed;
+}
+
+.top-pad {
+  padding-top: 20%;
+  position: relative;
+  z-index: -1;
 }
 
 .chartTitle {
