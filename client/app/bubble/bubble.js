@@ -19,9 +19,9 @@ angular.module('newsgate.bubble', [])
           height = 640 - margin.top - margin.bottom;
 
       // define scale
-      var scale = d3.scaleLog() // automatically converts to log scale
+      var scale = d3.scaleSqrt() // automatically converts to scale
         .domain([0.6, 1]) // range of input data
-        .range([16, 80]); // range of output data
+        .range([30, 100]); // range of output data
 
       // create svg
       var svg = d3.select(element[0]).append("svg")
@@ -44,10 +44,13 @@ angular.module('newsgate.bubble', [])
 
         var bubbles = svg.selectAll('circle');
 
+        // remove existing bubbles
         bubbles.transition().duration(800)
           .attr('fill', 'rgba(0,0,0,0)')
+          .attr('stroke', 'rgba(0,0,0,0)')
           .remove();
 
+        // generate new bubbles
         var allBubbles = svg.selectAll('circles').data(data)
         .enter().append("circle")
           .attr("class", ".keyword")
@@ -69,11 +72,15 @@ angular.module('newsgate.bubble', [])
             d3.select(this).transition().duration(200).attr('fill-opacity', 1);
           });
 
-        // not working
-        var textBoxes = allBubbles.append('text')
-          .attr('dx', function(d) { return -20;})
+        // remove old text boxes
+        svg.selectAll('.bubbleText').transition().duration(800).remove();
+
+        // generate new text boxes
+        var textBoxes = svg.selectAll('.bubbleText').data(data)
+        .enter().append('text')
+          .attr('dx', function(d) { return -25;})
           .attr('class', 'bubbleText')
-          .text(function(d) { return d.text});
+          .text(function(d) { return d.text.split(' ')[0]});
 
         // define simulation
         simulation = d3.forceSimulation()
@@ -94,8 +101,8 @@ angular.module('newsgate.bubble', [])
           .attr("cy", function(d) { return d.y;} );
 
           textBoxes
-          .attr("cx", function(d) { return d.x;} )
-          .attr("cy", function(d) { return d.y;} );
+          .attr("x", function(d) { return d.x;} )
+          .attr("y", function(d) { return d.y;} );
         };
 
         // apply simulation
