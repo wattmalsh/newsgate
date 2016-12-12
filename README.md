@@ -50,7 +50,7 @@ To make numerous requests to the Google Trends website, a cookie needs to be sup
 
 ### Implementing Watson API - REQUIRED
 
-1) Obtain Watson API key from Watson Developer Cloud
+1) Obtain Watson API key from Watson Developer Cloud<br>
 2) Rename 'server/watson/watson_api_key_example.js' to 'server/watson/watson_api_key.js'<br>
 3) Overwrite the 'watsonKey' value with your API key<br>
 4) Save 'watson_api_key.js' file
