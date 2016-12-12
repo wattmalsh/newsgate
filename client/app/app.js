@@ -9,7 +9,7 @@ angular.module('newsgate', [
   'newsgate.nav',
   'ngRoute'
 ])
-.config(function($routeProvider, $locationProvider) {
+.config(function($routeProvider) {
   $routeProvider
   .when('/', {
     // leave this empty

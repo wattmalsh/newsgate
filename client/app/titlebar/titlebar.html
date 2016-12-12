@@ -1,4 +1,16 @@
 <div id="titlebarContainer" ng-controller="TitlebarController">
   <div class="centerGeneric">LOADED TITLEBAR COMPONENT</div>
-  <div class="chartTitle">{{title}}</div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="titlebarTitle" class="centerGeneric">{{title}}</div>
+      <div class="alert alert-success" role="alert" ng-hide="fake">
+        <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
+        Article Verification: Not on fake news blacklist!
+      </div>
+      <div class="alert alert-danger" role="alert" ng-hide="{{!fake}}">
+        <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>
+        Article Verification: Detected fake news on blacklist!
+      </div>
+    </div>
+  </div>
 </div>

@@ -52,8 +52,15 @@
 .chartTitle {
   margin-left: 50px;
   font-weight: bolder;
-  font-size: 200%;
+  font-size: 150%;
   color: white;
+}
+
+.titlebarTitle {
+  /*margin-left: 50px;*/
+  font-weight: bolder;
+  font-size: 120%;
+  color: steelblue;
 }
 
 #formContainer {
@@ -85,6 +92,11 @@
   align-items: center;
   display: flex;
   justify-content: center;
+}
+
+#titlebarContainer {
+  width: 80%;
+  margin-left: 10%;
 }
 
 .centerGeneric {
