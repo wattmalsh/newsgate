@@ -3,13 +3,13 @@
   <div class="panel panel-default">
     <div class="panel-body">
       <div class="titlebarTitle" class="centerGeneric">{{title}}</div>
-      <div class="alert alert-danger" role="alert">
-        <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>
-        Insert Text to describe that site failed our fakeness assessment
-      </div>
-      <div class="alert alert-success" role="alert">
+      <div class="alert alert-success" role="alert" ng-hide="fake">
         <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
-        Insert Text to describe that site passed our fakeness assessment
+        Article Verification: Not on fake news blacklist!
+      </div>
+      <div class="alert alert-danger" role="alert" ng-hide="{{!fake}}">
+        <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>
+        Article Verification: Detected fake news on blacklist!
       </div>
     </div>
   </div>
