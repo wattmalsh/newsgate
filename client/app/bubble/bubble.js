@@ -1,5 +1,7 @@
 angular.module('newsgate.bubble', [])
 .controller('BubbleController', function($scope, $rootScope, Data, Response) {
+  $scope.data = Data.keywords.keywords;
+
   $rootScope.$on('updateData', () => {
     $scope.data = Data.keywords.keywords;
     console.log('CLIENT: updated keywords ->', $scope.data);

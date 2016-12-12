@@ -1,6 +1,7 @@
 angular.module('newsgate.trends', [])
 .controller('TrendsController', function($scope, $rootScope, Data) {
-  $scope.data = Data.process(Data.test2, 'init');
+  // $scope.data = Data.process(Data.google[1],'init');
+  $scope.data = Data.process(Data.google[1]);
 
   $rootScope.$on('updateData', () => {
     console.log('Queried Trend Term:', Data.google[1].query);
@@ -57,6 +58,7 @@ angular.module('newsgate.trends', [])
         .call(d3.axisLeft(y).ticks(5));
 
       // render data whenever it changes
+      var nextOldLine;
       scope.$watch('data', function(currentData, previousData) {
         console.log('data was updated!');
         data = scope.data;
@@ -76,12 +78,19 @@ angular.module('newsgate.trends', [])
         x.domain(d3.extent(data, function(d) { return d.date; }));
         y.domain([0, d3.max(data, function(d) { return d.value; })]);
 
-        var oldLine = svg.selectAll(".line").attr("d");
+        var oldLine = nextOldLine;
         var path = svg.selectAll(".line").data([data]);
         var pathLine = path.attr("d", valueLine).attr("d").slice();
+        nextOldLine = svg.selectAll(".line").attr("d");
+
+        if (oldLine === pathLine) {
+          console.log('same line was rendered!');
+          oldLine === null;
+        }
 
         // On first load, create a straight line on xaxis
         if (!oldLine) {
+          console.log('create init oldLine');
           var dataCopy = data.slice();
           dataCopy.forEach((point) => {
             point.value = 0;
