@@ -78,8 +78,8 @@ angular.module('newsgate.bubble', [])
         // generate new text boxes
         var textBoxes = svg.selectAll('.bubbleText').data(data)
         .enter().append('text')
-          .attr('dx', function(d) { return -25;})
           .attr('class', 'bubbleText')
+          .attr('text-anchor', 'middle')
           .text(function(d) { return d.text.split(' ')[0]});
 
         // define simulation
