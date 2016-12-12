@@ -1,3 +1,13 @@
+#app {
+  background-color: rgb(74, 92, 122);
+  padding: 0px 0px 0px 0px;
+  height: 100%;
+  margin: 0px;
+  margin-left: 10%;
+  width: 80%;
+  position: absolute;
+}
+
 #formContainer {
   padding: 0px 20% 0px 20%;
   margin: 0px;
@@ -7,6 +17,7 @@
 }
 
 #trendsContainer {
+  background-color: white;
   margin: 0px;
   align-items: center;
   display: flex;
@@ -28,6 +39,7 @@
 }
 
 .centerGeneric {
+  color: white;
   margin: 0px;
   align-items: center;
   display: flex;
@@ -36,14 +48,14 @@
 }
 
 .centerHeader {
-  /*color: white;*/
+  color: white;
   margin: 0px;
   align-items: center;
   display: flex;
   justify-content: center;
   font-weight: bolder;
   font-size: 300%;
-  color: black;
+  /*color: black;*/
 }
 
 .formNewsLinkHeader {
@@ -58,7 +70,7 @@
 
 body {
   /*background: -webkit-linear-gradient(left top to right bottom, rgb(22, 140, 224), rgb(68, 233, 244));*/
-  background-color: white;
+  background-color: #e1e4ea;
 }
 
 .bubbleText {
@@ -88,8 +100,11 @@ body {
   stroke-width: 2px;
 }
 
-/*TEST*/
 .area {
   fill: steelblue;
   stroke-width: 0;
+}
+
+.graphSVG {
+  background-color: white;
 }
