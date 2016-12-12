@@ -8,6 +8,8 @@ angular.module('newsgate.services', [])
   var url, title, keywords, twitter;
 
   var sendLink = function(url) {
+    Data.hideSpinner = false;
+    $rootScope.$emit('updateSpinner');
     let apiPath = '/api';
     let message = {
         url: url
@@ -23,6 +25,8 @@ angular.module('newsgate.services', [])
 	    Data.title = res.data.title,
 	    Data.keywords = res.data.keywords,
 	    Data.twitter = res.data.twitter
+      Data.hideSpinner = true;
+      $rootScope.$emit('updateSpinner');
       $rootScope.$emit('updateData');
     });
 
@@ -59,11 +63,12 @@ angular.module('newsgate.services', [])
   // store responses here... easier to access
   return {
     process: dataGet,
-    test1: dataSet1[0],
-    test2: dataSet2[0],
     url: {},
     title: {},
     keywords: {},
-    twitter: {}
+    twitter: {},
+    hideSpinner: null,
+    test1: dataSet1[0],
+    test2: dataSet2[0]
   };
 });
