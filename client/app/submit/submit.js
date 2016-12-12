@@ -1,6 +1,6 @@
 angular.module('newsgate.submit', [])
-.controller('SubmitController', function($scope, $rootScope, Response, Data) {
-  $scope.hideSpinner = true;
+.controller('SubmitController', function($scope, $rootScope, Response, State) {
+  $scope.hideSpinner = State.hideSpinner;
   // Invoke get request to server
   $scope.sendLink = function() {
     console.log('Getting Link:', $scope.inputLink);
@@ -9,7 +9,7 @@ angular.module('newsgate.submit', [])
 
   $rootScope.$on('updateSpinner', function() {
     console.log('updating spinner!');
-    $scope.hideSpinner = Data.hideSpinner;
+    $scope.hideSpinner = State.hideSpinner;
   });
 
 });
