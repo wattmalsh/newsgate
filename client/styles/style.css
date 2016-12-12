@@ -10,7 +10,7 @@
 
 #mainContainer {
   transform: translate(-50%, -50%);
-  position: relative;
+  position: fixed;
   padding: 1em;
   left: 50%;
   margin-right: -50%;
@@ -37,6 +37,10 @@
   top: 9%;
   background-color: rgba(255,255,255,0);
   border-color: rgba(153,153,153, 0);
+
+
+.fixed-header {
+  position: fixed;
 }
 
 .chartTitle {
