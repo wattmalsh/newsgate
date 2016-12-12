@@ -63,6 +63,12 @@
   color: steelblue;
 }
 
+.top-pad {
+  padding-top: 20%;
+  position: relative;
+  z-index: -1;
+}
+
 #formContainer {
   padding: 0px 5% 0px 5%;
   margin: 0px;
