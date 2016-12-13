@@ -1,0 +1,24 @@
+{
+  "name": "Page Redder",
+  "description": "Make the current page red",
+  "version": "2.0",
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      // "css": ["mystyles.css"],
+      "js": ["jquery.min.js", "background.js"]
+    }
+  ],
+  "browser_action": {
+    "default_title": "Make this page red"
+  },
+  "manifest_version": 2
+}
+
+// "background": {
+//   "scripts": ["background.js"],
+//   "persistent": false
+// },
