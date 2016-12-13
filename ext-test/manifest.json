@@ -5,11 +5,19 @@
   "permissions": [
     "activeTab"
   ],
+  "background": {
+    "scripts": ["storageController/updateStorage.js", "storageController/getLastUpdated.js"],
+    "persistent": false
+  },
   "content_scripts": [
     {
       "matches": ["*://*/*"],
       // "css": ["mystyles.css"],
-      "js": ["jquery.min.js", "background.js"]
+      "js": [
+        "lib/jquery.min.js",
+        "models/checkForFakes.js",
+        "renderBlacklistedDOM.js"
+      ]
     }
   ],
   "browser_action": {
