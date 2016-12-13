@@ -1,25 +1,25 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/Users/Evan/.nvm/versions/node/v5.12.0/bin/node',
-1 verbose cli   '/Users/Evan/.nvm/versions/node/v5.12.0/bin/npm',
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
 1 verbose cli   'run',
 1 verbose cli   'blacklist' ]
-2 info using npm@3.8.6
-3 info using node@v5.12.0
+2 info using npm@3.10.8
+3 info using node@v6.9.1
 4 verbose stack Error: missing script: blacklist
-4 verbose stack     at run (/Users/Evan/.nvm/versions/node/v5.12.0/lib/node_modules/npm/lib/run-script.js:147:19)
-4 verbose stack     at /Users/Evan/.nvm/versions/node/v5.12.0/lib/node_modules/npm/lib/run-script.js:57:5
-4 verbose stack     at /Users/Evan/.nvm/versions/node/v5.12.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:345:5
-4 verbose stack     at checkBinReferences_ (/Users/Evan/.nvm/versions/node/v5.12.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:309:45)
-4 verbose stack     at final (/Users/Evan/.nvm/versions/node/v5.12.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:343:3)
-4 verbose stack     at then (/Users/Evan/.nvm/versions/node/v5.12.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:113:5)
-4 verbose stack     at ReadFileContext.<anonymous> (/Users/Evan/.nvm/versions/node/v5.12.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:284:20)
-4 verbose stack     at ReadFileContext.callback (/Users/Evan/.nvm/versions/node/v5.12.0/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:78:16)
-4 verbose stack     at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:324:13)
-5 verbose cwd /Users/Evan/Desktop/hacker/hr4/newsgate/client
-6 error Darwin 16.1.0
-7 error argv "/Users/Evan/.nvm/versions/node/v5.12.0/bin/node" "/Users/Evan/.nvm/versions/node/v5.12.0/bin/npm" "run" "blacklist"
-8 error node v5.12.0
-9 error npm  v3.8.6
+4 verbose stack     at run (/usr/local/lib/node_modules/npm/lib/run-script.js:151:19)
+4 verbose stack     at /usr/local/lib/node_modules/npm/lib/run-script.js:61:5
+4 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:356:5
+4 verbose stack     at checkBinReferences_ (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:320:45)
+4 verbose stack     at final (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:354:3)
+4 verbose stack     at then (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:124:5)
+4 verbose stack     at ReadFileContext.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:295:20)
+4 verbose stack     at ReadFileContext.callback (/usr/local/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:78:16)
+4 verbose stack     at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:365:13)
+5 verbose cwd /Users/jamesgu/github/newsgate/client
+6 error Darwin 16.0.0
+7 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "blacklist"
+8 error node v6.9.1
+9 error npm  v3.10.8
 10 error missing script: blacklist
 11 error If you need help, you may report this error at:
 11 error     <https://github.com/npm/npm/issues>
