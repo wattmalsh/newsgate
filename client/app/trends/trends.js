@@ -80,9 +80,9 @@ angular.module('newsgate.trends', [])
 
         // create area path under curve
         var drawnArea = svg.append('path').datum(data)
-        .attr('class', 'area')
-        .attr('fill-opacity', 0)
-        .attr('d', area);
+          .attr('class', 'area')
+          .attr('fill-opacity', 0)
+          .attr('d', area);
 
         nextOldArea = drawnArea;
 
