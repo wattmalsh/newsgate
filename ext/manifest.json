@@ -3,7 +3,6 @@
   "description": "Point out fake news",
   "version": "1.0",
   "permissions": [
-    "tabs",
     "activeTab",
     "storage",
     "https://newsgate.herokuapp.com/*"
