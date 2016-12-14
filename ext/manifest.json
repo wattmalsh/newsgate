@@ -7,7 +7,12 @@
     "storage"
   ],
   "background": {
-    "page": "background.html"
+    "scripts": [
+      "lib/jquery.min.js",
+      "models/checkForFakes.js"
+    ]
+    // "persistent": false
+    // "page": "background.html"
   },
   "browser_action": {
     "default_icon": "icon.png",
