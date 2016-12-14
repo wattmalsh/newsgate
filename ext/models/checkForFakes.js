@@ -97,6 +97,12 @@ var filterFakes = function(userlist, blacklist, links) {
 };
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  checkForFakes(request, function(result) {
+    sendResponse(result);
+  });
+});
+
+function checkForFakes(request, callback) {
   var blacklist;
   var userlist;
 
@@ -105,11 +111,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     getUserlist(function(userlistResults) {
       userlist = userlistResults;
       var fakeDOMLinks = filterFakes(userlist, blacklist, request.data);
-      sendResponse({data: fakeDOMLinks});
+      callback({data: fakeDOMLinks})
     });
   });
-});
-
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Listener for Shortened Links
@@ -122,6 +127,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 chrome.runtime.onConnect.addListener(function(port) {
   console.assert(port.name === 'shorts');
   port.onMessage.addListener(function(request) {
+    
     port.postMessage({ data: 'hey there'} );
   });
 })
