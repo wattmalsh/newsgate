@@ -1,5 +1,6 @@
-// TO DO: improve regex function does not filter
-// to mail.google.com v. blacklist
+// This file pings background scripts and compares DOM hrefs with
+// ones found on the blacklist and user-preferenced blacklist 
+// and modifies the matching elements on the DOM 
 
 var sites = [];
 // var unfilteredSites = [];
@@ -24,10 +25,10 @@ var renderBlacklistedDOM = function() {
 
     if (!cache[filtered]) {
       sites.push(filtered);
-      cache[filtered] = filtered; // ensure no duplicates
+      cache[filtered] = filtered;
     }
+    // console.log(sites, '.........sites here ');
     // unfilteredSites.push(href);
-    console.log(sites, '.........sites here ');
     // console.log(unfilteredSites, 'unfilteredSitesHere');
   });
 }
