@@ -9,7 +9,15 @@ var ratingSchema = new mongoose.Schema({
 
 var urlSchema = new mongoose.Schema({
 	url: String,
-	rating: ratingSchema
-});
+	rating: ratingSchema,
+}, {timestamps: true});
+/*
+{
+  url: String,
+  rating: ratingSchema,
+  createdAt: ISODate object,
+  updatedAt: ISODate object
+}
+*/
 
 module.exports = mongoose.model('News', urlSchema);
