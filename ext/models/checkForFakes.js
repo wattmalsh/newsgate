@@ -2,7 +2,7 @@
 /*
 [
   {
-    url: String,
+    url: 'String',
     rating: ratingSchema,
     createdAt: ISODate object,
     updatedAt: ISODate object
@@ -14,16 +14,27 @@
 
 chrome.tabs.executeScript(null, { file: '../lib/jquery.min.js'});
 
-var test = function(userlist, blacklist, links) {
+var filterFakes = function(userlist, blacklist, links) {
   var userlist_storage = {};
   var blacklist_storage = {};
+  var results = [];
   
   userlist.forEach(function(link) {
     userlist_storage[link] = link;
   });
 
-  blacklist.forEach(function(link) {});
-}
+  blacklist.forEach(function(link) {
+    blacklist_storage[link] = link;
+  });
+
+  links.forEach(function(href) {
+    if (href in userlist_storage || href in blacklist_storage) {
+      results.push(href);
+    }
+  });
+
+  return results;
+};
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
@@ -32,10 +43,3 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     sendResponse({data: request.data, test: x});
   }
 );
-
-
-
-    // console.log(sender.tab ?
-    //             "from a content script:" + sender.tab.url :
-    //             "from the extension");
-    // console.log(request.data);
