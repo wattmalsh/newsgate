@@ -36,7 +36,8 @@ var filterLinks = function(unfilteredLink) {
   var domain = unfilteredLink.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
   domain = domain.replace(/^(www\.)/,''); // Strip off www.
   domain = domain.replace(/^(\/*)/, ''); // Strip off any // remaining
-  domain = domain.split('/')[0]; // Get the domain and just the domain (not the path)  
+  domain = domain.split('/')[0]; // Get the domain and just the domain (not the path)
+  domain = domain.split('.').slice(-2).join('.'); // remove prefixes ie: mail.google.com to google.com
   return domain;
 };
 
@@ -79,4 +80,11 @@ var sendResponse = function(request, sender, sendResponse) {
   });
 };
 
-sendResponse({data: ['americannews.com', 'google.com', 'google.com']});
+// sendResponse({data: ['americannews.com', 'google.com', 'google.com']});
+
+var shorts = [
+  'bit.do', 'bit.ly', 'cutt.us', 'goo.gl', 'ht.ly', 'is.gd', 'ow.ly',
+  'po.st', 'tinyurl.com', 'tr.im', 'trib.al', 'u.to', 'v.gd', 'x.co'
+];
+// var domain = 'http://www.//bid.do/asdsa/asdasd/asd/asdaddas/asda';
+// console.log(filterLinks(domain));
