@@ -1,26 +1,9 @@
-// expects two arrays: client and blacklist 
-/*
-[
-  {
-    url: 'String',
-    rating: ratingSchema,
-    createdAt: ISODate object,
-    updatedAt: ISODate object
-  }
-]
-*/
-
 var getBlacklist = function(callback) {
   // TO DO
   
   var results = [
     {
       url: 'americannews.com',
-      rating: '',
-      createdAt: '',
-      updatedAt: ''
-    }, {
-      url: 'stackoverflow.com',
       rating: '',
       createdAt: '',
       updatedAt: ''
@@ -60,7 +43,7 @@ var filterLinks = function(unfilteredLink) {
 var filterFakes = function(userlist, blacklist, links) {
   var userlist_storage = {};
   var blacklist_storage = {};
-  // var cache = {}; // cache results to ensure no duplicates
+  var cache = {};
   var results = [];
   
   userlist.forEach(function(link) {
@@ -72,16 +55,17 @@ var filterFakes = function(userlist, blacklist, links) {
   });
 
   links.forEach(function(href) {
-    if (href in userlist_storage || href in blacklist_storage) {
+    if (href in userlist_storage || href in blacklist_storage && !(href in cache)) {
       results.push(href);
-      // cache[href] = href;
+      cache[href] = href;
     }
   });
-
+  console.log(userlist);
+  console.log(blacklist);
   return results;
 };
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+var sendResponse = function(request, sender, sendResponse) {
   var blacklist;
   var userlist;
 
@@ -90,7 +74,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     getUserlist(function(userlistResults) {
       userlist = userlistResults;
       var fakeDOMLinks = filterFakes(userlist, blacklist, request.data);
-      sendResponse({data: fakeDOMLinks});
+      console.log({data: fakeDOMLinks});
     });
   });
-});
+};
+
+sendResponse({data: ['americannews.com', 'google.com', 'google.com']});
