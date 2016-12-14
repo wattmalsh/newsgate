@@ -19,7 +19,7 @@
       // "css": ["mystyles.css"],
       "js": [
         "lib/jquery.min.js",
-        "models/checkForFakes.js",
+        // "models/checkForFakes.js",
         "renderBlacklistedDOM.js"
       ]
     }
