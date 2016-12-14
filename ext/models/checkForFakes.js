@@ -74,6 +74,7 @@ var filterLinks = function(unfilteredLink) {
   return domain;
 };
 
+// Any way to store userlist and blacklist here on client side??
 var filterFakes = function(userlist, blacklist, links) {
   var userlist_storage = {};
   var blacklist_storage = {};
@@ -119,29 +120,34 @@ function checkForFakes(request, callback) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Listener for Shortened Links
 ///////////////////////////////////////////////////////////////////////////////////////////
-
-// chrome.tabs.getSelected(null, function(tab) {  
-//   chrome.tabs.connect(tab.id);  
-// });
+// NOT TESTED
+// https://unshorten.me/json/{short_url}
+var grabUnshortenedUrl = function(shortUrl, cb) {
+  $.ajax({
+    type: 'get',
+    url: 'https://unshorten.me/json/' + shortUrl,
+    success: function(data) {
+      data
+      cb(data.resolvedUrl); // located in updateStorage.js
+    }
+  });
+};
 
 chrome.runtime.onConnect.addListener(function(port) {
   console.assert(port.name === 'shorts');
   port.onMessage.addListener(function(request) {
-    
-    port.postMessage({ data: 'hey there'} );
+    request.data.forEach(function(shortLink) {
+      grabUnshortenedUrl(shortLink, function(longLink) {
+        checkForFakes([longLink], function(fakeDOMLinks) {
+          // check if link was fake (will only be one)
+          if (fakeDOMLinks.data[0]) {
+            port.postMessage({ data: shortLink });
+          }
+        })
+      });
+    });
   });
 })
-// https://unshorten.me/json/{short_url}
-// var grabUnshortenedUrl = function(shortUrl, cb) {
-//   $.ajax({
-//     type: 'get',
-//     url: 'https://unshorten.me/json/' + shortUrl,
-//     success: function(data) {
-//       data
-//       cb(data.resolvedUrl); // located in updateStorage.js
-//     }
-//   });
-// };
 
 // chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 //   //ASSUMING REQUEST WILL HAVE THE LINK PROPERTY = TO HREF

@@ -61,12 +61,12 @@ var populateSites = function() {
 populateSites();
 
 chrome.runtime.sendMessage({data: sites}, function(response) {
-  renderDOM(response)
+  renderDOM(response, $('a[href]'));
 });
 
-function renderDOM(response) {
-  // loop through DOM links to compare with blacklist returned by ctrlr
-  var DOMLinks = $('a[href]');
+// Compares all links on page with what model returns
+function renderDOM(response, DOMLinks) {
+  // var DOMLinks = $('a[href]');
   DOMLinks.each(function(index, element) {
     var href = $(element).attr('href');
     var domain = filterLinks(href);
@@ -87,10 +87,14 @@ function renderDOM(response) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Messenger for Shortened Links
 ///////////////////////////////////////////////////////////////////////////////////////////
-
+// NOT TESTED
 var port = chrome.runtime.connect({ name: 'shorts' });
-port.postMessage({ data: 'hello' });
+
+// send array of short links
+port.postMessage({ data: shortSites });
+
+// expect back in piecemeal which we will modify specific elements of DOM with
 port.onMessage.addListener(function(response) {
-  console.log(response.data);
-  // renderDOM(response);
+  // console.log(response.data);
+  renderDOM(response, $(`a[href="${response.data}"]`));
 });
