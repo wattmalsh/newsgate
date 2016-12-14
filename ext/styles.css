@@ -1,0 +1,29 @@
+.fake-site-popup,
+.fake-site-alert,
+.fake-site-close {
+  font-family: Helvetica, Arial, sans-serif;
+  color: white;
+  font-weight: 200;
+}
+
+.fake-site-popup {
+  width: 100%;
+  position: fixed;
+  z-index: 100000000;
+  padding-top: 20px;
+  padding-bottom: 30px;
+  background-color: rgba(255,0,0,0.8);
+  top: 0;
+}
+
+.fake-site-alert {
+  text-align: center;
+  font-size: 30px;
+}
+
+.fake-site-close {
+  text-align: right;
+  cursor: pointer;
+  font-size: 12px;
+  margin-right: 30px;
+}
