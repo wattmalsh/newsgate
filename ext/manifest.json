@@ -1,9 +1,10 @@
 {
-  "name": "Page Redder",
-  "description": "Make the current page red",
-  "version": "2.0",
+  "name": "Newsgate",
+  "description": "Point out fake news",
+  "version": "1.0",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "background": {
     "page": "background.html"
