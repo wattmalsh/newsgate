@@ -24,7 +24,7 @@ module.exports = function (app, express) {
   app.get('/twitter', twitterSearch.getTweetsOnTopic);
 
   //CHROME EXTENSION REQUEST HANDLERS
-  app.get('/dateFilter', extControllerDateFilter.dateFilter);
+  app.post('/dateFilter', extControllerDateFilter.dateFilter);
 };
 
 // newsController.isFakeNews depends on nothing
