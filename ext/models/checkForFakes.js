@@ -15,7 +15,7 @@ var getBlacklist = function(callback) {
   
   var results = [
     {
-      url: 'americannews.com',
+      url: 'stackoverflow.com',
       rating: '',
       createdAt: '',
       updatedAt: ''
@@ -53,7 +53,8 @@ var filterLinks = function(unfilteredLink) {
   var domain = unfilteredLink.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
   domain = domain.replace(/^(www\.)/,''); // Strip off www.
   domain = domain.replace(/^(\/*)/, ''); // Strip off any // remaining
-  domain = domain.split('/')[0]; // Get the domain and just the domain (not the path)  
+  domain = domain.split('/')[0]; // Get the domain and just the domain (not the path)
+  domain = domain.split('.').slice(-2).join('.'); // remove prefixes ie: mail.google.com to google.com
   return domain;
 };
 
