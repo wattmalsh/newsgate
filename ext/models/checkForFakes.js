@@ -61,7 +61,6 @@ var filterLinks = function(unfilteredLink) {
 var filterFakes = function(userlist, blacklist, links) {
   var userlist_storage = {};
   var blacklist_storage = {};
-  // var cache = {}; // cache results to ensure no duplicates
   var results = [];
   
   userlist.forEach(function(link) {
@@ -75,7 +74,6 @@ var filterFakes = function(userlist, blacklist, links) {
   links.forEach(function(href) {
     if (href in userlist_storage || href in blacklist_storage) {
       results.push(href);
-      // cache[href] = href;
     }
   });
 
