@@ -1,6 +1,10 @@
 // This file pings background scripts and compares DOM hrefs with
 // ones found on the blacklist and user-preferenced blacklist 
-// and modifies the matching elements on the DOM 
+// and modifies the matching elements on the DOM
+
+// Short links are handled through live-connection where short
+// links are sent to background scripts and the respective DOM
+// element is modified as responses are received 
 
 var sites = [];
 var shortSites = [];
@@ -20,9 +24,8 @@ var shorts = {
   'v.gd': 'v.gd',
   'x.co': 'x.co'
 };
-// var unfilteredSites = [];
 
-// regex to reduce down to XXX.google.com 
+// regex to reduce down to XXXXX.com 
 var filterLinks = function(unfilteredLink) {
   var domain = unfilteredLink.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
   domain = domain.replace(/^(www\.)/,''); // Strip off www.
@@ -32,6 +35,7 @@ var filterLinks = function(unfilteredLink) {
   return domain;
 };
 
+// populate sites and shortSites with DOM links
 var populateSites = function() {
   var DOMLinks = $('a[href]');
   var cache = {};
@@ -43,41 +47,31 @@ var populateSites = function() {
     if (!cache[filtered]) {
       
       // if a short link, add original link to shortSites
-      if (!!shorts[filtered]) {
+      if (shorts[filtered]) {
         shortSites.push(href);
       } else {
         sites.push(filtered);
+        cache[filtered] = filtered;
       }
-
-      // add to cache to ensure no duplicates
-      cache[filtered] = filtered;
     }
-    // console.log(sites, '.........sites here ');
-    // unfilteredSites.push(href);
-    // console.log(unfilteredSites, 'unfilteredSitesHere');
   });
 }
 
 populateSites();
 
+// sends to background script array of sites in form ['xxx.com']
 chrome.runtime.sendMessage({data: sites}, function(response) {
   renderDOM(response, $('a[href]'));
 });
 
-// Compares all links on page with what model returns
+// compares all links on page with what model returns
 function renderDOM(response, DOMLinks) {
-  // var DOMLinks = $('a[href]');
   DOMLinks.each(function(index, element) {
     var href = $(element).attr('href');
     var domain = filterLinks(href);
-
-    // console.log(domain)
-    // console.log(response.data, '.......RESPONSE DATA'); 
     
     // if link is in blacklist, change css
     if (response.data.indexOf(domain) !== -1) {
-      // console.log('domain...', domain);
-      // console.log('INDEX...', response.data.indexOf(domain))
       $(element).css('background-color', '');
       $(element).css('background-color', 'red');
     }
@@ -87,7 +81,6 @@ function renderDOM(response, DOMLinks) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Messenger for Shortened Links
 ///////////////////////////////////////////////////////////////////////////////////////////
-// NOT TESTED
 var port = chrome.runtime.connect({ name: 'shorts' });
 
 // send array of short links
@@ -95,6 +88,6 @@ port.postMessage({ data: shortSites });
 
 // expect back in piecemeal which we will modify specific elements of DOM with
 port.onMessage.addListener(function(response) {
-  // console.log(response.data);
+  console.log('response for shortener', response);
   renderDOM(response, $(`a[href="${response.data}"]`));
 });

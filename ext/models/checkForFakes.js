@@ -40,6 +40,11 @@ var getBlacklist = function(callback) {
       rating: '',
       createdAt: '',
       updatedAt: ''
+    }, {
+      url: 'twitch.tv',
+      rating: '',
+      createdAt: '',
+      updatedAt: ''
     }
   ];
 
@@ -57,7 +62,12 @@ var getUserlist = function(callback) {
       rating: '',
       createdAt: '',
       updatedAt: ''
-    }
+    }, {
+      url: 'twitch.com',
+      rating: '',
+      createdAt: '',
+      updatedAt: ''
+    }    
   ];
 
   if (callback) {
@@ -74,12 +84,10 @@ var filterLinks = function(unfilteredLink) {
   return domain;
 };
 
-// Any way to store userlist and blacklist here on client side??
 var filterFakes = function(userlist, blacklist, links) {
   var userlist_storage = {};
   var blacklist_storage = {};
   var results = [];
-  
   userlist.forEach(function(link) {
     userlist_storage[link.url] = link.url;
   });
@@ -87,20 +95,20 @@ var filterFakes = function(userlist, blacklist, links) {
   blacklist.forEach(function(link) {
     blacklist_storage[link.url] = link.url;
   });
-
   links.forEach(function(href) {
-    if (href in userlist_storage || href in blacklist_storage || href in shorts) {
+    if (href in userlist_storage || href in blacklist_storage) {
       results.push(href);
     }
   });
-
   return results;
 };
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  checkForFakes(request, function(result) {
-    sendResponse(result);
-  });
+  if (request.data) {
+    checkForFakes(request, function(result) {
+      sendResponse(result);
+    });
+  }
 });
 
 function checkForFakes(request, callback) {
@@ -117,18 +125,19 @@ function checkForFakes(request, callback) {
   });
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 // Listener for Shortened Links
-///////////////////////////////////////////////////////////////////////////////////////////
-// NOT TESTED
+///////////////////////////////////////////////////////////////////
 // https://unshorten.me/json/{short_url}
 var grabUnshortenedUrl = function(shortUrl, cb) {
   $.ajax({
-    type: 'get',
+    type: 'GET',
     url: 'https://unshorten.me/json/' + shortUrl,
     success: function(data) {
-      data
-      cb(data.resolvedUrl); // located in updateStorage.js
+      cb(JSON.parse(data).resolvedURL); // located in updateStorage.js
+    },
+    error: function(data) {
+      console.log('SHORT URL USED IN GRABBING...', shortUrl);
     }
   });
 };
@@ -138,7 +147,8 @@ chrome.runtime.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(request) {
     request.data.forEach(function(shortLink) {
       grabUnshortenedUrl(shortLink, function(longLink) {
-        checkForFakes([longLink], function(fakeDOMLinks) {
+        var filteredLongLink = filterLinks(longLink)
+        checkForFakes({data: [filteredLongLink]}, function(fakeDOMLinks) {
           // check if link was fake (will only be one)
           if (fakeDOMLinks.data[0]) {
             port.postMessage({ data: shortLink });
@@ -147,13 +157,6 @@ chrome.runtime.onConnect.addListener(function(port) {
       });
     });
   });
-})
-
-// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-//   //ASSUMING REQUEST WILL HAVE THE LINK PROPERTY = TO HREF
-//   grabUnshortenedUrl(function(unshortened) {
-//     sendResponse({url: unshortend});
-//     return true;
-//   });
-// });
+  return true;
+});
 
