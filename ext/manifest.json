@@ -3,11 +3,15 @@
   "description": "Point out fake news",
   "version": "1.0",
   "permissions": [
-    "tabs",
     "activeTab",
     "storage",
-    "http://localhost:8000/*"
+    "http://localhost:8000/*",
+    "https://ajax.googleapis.com/"
   ],
+  "browser_action": {
+    "default_icon": "assets/icon.png",
+    "default_popup": "popup/popup.html"
+  },
   "background": {
     "scripts": [
       "lib/jquery.min.js",
@@ -22,7 +26,6 @@
     "default_popup": "popup.html"
   },
   "options_page": "options/options.html",
-
   "content_scripts": [
     {
       "matches": ["*://*/*"],
@@ -35,8 +38,5 @@
       ]
     }
   ],
-  "browser_action": {
-    "default_title": "Make this page red"
-  },
   "manifest_version": 2
 }
