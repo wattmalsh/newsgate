@@ -20,7 +20,7 @@
       "js": [
         "lib/jquery.min.js",
         // "models/checkForFakes.js",
-        "renderBlacklistedDOM.js"
+        "views/renderBlacklistedDOM.js"
       ]
     }
   ],

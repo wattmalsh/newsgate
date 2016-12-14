@@ -1,16 +1,25 @@
-function checkForFakes() {
-  $('a[href]').each(function(index, element) {
-    
-    // gets the href value of each element
-    // $(element).attr('href')
-    $(element).css('background-color', 'red');
-    
-    // check db for a match
+// expects two arrays: client and blacklist 
+/*
+[
+  {
+    url: String,
+    rating: ratingSchema,
+    createdAt: ISODate object,
+    updatedAt: ISODate object
+  }
+]
+*/
 
+// get sites array from renderBlacklistedDOM
+console.log('BACKGROUND FILE RUNNING');
 
-    // if match in blacklist then turn element red
-  });
-}
-
-checkForFakes();
-
+chrome.runtime.onMessage.addListener(
+  console.log('BACKGROUND AND CHECK FOR FAKE HAS RECEIVED');
+  function(request, sender, sendResponse) {
+    console.log(sender.tab ?
+                "from a content script:" + sender.tab.url :
+                "from the extension");
+    if (request.data == "sites")
+      sendResponse({farewell: "goodbye"});
+  }
+);

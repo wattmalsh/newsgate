@@ -1,16 +1,18 @@
-// gets href's on the page and sends them to checkForFakes
-function checkForFakes() {
+var checkForFakes = function() {
+  var sites = [];
+
+  // gets the href value of each element
   $('a[href]').each(function(index, element) {
-    
-    // gets the href value of each element
-    // $(element).attr('href')
-    $(element).css('background-color', 'red');
-    
-    // check db for a match
-
-
-    // if match in blacklist then turn element red
+    sites.push($(element).attr('href'));
   });
+    
+  // send checkForFakes
+  chrome.runtime.sendMessage({data: 'sites'}, function(response) {
+    console.log(response, '....RESPONSE ON CONTEXT SCRIPT');
+  });
+
+  // if match in blacklist then turn element red
+  // $(element).css('background-color', 'red');
 }
 
 checkForFakes();
