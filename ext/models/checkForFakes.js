@@ -11,15 +11,31 @@
 */
 
 // get sites array from renderBlacklistedDOM
-console.log('BACKGROUND FILE RUNNING');
 
-chrome.runtime.onMessage.addListener(
+chrome.tabs.executeScript(null, { file: '../lib/jquery.min.js'});
+
+var test = function(userlist, blacklist, links) {
+  var userlist_storage = {};
+  var blacklist_storage = {};
+  
+  userlist.forEach(function(link) {
+    userlist_storage[link] = link;
+  });
+
+  blacklist.forEach(function(link) {});
+}
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+
   console.log('BACKGROUND AND CHECK FOR FAKE HAS RECEIVED');
-  function(request, sender, sendResponse) {
-    console.log(sender.tab ?
-                "from a content script:" + sender.tab.url :
-                "from the extension");
-    if (request.data == "sites")
-      sendResponse({farewell: "goodbye"});
+    var x = test();
+    sendResponse({data: request.data, test: x});
   }
 );
+
+
+
+    // console.log(sender.tab ?
+    //             "from a content script:" + sender.tab.url :
+    //             "from the extension");
+    // console.log(request.data);
