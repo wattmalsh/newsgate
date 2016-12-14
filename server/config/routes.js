@@ -3,7 +3,7 @@ var newsController = require('../controllers/newsController.js');
 var watsonController = require('../watson/watsonController.js');
 const googleTrends = require('../trends/googleTrends');
 const twitterSearch = require('../trends/twitterTrends');
-const extController = require('../extController/extControllerFunction.js');
+const extControllerDateFilter = require('../extController/dateFilter.js');
 
 module.exports = function (app, express) {
 
@@ -23,8 +23,8 @@ module.exports = function (app, express) {
   app.get('/api/googleTrends', googleTrends.getGoogleTrends);
   app.get('/twitter', twitterSearch.getTweetsOnTopic);
 
-  app.get('/extInfo', extController.chromeExtensionDateFilter);
-  app.get('/extSites', extController.extSendSites);
+  //CHROME EXTENSION REQUEST HANDLERS
+  app.get('/dateFilter', extControllerDateFilter.dateFilter);
 };
 
 // newsController.isFakeNews depends on nothing
