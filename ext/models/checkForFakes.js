@@ -110,10 +110,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   });
 });
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Listener for Shortened Links
 ///////////////////////////////////////////////////////////////////////////////////////////
 
+// chrome.tabs.getSelected(null, function(tab) {  
+//   chrome.tabs.connect(tab.id);  
+// });
+
+chrome.runtime.onConnect.addListener(function(port) {
+  console.assert(port.name === 'shorts');
+  port.onMessage.addListener(function(request) {
+    port.postMessage({ data: 'hey there'} );
+  });
+})
 // https://unshorten.me/json/{short_url}
 // var grabUnshortenedUrl = function(shortUrl, cb) {
 //   $.ajax({

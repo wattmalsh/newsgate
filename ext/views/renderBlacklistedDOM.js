@@ -61,7 +61,10 @@ var populateSites = function() {
 populateSites();
 
 chrome.runtime.sendMessage({data: sites}, function(response) {
+  renderDOM(response)
+});
 
+function renderDOM(response) {
   // loop through DOM links to compare with blacklist returned by ctrlr
   var DOMLinks = $('a[href]');
   DOMLinks.each(function(index, element) {
@@ -79,11 +82,15 @@ chrome.runtime.sendMessage({data: sites}, function(response) {
       $(element).css('background-color', 'red');
     }
   });
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Messenger for Shortened Links
+///////////////////////////////////////////////////////////////////////////////////////////
+
+var port = chrome.runtime.connect({ name: 'shorts' });
+port.postMessage({ data: 'hello' });
+port.onMessage.addListener(function(response) {
+  console.log(response.data);
+  // renderDOM(response);
 });
-
-///////////////////////////////////////////////////////////////////////////////////////////
-// Messanger for Shortened Links
-///////////////////////////////////////////////////////////////////////////////////////////
-
-// var port = chrome.runtime.connect({ name: 'shorts' });
-// port.postMessage({ data: '' });
