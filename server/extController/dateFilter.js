@@ -2,7 +2,7 @@ var News = require('../models/newsModel.js');
 
 module.exports.dateFilter = function(req, res) {
   // Plug in the new Date(isotime) with req.body.date
-  var date = new Date(JSON.parse(req.body.date));
+  var date = new Date(req.body.date);
   News.find({"createdAt" : { $gt : date }})
   .then(function(value) {
     console.log('DONE');
