@@ -9,6 +9,22 @@
   }
 ]
 */
+var shorts = {
+  'bit.do': 'bit.do',
+  'bit.ly': 'bit.ly',
+  'cutt.us': 'cutt.us',
+  'goo.gl': 'goo.gl',
+  'ht.ly': 'ht.ly',
+  'is.gd': 'is.gd',
+  'ow.ly': 'ow.ly',
+  'po.st': 'po.st',
+  'tinyurl.com': 'tinyurl.com',
+  'tr.im': 'tr.im',
+  'trib.al': 'trib.al',
+  'u.to': 'u.to',
+  'v.gd': 'v.gd',
+  'x.co': 'x.co'
+};
 
 var getBlacklist = function(callback) {
   // TO DO
@@ -72,7 +88,7 @@ var filterFakes = function(userlist, blacklist, links) {
   });
 
   links.forEach(function(href) {
-    if (href in userlist_storage || href in blacklist_storage) {
+    if (href in userlist_storage || href in blacklist_storage || href in shorts) {
       results.push(href);
     }
   });
@@ -93,3 +109,28 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     });
   });
 });
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Listener for Shortened Links
+///////////////////////////////////////////////////////////////////////////////////////////
+
+// https://unshorten.me/json/{short_url}
+// var grabUnshortenedUrl = function(shortUrl, cb) {
+//   $.ajax({
+//     type: 'get',
+//     url: 'https://unshorten.me/json/' + shortUrl,
+//     success: function(data) {
+//       data
+//       cb(data.resolvedUrl); // located in updateStorage.js
+//     }
+//   });
+// };
+
+// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+//   //ASSUMING REQUEST WILL HAVE THE LINK PROPERTY = TO HREF
+//   grabUnshortenedUrl(function(unshortened) {
+//     sendResponse({url: unshortend});
+//     return true;
+//   });
+// });
+

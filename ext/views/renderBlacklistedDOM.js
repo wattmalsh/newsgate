@@ -3,6 +3,23 @@
 // and modifies the matching elements on the DOM 
 
 var sites = [];
+var shortSites = [];
+var shorts = {
+  'bit.do': 'bit.do',
+  'bit.ly': 'bit.ly',
+  'cutt.us': 'cutt.us',
+  'goo.gl': 'goo.gl',
+  'ht.ly': 'ht.ly',
+  'is.gd': 'is.gd',
+  'ow.ly': 'ow.ly',
+  'po.st': 'po.st',
+  'tinyurl.com': 'tinyurl.com',
+  'tr.im': 'tr.im',
+  'trib.al': 'trib.al',
+  'u.to': 'u.to',
+  'v.gd': 'v.gd',
+  'x.co': 'x.co'
+};
 // var unfilteredSites = [];
 
 // regex to reduce down to XXX.google.com 
@@ -15,7 +32,7 @@ var filterLinks = function(unfilteredLink) {
   return domain;
 };
 
-var renderBlacklistedDOM = function() {
+var populateSites = function() {
   var DOMLinks = $('a[href]');
   var cache = {};
 
@@ -24,7 +41,15 @@ var renderBlacklistedDOM = function() {
     var filtered = filterLinks(href);
 
     if (!cache[filtered]) {
-      sites.push(filtered);
+      
+      // if a short link, add original link to shortSites
+      if (!!shorts[filtered]) {
+        shortSites.push(href);
+      } else {
+        sites.push(filtered);
+      }
+
+      // add to cache to ensure no duplicates
       cache[filtered] = filtered;
     }
     // console.log(sites, '.........sites here ');
@@ -33,7 +58,7 @@ var renderBlacklistedDOM = function() {
   });
 }
 
-renderBlacklistedDOM();
+populateSites();
 
 chrome.runtime.sendMessage({data: sites}, function(response) {
 
@@ -42,14 +67,23 @@ chrome.runtime.sendMessage({data: sites}, function(response) {
   DOMLinks.each(function(index, element) {
     var href = $(element).attr('href');
     var domain = filterLinks(href);
-    console.log(domain)
-    console.log(response.data, '.......RESPONSE DATA'); 
+
+    // console.log(domain)
+    // console.log(response.data, '.......RESPONSE DATA'); 
+    
     // if link is in blacklist, change css
     if (response.data.indexOf(domain) !== -1) {
-      console.log('domain...', domain);
-      console.log('INDEX...', response.data.indexOf(domain))
+      // console.log('domain...', domain);
+      // console.log('INDEX...', response.data.indexOf(domain))
       $(element).css('background-color', '');
       $(element).css('background-color', 'red');
     }
   });
 });
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Messanger for Shortened Links
+///////////////////////////////////////////////////////////////////////////////////////////
+
+// var port = chrome.runtime.connect({ name: 'shorts' });
+// port.postMessage({ data: '' });
