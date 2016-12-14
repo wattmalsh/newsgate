@@ -21,10 +21,11 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      // "css": ["mystyles.css"],
+      "css": ["clearall.css", "styles.css"],
       "js": [
         "lib/jquery.min.js",
-        // "models/checkForFakes.js",
+        "models/checkForFakes.js",
+        "models/alertFakeSite.js",
         "views/renderBlacklistedDOM.js"
       ]
     }
@@ -34,8 +35,3 @@
   },
   "manifest_version": 2
 }
-
-// "background": {
-//   "scripts": ["background.js"],
-//   "persistent": false
-// },
