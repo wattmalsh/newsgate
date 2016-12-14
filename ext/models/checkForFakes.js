@@ -9,26 +9,87 @@
   }
 ]
 */
+var shorts = {
+  'bit.do': 'bit.do',
+  'bit.ly': 'bit.ly',
+  'cutt.us': 'cutt.us',
+  'goo.gl': 'goo.gl',
+  'ht.ly': 'ht.ly',
+  'is.gd': 'is.gd',
+  'ow.ly': 'ow.ly',
+  'po.st': 'po.st',
+  'tinyurl.com': 'tinyurl.com',
+  'tr.im': 'tr.im',
+  'trib.al': 'trib.al',
+  'u.to': 'u.to',
+  'v.gd': 'v.gd',
+  'x.co': 'x.co'
+};
 
-// get sites array from renderBlacklistedDOM
+var getBlacklist = function(callback) {
+  // TO DO
+  
+  var results = [
+    {
+      url: 'stackoverflow.com',
+      rating: '',
+      createdAt: '',
+      updatedAt: ''
+    }, {
+      url: 'stackoverflow.com',
+      rating: '',
+      createdAt: '',
+      updatedAt: ''
+    }
+  ];
 
-chrome.tabs.executeScript(null, { file: '../lib/jquery.min.js'});
+  if (callback) {
+    callback(results);
+  }
+};
 
+var getUserlist = function(callback) {
+  // TO DO
+
+  var results = [
+    {
+      url: 'google.com',
+      rating: '',
+      createdAt: '',
+      updatedAt: ''
+    }
+  ];
+
+  if (callback) {
+    callback(results);
+  }
+};
+
+var filterLinks = function(unfilteredLink) {
+  var domain = unfilteredLink.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
+  domain = domain.replace(/^(www\.)/,''); // Strip off www.
+  domain = domain.replace(/^(\/*)/, ''); // Strip off any // remaining
+  domain = domain.split('/')[0]; // Get the domain and just the domain (not the path)
+  domain = domain.split('.').slice(-2).join('.'); // remove prefixes ie: mail.google.com to google.com
+  return domain;
+};
+
+// Any way to store userlist and blacklist here on client side??
 var filterFakes = function(userlist, blacklist, links) {
   var userlist_storage = {};
   var blacklist_storage = {};
   var results = [];
   
   userlist.forEach(function(link) {
-    userlist_storage[link] = link;
+    userlist_storage[link.url] = link.url;
   });
 
   blacklist.forEach(function(link) {
-    blacklist_storage[link] = link;
+    blacklist_storage[link.url] = link.url;
   });
 
   links.forEach(function(href) {
-    if (href in userlist_storage || href in blacklist_storage) {
+    if (href in userlist_storage || href in blacklist_storage || href in shorts) {
       results.push(href);
     }
   });
@@ -37,9 +98,62 @@ var filterFakes = function(userlist, blacklist, links) {
 };
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  checkForFakes(request, function(result) {
+    sendResponse(result);
+  });
+});
 
-  console.log('BACKGROUND AND CHECK FOR FAKE HAS RECEIVED');
-    var x = test();
-    sendResponse({data: request.data, test: x});
-  }
-);
+function checkForFakes(request, callback) {
+  var blacklist;
+  var userlist;
+
+  getBlacklist(function(blacklistResults) {
+    blacklist = blacklistResults;
+    getUserlist(function(userlistResults) {
+      userlist = userlistResults;
+      var fakeDOMLinks = filterFakes(userlist, blacklist, request.data);
+      callback({data: fakeDOMLinks})
+    });
+  });
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Listener for Shortened Links
+///////////////////////////////////////////////////////////////////////////////////////////
+// NOT TESTED
+// https://unshorten.me/json/{short_url}
+var grabUnshortenedUrl = function(shortUrl, cb) {
+  $.ajax({
+    type: 'get',
+    url: 'https://unshorten.me/json/' + shortUrl,
+    success: function(data) {
+      data
+      cb(data.resolvedUrl); // located in updateStorage.js
+    }
+  });
+};
+
+chrome.runtime.onConnect.addListener(function(port) {
+  console.assert(port.name === 'shorts');
+  port.onMessage.addListener(function(request) {
+    request.data.forEach(function(shortLink) {
+      grabUnshortenedUrl(shortLink, function(longLink) {
+        checkForFakes([longLink], function(fakeDOMLinks) {
+          // check if link was fake (will only be one)
+          if (fakeDOMLinks.data[0]) {
+            port.postMessage({ data: shortLink });
+          }
+        })
+      });
+    });
+  });
+})
+
+// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+//   //ASSUMING REQUEST WILL HAVE THE LINK PROPERTY = TO HREF
+//   grabUnshortenedUrl(function(unshortened) {
+//     sendResponse({url: unshortend});
+//     return true;
+//   });
+// });
+
