@@ -15,7 +15,7 @@ var makePostReq = function(dateObj) {
     dataType: 'json', // data type expected back from server
     success: function(data) {
       // DATA IS AN ARRAY OF NEW BLACKLISTED URL objects
-      updateBlacklist(data); // located in updateStorage.js
+      updateBlacklist(data, 'blackListedURLs'); // located in updateStorage.js
     }
   });
 };
