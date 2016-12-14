@@ -5,12 +5,14 @@
   "permissions": [
     "tabs",
     "activeTab",
-    "storage"
+    "storage",
+    "http://localhost:8000/*"
   ],
   "background": {
     "scripts": [
       "lib/jquery.min.js",
-      "models/checkForFakes.js"
+      "models/checkForFakes.js",
+      "storageController/storageController.js"
     ]
     // "persistent": false
     // "page": "background.html"
