@@ -10,7 +10,7 @@ $(document).ready(function(){
         url: $(this).attr('href'),
         index: index + 1
       });
-    })
+    });
     return false;
   });
 
@@ -43,4 +43,4 @@ function getCurrentTabUrl(callback) {
     // tabs is required to see info for other tabs
     callback(url);
   });
-};
+}

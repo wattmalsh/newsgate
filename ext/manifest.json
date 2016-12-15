@@ -16,10 +16,9 @@
     "scripts": [
       "lib/jquery.min.js",
       "storageController/storageController.js",
-      "models/checkForFakes.js"
+      "models/checkForFakes.js",
+      "models/checkAddressBarUrl.js"
     ]
-    // "persistent": false
-    // "page": "background.html"
   },
   "options_page": "options/options.html",
   "content_scripts": [

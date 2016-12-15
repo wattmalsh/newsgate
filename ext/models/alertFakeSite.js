@@ -5,4 +5,9 @@ function alertFakeSite() {
   });
 }
 
-alertFakeSite();
+// Receive the url of the current window from background.html
+chrome.runtime.sendMessage({url: true}, function(response) {
+  if (response.fake) {
+    alertFakeSite();
+  }
+});
