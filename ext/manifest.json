@@ -17,7 +17,7 @@
       "lib/jquery.min.js",
       "storageController/storageController.js",
       "models/checkForFakes.js",
-      "models/grabAddressBarUrl.js"
+      "models/checkAddressBarUrl.js"
     ]
   },
   "options_page": "options/options.html",
