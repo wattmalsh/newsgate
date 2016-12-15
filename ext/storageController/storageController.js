@@ -4,7 +4,7 @@
  *
 */
 
-var server = 'http://localhost:8000/dateFilter'; // CHANGE ME ONCE DEPLOYED
+var server = 'https://newsgate.herokuapp.com:19794/dateFilter'; // CHANGE ME ONCE DEPLOYED
 
 // Makes post request to server for new blacklisted URLs
 var makePostReq = function(dateObj) {

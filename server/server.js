@@ -1,12 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const port = 8000;
+const port = process.env.PORT || 8000;
 const app = express();
-const googleTrends = require('./trends/googleTrends');
-const twitterSearch = require('./trends/twitterTrends');
-const watson = require('./watson/watsonController');
 
-var dbURI = 'mongodb://localhost/newsgate'
+var dbURI = 'mongodb://heroku_z3pg5nvm:b6bla21nua9a0opbmvju1ub1pa@ds133378.mlab.com:33378/heroku_z3pg5nvm/newsgate'
 mongoose.connect(dbURI);
 
 // CONNECTION EVENTS
