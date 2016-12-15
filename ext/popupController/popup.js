@@ -1,5 +1,17 @@
+/////////////////////////////////////////////////////////////////////////////
+// var filterLinks = function(unfilteredLink) {
+//   var domain = unfilteredLink.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
+//   domain = domain.replace(/^(www\.)/,''); // Strip off www.
+//   domain = domain.replace(/^(\/*)/, ''); // Strip off any // remaining
+//   domain = domain.split('/')[0]; // Get the domain and just the domain (not the path)
+//   domain = domain.split('.').slice(-2).join('.'); // remove prefixes ie: mail.google.com to google.com
+//   return domain;
+// };
+/////////////////////////////////////////////////////////////////////////////
+
 $(document).ready(function(){
-   
+  
+
   // Navigate to settings page in next tab
   $('body').on('click', '#settings', function(){
     chrome.tabs.query({
@@ -17,8 +29,19 @@ $(document).ready(function(){
   // Add current url in active tab to userlist
   $('body').on('click', '#addToBlacklist', function() {
     getCurrentTabUrl(function(url) {
-      var domain = filterLinks(url);
-      updateBlacklist([domain], 'userGeneratedBlacklist');
+      chrome.extension.getBackgroundPage().console.log(url, '...url');
+      // chrome.extension.getBackgroundPage().console.log(filterLinks);
+      var domain = chrome.extension.getBackgroundPage().filterLinks(url);
+      
+      chrome.extension.getBackgroundPage().console.log(domain, '...domain');
+      
+      chrome.extension.getBackgroundPage().console.log(
+        chrome.extension.getBackgroundPage().updateBlacklist, 'UPDATEBLACKLIST'
+      )
+
+      chrome.extension.getBackgroundPage().updateBlacklist([url], 'userGeneratedBlacklist');
+
+      chrome.extension.getBackgroundPage().console.log('successfully inserted');
     });
   });
 
@@ -43,4 +66,10 @@ function getCurrentTabUrl(callback) {
     // tabs is required to see info for other tabs
     callback(url);
   });
+<<<<<<< HEAD
 }
+=======
+};
+
+console.log('POPUP DONE');
+>>>>>>> Shell out add user functionality
