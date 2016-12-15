@@ -13,8 +13,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', end
 h1 {
   font-size: 250%;
 }
+html {
+  height: 100%;
+}
 .container {
-  height: 408px;
+  height: 100%;
   margin: auto;
   text-align: center;
   margin-top: 19%;
