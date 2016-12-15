@@ -6,7 +6,7 @@
     "tabs",
     "activeTab",
     "storage",
-    "http://localhost:8000/*"
+    "https://newsgate.herokuapp.com:19794/*"
   ],
   "browser_action": {
     "default_icon": "assets/icon.png",
