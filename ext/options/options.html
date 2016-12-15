@@ -7,7 +7,17 @@
   </title>
 </head>
   <body>
-    <div ng-view></div>
+    <div class="options-wrapper">
+      <nav class="navbar navbar-default navbar-fixed-top header-nav">
+        <div class="container">
+          <ul>
+            <li><a href="../optionsView/blacklist/blacklist.html">Blacklist Options</a></li>
+            <li><a href="">Themes</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div ng-view></div>
+    </div>
 
     <script src="../lib/jquery.min.js"></script>
     <script src="../lib/angular.min.js"></script>
