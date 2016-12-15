@@ -21,6 +21,11 @@ $(document).ready(function(){
       // Background functions are available with chrome.extension.getBackgroundPage()
       var domain = chrome.extension.getBackgroundPage().filterLinks(url);
       
+      // Make sure url we are inserting is not already in storage
+      chrome.extension.getBackgroundPage().getUserlist(function(results) {
+        
+      })
+
       // use getUserlist(function(results) { console.log(results); }); to test in local storage
       chrome.extension.getBackgroundPage().updateBlacklist([domain], 'userGeneratedBlacklist');
     });
