@@ -10,11 +10,9 @@ blacklist.controller('blacklistController', function($scope) {
 
   // GET WHITE LIST URLS FROM SYNC STORAGE
   // then update textarea field on blacklist.html
-  // chrome.storage.sync.get('userGeneratedBlacklist')
-
-  // $scope.userBlacklistURLs = "lolzcats\nlolzcats2";
-  // NEED TO GET WHITE LIST URLS FROM SYNC STORAGE
-  $scope.whiteListedURLs = "helloworld.com\nhellothere.biz";
+  chrome.extension.getBackgroundPage().getWhitelist(function(whitelistArray) {
+    $scope.whiteListedURLs = whitelistArray.join('\n');
+  });
 
   // ON SAVE SETTINGS BUTTON CLICK
   // Call setter functions from storageController to reset whitelist and user blacklist
