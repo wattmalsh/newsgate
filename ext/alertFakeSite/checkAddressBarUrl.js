@@ -14,16 +14,19 @@ function getCurrentTabUrl(callback) {
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
+    var response = {fake: false};
     getCurrentTabUrl(function(tabUrl) {
       var url = filterLinks(tabUrl);
-      getBlacklist(function(mainList) {
+      console.log("URL", url);
+      getBlacklist(function(blackList) {
         getUserlist(function(userList) {
-          userList.concat(mainList).forEach(function(obj) {
-            if (obj.url === url) {
-              sendResponse({fake: true});
-            }
+          getWhitelist(function(whiteList) {
+            userList.concat(blackList).filter(function(obj) {return whiteList.indexOf(obj) === -1;}).forEach(function(obj) {
+              if (obj.url === url) {
+                sendResponse({fake: true});
+              }
+            });
           });
-          sendResponse({fake: false});
         });
       });
       // allow for an asynchronoous response to alertFakeSite listener
