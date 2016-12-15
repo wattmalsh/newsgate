@@ -14,10 +14,14 @@ function getCurrentTabUrl(callback) {
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    var response = {fake: false};
-    getCurrentTabUrl(function(tabUrl) {
-      var url = filterLinks(tabUrl);
-      console.log("URL", url);
+    if (request.action === 'getUrl') {
+      getCurrentTabUrl(function(tabUrl) {
+        sendResponse({url: filterLinks(tabUrl)});
+      });
+    }
+
+    if (request.action === 'checkUrl') {
+      var url = request.url;
       getBlacklist(function(blackList) {
         getUserlist(function(userList) {
           getWhitelist(function(whiteList) {
@@ -29,8 +33,8 @@ chrome.runtime.onMessage.addListener(
           });
         });
       });
-      // allow for an asynchronoous response to alertFakeSite listener
-      return true;
-    });
+    }
+    // allow for an asynchronoous response to alertFakeSite listener
+    return true;
   }
 );
