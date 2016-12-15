@@ -80,6 +80,15 @@ var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
   }
 };
 
+// Function to remove array of urls from userGeneratedBlacklist
+var removeUrl = function(urls) {
+  var syncedUserGeneratedUrls;
+  getUserlist(function(results) {
+    syncedUserGeneratedUrls = results;
+  });
+  
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //   _______  _______ .___________.___________. _______ .______          _______.
 //  /  _____||   ____||           |           ||   ____||   _  \        /       |
