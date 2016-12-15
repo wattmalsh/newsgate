@@ -14,6 +14,10 @@ themes.controller('themesController', function($scope) {
     }
   }
 
+  $scope.radioButton = {
+    selected: 'default'
+  }
+
   $scope.setTheme = function(theme) {
     chrome.storage.sync.set(theme, function() {
       console.log('Theme successfully saved');
