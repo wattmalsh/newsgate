@@ -5,8 +5,10 @@
 // Short links are handled through live-connection where short
 // links are sent to background scripts and the respective DOM
 // element is modified as responses are received 
-
+console.log('RUNNING CONTEXT');
 var sites = [];
+var unfilteredSites = [];
+
 var shortSites = [];
 var shorts = {
   'bit.do': 'bit.do',
@@ -44,6 +46,8 @@ var populateSites = function() {
     var href = $(element).attr('href');
     var filtered = filterLinks(href);
 
+    unfilteredSites.push(href);
+
     if (!cache[filtered]) {
       
       // if a short link, add original link to shortSites
@@ -60,6 +64,8 @@ var populateSites = function() {
 populateSites();
 
 // sends to background script array of sites in form ['xxx.com']
+console.log(sites, 'SITES DATAS');
+console.log(unfilteredSites, 'UNFILTERED SITES');
 chrome.runtime.sendMessage({data: sites}, function(response) {
   renderDOM(response, $('a[href]'));
 });
@@ -69,13 +75,13 @@ function renderDOM(response, DOMLinks) {
   DOMLinks.each(function(index, element) {
     var href = $(element).attr('href');
     var domain = filterLinks(href);
-    
     // if link is in blacklist, change css
     if (response.data.indexOf(domain) !== -1) {
       $(element).css('background-color', '');
       $(element).css('background-color', 'red');
     }
   });
+  console.log(response.data, 'response data');
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
