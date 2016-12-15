@@ -34,7 +34,11 @@ function getCurrentTabUrl(callback) {
     currentWindow: true
   };
 
+<<<<<<< HEAD
   console.log('CHROME TABS OLD ===>', chrome.tabs);
+=======
+  console.log('CHROME TABS OLD ===>', chrome.tabs)
+>>>>>>> Render popup warning only for blacklisted sites.
   chrome.tabs.query(queryInfo, function(tabs) {
     // One tab available in active window array
     var tab = tabs[0];
