@@ -91,7 +91,7 @@ var removeUrl = function(urls) {
 
   getUserlist(function(results) {
     newList = results;
-    
+
     // Remove any duplicates
     newList = newList.filter(function(e, i) {
       return newList.indexOf(e) === i;
@@ -128,7 +128,6 @@ var removeUrl = function(urls) {
 var getBlacklist = function(callback) {
   chrome.storage.local.get('blackListedURLs', function(localStorage) {
     var blacklist = localStorage['blackListedURLs'];
-    console.log(blacklist, 'RESULTS INSIDE GETBLACKLIST');
     callback(blacklist);
   });
 };

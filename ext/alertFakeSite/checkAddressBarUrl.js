@@ -19,7 +19,6 @@ chrome.runtime.onMessage.addListener(
         sendResponse({url: filterLinks(tabUrl)});
       });
     }
-
     if (request.action === 'checkUrl') {
       var url = request.url;
       getBlacklist(function(blackList) {
