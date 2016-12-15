@@ -17,17 +17,17 @@
       "lib/jquery.min.js",
       "storageController/storageController.js",
       "models/checkForFakes.js",
-      "models/checkAddressBarUrl.js"
+      "alertFakeSite/checkAddressBarUrl.js"
     ]
   },
   "options_page": "options/options.html",
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "css": ["clearall.css", "styles.css"],
+      "css": ["styles/clearall.css", "styles/styles.css"],
       "js": [
         "lib/jquery.min.js",
-        "models/alertFakeSite.js",
+        "alertFakeSite/alertFakeSite.js",
         "views/renderBlacklistedDOM.js"
       ]
     }
