@@ -124,6 +124,7 @@ function checkForFakes(request, callback) {
       userlist = userlistResults;
       var fakeDOMLinks = filterFakes(userlist, blacklist, request.data);
       console.log(blacklist, '...BLACKLIST');
+      console.log(userlist, '...USERLIST');
       console.log(fakeDOMLinks, '...fakeDOMLINKS');
       callback({data: fakeDOMLinks})
       // callback({data: ['google.com']})
