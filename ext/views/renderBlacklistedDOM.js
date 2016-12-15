@@ -1,4 +1,4 @@
-$(document).ready(function() {
+var renderBlacklist = function() {
 
   // This file pings background scripts and compares DOM hrefs with
   // ones found on the blacklist and user-preferenced blacklist
@@ -7,7 +7,7 @@ $(document).ready(function() {
   // Short links are handled through live-connection where short
   // links are sent to background scripts and the respective DOM
   // element is modified as responses are received
-  console.log('RUNNING CONTEXT');
+  // console.log('RUNNING CONTEXT');
   var sites = [];
   var unfilteredSites = [];
 
@@ -41,15 +41,14 @@ $(document).ready(function() {
 
   // populate sites and shortSites with DOM links
   var populateSites = function() {
+    // var DOMLinks = $('a[href]');
     var DOMLinks = $('a[href]');
     var cache = {};
 
     DOMLinks.each(function(index, element) {
       var href = $(element).attr('href');
       var filtered = filterLinks(href);
-
       unfilteredSites.push(href);
-
       if (!cache[filtered]) {
 
         // if a short link, add original link to shortSites
@@ -68,11 +67,11 @@ $(document).ready(function() {
   // sends to background script array of sites in form ['xxx.com']
 
   // ONLY GETS FIRST RESPONSE, THEN REAL RESPONSE COMES IN ~5 SEC LATER
-  console.log(sites, 'SITES DATAS');
-  console.log(unfilteredSites, 'UNFILTERED SITES');
+  // console.log(sites, 'SITES DATAS');
+  // console.log(unfilteredSites, 'UNFILTERED SITES');
   chrome.runtime.sendMessage({data: sites}, function(response) {
-    console.log('SENDING MESSAGE');
-    console.log(response, 'RESPONSE HERE')
+    // console.log('SENDING MESSAGE');
+    // console.log(response, 'RESPONSE HERE')
     renderDOM(response, $('a[href]'));
     // return true;
   });
@@ -106,8 +105,20 @@ $(document).ready(function() {
   }
   // expect back in piecemeal which we will modify specific elements of DOM with
   port.onMessage.addListener(function(response) {
-    console.log('response for shortener', response);
+    // console.log('response for shortener', response);
     renderDOM(response, $(`a[href="${response.data}"]`));
   });
+}
 
+
+//MUTATION OBSERVER WATCHES FOR CHANGES
+MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+// SETS THE FUNCTION TO RUN ON OBSERVING CHANGE
+var observer = new MutationObserver(renderBlacklist);
+
+//SETS WHAT TO OBSERVE WITH 'DOCUMENT' AND ITS 'CHILDLIST' AND 'SUBTREE' ELEMENTS
+observer.observe(document, {
+  childList: true,
+  subtree: true
 });
