@@ -1,5 +1,22 @@
 themes = angular.module('options.themes', []);
 
-themes.controller('themesController', function() {
+themes.controller('themesController', function($scope) {
+  $scope.defaultTheme = {
+    theme: {
+      'background-color': 'red'
+    }
+  };
 
+  $scope.censorTheme = {
+    theme: {
+      'background-color': 'black',
+      'color': 'black'
+    }
+  }
+
+  $scope.setTheme = function(theme) {
+    chrome.storage.sync.set(theme, function() {
+      console.log('Theme successfully saved');
+    });
+  };
 });

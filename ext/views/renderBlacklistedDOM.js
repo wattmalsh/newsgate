@@ -1,12 +1,12 @@
 $(document).ready(function() {
 
   // This file pings background scripts and compares DOM hrefs with
-  // ones found on the blacklist and user-preferenced blacklist 
+  // ones found on the blacklist and user-preferenced blacklist
   // and modifies the matching elements on the DOM
 
   // Short links are handled through live-connection where short
   // links are sent to background scripts and the respective DOM
-  // element is modified as responses are received 
+  // element is modified as responses are received
   console.log('RUNNING CONTEXT');
   var sites = [];
   var unfilteredSites = [];
@@ -29,7 +29,7 @@ $(document).ready(function() {
     'x.co': 'x.co'
   };
 
-  // regex to reduce down to XXXXX.com 
+  // regex to reduce down to XXXXX.com
   var filterLinks = function(unfilteredLink) {
     var domain = unfilteredLink.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
     domain = domain.replace(/^(www\.)/,''); // Strip off www.
@@ -51,7 +51,7 @@ $(document).ready(function() {
       unfilteredSites.push(href);
 
       if (!cache[filtered]) {
-        
+
         // if a short link, add original link to shortSites
         if (shorts[filtered]) {
           shortSites.push(href);
@@ -66,7 +66,7 @@ $(document).ready(function() {
   populateSites();
 
   // sends to background script array of sites in form ['xxx.com']
-  
+
   // ONLY GETS FIRST RESPONSE, THEN REAL RESPONSE COMES IN ~5 SEC LATER
   console.log(sites, 'SITES DATAS');
   console.log(unfilteredSites, 'UNFILTERED SITES');
@@ -84,8 +84,12 @@ $(document).ready(function() {
       var domain = filterLinks(href);
       // if link is in blacklist, change css
       if (response.data.indexOf(domain) !== -1) {
-        $(element).css('background-color', '');
-        $(element).css('background-color', 'red');
+        chrome.storage.sync.get('theme', function(syncStore) {
+          for (var prop in syncStore.theme) {
+            // Apply all css in theme to <a href> element
+            $(element).css(prop, syncStore.theme[prop]);
+          }
+        });
       }
     });
     console.log(response.data, 'response data');
@@ -107,4 +111,3 @@ $(document).ready(function() {
   });
 
 });
-  
