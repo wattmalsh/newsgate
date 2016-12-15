@@ -1,10 +1,10 @@
 /* storageController.js - useful functions to help manage blacklist in local storage
- * @Author: David Wayman
+ * @Author: David Wayman - github.com/r3dcrosse
  * @CreatedOn: 12/14/16
  *
 */
 
-var server = 'https://newsgate.herokuapp.com/dateFilter'; // CHANGE ME ONCE DEPLOYED
+var server = 'https://newsgate.herokuapp.com/dateFilter'; // Deployed server db
 
 // Makes post request to server for new blacklisted URLs
 var makePostReq = function(dateObj) {
@@ -28,9 +28,10 @@ var makePostReq = function(dateObj) {
 // Initialize local storage variables for black list
 var initLocalStorage = function() {
   // Initialize storage containers
-  chrome.storage.local.set({'blackListedURLs': []});
-  chrome.storage.local.set({'userGeneratedBlacklist': []});
-  chrome.storage.sync.set({
+  chrome.storage.local.set({ 'blackListedURLs' : [] });
+  chrome.storage.sync.set({ 'userGeneratedBlacklist' : [] });
+  chrome.storage.sync.set({ 'whiteListedURLs' : [] });
+  chrome.storage.sync.set({ // Set's default theme
     'theme':
       { 'background-color': 'red' }
     });
@@ -57,7 +58,7 @@ var updateBlacklist = function(newURLs, blackListToUpdate) {
       combineBlackList(newURLs, oldURLs, blackListToUpdate);
     });
   } else {
-    console.error('COULD NOT FIND BLACK LIST IN LOCAL STORAGE TO UPDATE');
+    console.error('COULD NOT FIND BLACK LIST TO UPDATE');
   }
 };
 
@@ -71,11 +72,11 @@ var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
       console.log('Successfully updated blackListedURLs');
     });
   } else if (blackListToUpdate === 'userGeneratedBlacklist') {
-    chrome.storage.local.set({ 'userGeneratedBlacklist': newBlackList }, function() {
+    chrome.storage.sync.set({ 'userGeneratedBlacklist': newBlackList }, function() {
       console.log('Successfully updated userGeneratedBlacklist');
     });
   } else {
-    console.error('COULD NOT FIND BLACK LIST IN LOCAL STORAGE TO UPDATE');
+    console.error('COULD NOT FIND BLACK LIST TO UPDATE');
   }
 };
 
@@ -91,19 +92,27 @@ var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
 // Getter for server blacklist
 var getBlacklist = function(callback) {
   chrome.storage.local.get('blackListedURLs', function(localStorage) {
-    var results = localStorage['blackListedURLs'];
-    console.log(results, 'RESULTS INSIDE GETBLACKLIST');
-    callback(results);
+    var blacklist = localStorage['blackListedURLs'];
+    console.log(blacklist, 'RESULTS INSIDE GETBLACKLIST');
+    callback(blacklist);
   });
 };
 
 // Getter for user generated blacklist
 var getUserlist = function(callback) {
-  chrome.storage.local.get('userGeneratedBlacklist', function(localStorage) {
-    var results = localStorage['userGeneratedBlacklist'];
-    callback(results);
+  chrome.storage.sync.get('userGeneratedBlacklist', function(syncStore) {
+    var userBlacklist = syncStore['userGeneratedBlacklist'];
+    callback(userBlacklist);
   });
 };
+
+// Getter for whitelist
+var getWhitelist = function(callback) {
+  chrome.storage.sync.get('whiteListedURLs', function(syncStore) {
+    var whitelist = syncStore['whiteListedURLs'];
+    callback(whitelist);
+  });
+}
 
 // Gets last URL that was pulled from server
 // and updates the list in local storage
