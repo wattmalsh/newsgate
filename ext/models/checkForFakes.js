@@ -26,54 +26,55 @@ var shorts = {
   'x.co': 'x.co'
 };
 
-var getBlacklist = function(callback) {
-  // TO DO
+console.log(getBlacklist, 'getBlacklist FUNCTION');
+// var getBlacklist = function(callback) {
+//   // TO DO
   
-  var results = [
-    {
-      url: 'stackoverflow.com',
-      rating: '',
-      createdAt: '',
-      updatedAt: ''
-    }, {
-      url: 'stackoverflow.com',
-      rating: '',
-      createdAt: '',
-      updatedAt: ''
-    }, {
-      url: 'twitch.tv',
-      rating: '',
-      createdAt: '',
-      updatedAt: ''
-    }
-  ];
+//   var results = [
+//     {
+//       url: 'stackoverflow.com',
+//       rating: '',
+//       createdAt: '',
+//       updatedAt: ''
+//     }, {
+//       url: 'stackoverflow.com',
+//       rating: '',
+//       createdAt: '',
+//       updatedAt: ''
+//     }, {
+//       url: 'twitch.tv',
+//       rating: '',
+//       createdAt: '',
+//       updatedAt: ''
+//     }
+//   ];
 
-  if (callback) {
-    callback(results);
-  }
-};
+//   if (callback) {
+//     callback(results);
+//   }
+// };
 
-var getUserlist = function(callback) {
-  // TO DO
+// var getUserlist = function(callback) {
+//   // TO DO
 
-  var results = [
-    {
-      url: 'google.com',
-      rating: '',
-      createdAt: '',
-      updatedAt: ''
-    }, {
-      url: 'twitch.com',
-      rating: '',
-      createdAt: '',
-      updatedAt: ''
-    }    
-  ];
+//   var results = [
+//     {
+//       url: 'google.com',
+//       rating: '',
+//       createdAt: '',
+//       updatedAt: ''
+//     }, {
+//       url: 'twitch.com',
+//       rating: '',
+//       createdAt: '',
+//       updatedAt: ''
+//     }    
+//   ];
 
-  if (callback) {
-    callback(results);
-  }
-};
+//   if (callback) {
+//     callback(results);
+//   }
+// };
 
 var filterLinks = function(unfilteredLink) {
   var domain = unfilteredLink.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
@@ -104,10 +105,12 @@ var filterFakes = function(userlist, blacklist, links) {
 };
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  console.log('INSIDE RUNTIME ADDLISTENER', request);
   if (request.data) {
     checkForFakes(request, function(result) {
       sendResponse(result);
     });
+    return true;
   }
 });
 
@@ -120,7 +123,10 @@ function checkForFakes(request, callback) {
     getUserlist(function(userlistResults) {
       userlist = userlistResults;
       var fakeDOMLinks = filterFakes(userlist, blacklist, request.data);
+      console.log(blacklist, '...BLACKLIST');
+      console.log(fakeDOMLinks, '...fakeDOMLINKS');
       callback({data: fakeDOMLinks})
+      // callback({data: ['google.com']})
     });
   });
 }
@@ -148,6 +154,7 @@ chrome.runtime.onConnect.addListener(function(port) {
     request.data.forEach(function(shortLink) {
       grabUnshortenedUrl(shortLink, function(longLink) {
         var filteredLongLink = filterLinks(longLink)
+        console.log('RUNNING CHECK FOR FAKES IN SHORT LINK');
         checkForFakes({data: [filteredLongLink]}, function(fakeDOMLinks) {
           // check if link was fake (will only be one)
           if (fakeDOMLinks.data[0]) {

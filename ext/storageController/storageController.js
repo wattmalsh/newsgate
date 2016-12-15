@@ -88,6 +88,7 @@ var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
 var getBlacklist = function(callback) {
   chrome.storage.local.get('blackListedURLs', function(localStorage) {
     var results = localStorage['blackListedURLs'];
+    console.log(results, 'RESULTS INSIDE GETBLACKLIST');
     callback(results);
   });
 };

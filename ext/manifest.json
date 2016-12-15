@@ -3,10 +3,10 @@
   "description": "Point out fake news",
   "version": "1.0",
   "permissions": [
+    "tabs",
     "activeTab",
     "storage",
-    "http://localhost:8000/*",
-    "https://ajax.googleapis.com/"
+    "http://localhost:8000/*"
   ],
   "browser_action": {
     "default_icon": "assets/icon.png",
@@ -15,15 +15,11 @@
   "background": {
     "scripts": [
       "lib/jquery.min.js",
-      "models/checkForFakes.js",
-      "storageController/storageController.js"
+      "storageController/storageController.js",
+      "models/checkForFakes.js"
     ]
     // "persistent": false
     // "page": "background.html"
-  },
-  "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "popup.html"
   },
   "options_page": "options/options.html",
   "content_scripts": [
@@ -32,7 +28,6 @@
       "css": ["clearall.css", "styles.css"],
       "js": [
         "lib/jquery.min.js",
-        "models/checkForFakes.js",
         "models/alertFakeSite.js",
         "views/renderBlacklistedDOM.js"
       ]
