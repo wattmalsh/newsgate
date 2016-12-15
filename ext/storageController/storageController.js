@@ -175,16 +175,26 @@ var getLastUpdated = function() {
 // |_______/    |_______|    |__|        |__|     |_______|| _| `._____|_______/
 ////////////////////////////////////////////////////////////////////////////////
 // setter for white list to be everything in newWhitelistArray
-var setWhitelistTo = function(newWhitelistArray) {
+// @input1: An array that will be the new white list
+// @input2: (optional) callback with no arguments to be executed after storage is set
+var setWhitelistTo = function(newWhitelistArray, callback) {
   chrome.storage.sync.set({ 'whiteListedURLs' : newWhitelistArray }, function() {
-    console.log('Successfully updated whiteListedURLs');
+    console.log('Successfully updated whiteListedURLs to: ', newWhitelistArray);
+    if (callback) {
+      callback();
+    }
   });
 };
 
 // setter for user generated blacklist
-var setUserlistTo = function(newUserlistArray) {
+// @input1: An array that will be the new white list
+// @input2: (optional) callback with no arguments to be executed after storage is set
+var setUserlistTo = function(newUserlistArray, callback) {
   chrome.storage.sync.set({ 'userGeneratedBlacklist' : newUserlistArray }, function() {
-    console.log('Successfully updated userGeneratedBlacklist');
+    console.log('Successfully updated userGeneratedBlacklist to: ', newUserlistArray);
+    if (callback) {
+      callback();
+    }
   });
 };
 
