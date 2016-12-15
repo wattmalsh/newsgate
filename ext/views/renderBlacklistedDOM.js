@@ -84,8 +84,12 @@ $(document).ready(function() {
       var domain = filterLinks(href);
       // if link is in blacklist, change css
       if (response.data.indexOf(domain) !== -1) {
-        $(element).css('background-color', '');
-        $(element).css('background-color', 'red');
+        chrome.storage.sync.get('theme', function(syncStore) {
+          for (var prop in syncStore.theme) {
+            // Apply all css in theme to <a href> element
+            $(element).css(prop, syncStore.theme[prop]);
+          }
+        });
       }
     });
     console.log(response.data, 'response data');
