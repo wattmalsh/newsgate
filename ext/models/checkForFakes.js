@@ -110,8 +110,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     checkForFakes(request, function(result) {
       sendResponse(result);
     });
-    return true;
   }
+  return true;
 });
 
 function checkForFakes(request, callback) {
@@ -148,22 +148,22 @@ var grabUnshortenedUrl = function(shortUrl, cb) {
   });
 };
 
-chrome.runtime.onConnect.addListener(function(port) {
-  console.assert(port.name === 'shorts');
-  port.onMessage.addListener(function(request) {
-    request.data.forEach(function(shortLink) {
-      grabUnshortenedUrl(shortLink, function(longLink) {
-        var filteredLongLink = filterLinks(longLink)
-        console.log('RUNNING CHECK FOR FAKES IN SHORT LINK');
-        checkForFakes({data: [filteredLongLink]}, function(fakeDOMLinks) {
-          // check if link was fake (will only be one)
-          if (fakeDOMLinks.data[0]) {
-            port.postMessage({ data: shortLink });
-          }
-        })
-      });
-    });
-  });
-  return true;
-});
+// chrome.runtime.onConnect.addListener(function(port) {
+//   console.assert(port.name === 'shorts');
+//   port.onMessage.addListener(function(request) {
+//     request.data.forEach(function(shortLink) {
+//       grabUnshortenedUrl(shortLink, function(longLink) {
+//         var filteredLongLink = filterLinks(longLink)
+//         console.log('RUNNING CHECK FOR FAKES IN SHORT LINK');
+//         checkForFakes({data: [filteredLongLink]}, function(fakeDOMLinks) {
+//           // check if link was fake (will only be one)
+//           if (fakeDOMLinks.data[0]) {
+//             port.postMessage({ data: shortLink });
+//           }
+//         })
+//       });
+//     });
+//   });
+//   return true;
+// });
 
