@@ -29,6 +29,10 @@ $(document).ready(function(){
   $('body').on('click', '#removeFromBlacklist', function(){
    
   });
+
+  $('body').on('click', '#pause', function(){
+    
+  });  
 });
 
 function getCurrentTabUrl(callback) {
