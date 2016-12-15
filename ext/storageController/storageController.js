@@ -140,7 +140,7 @@ var getWhitelist = function(callback) {
     var whitelist = syncStore['whiteListedURLs'];
     callback(whitelist);
   });
-}
+};
 
 // Gets last URL that was pulled from server
 // and updates the list in local storage
