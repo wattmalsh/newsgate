@@ -27,11 +27,11 @@ $(document).ready(function(){
         // update userGeneratedBlacklist only on unique urls
         // use getUserlist(function(results) { console.log(results); }); to test in local storage
         var unique = true;
-        results.forEach(function(url) {
-          if (pattern.test(url)) {
-            unique = false;
-          }
-        });
+        // results.forEach(function(url) {
+        //   if (pattern.test(url)) {
+        //     unique = false;
+        //   }
+        // });
         if (unique) {
           chrome.extension.getBackgroundPage().updateBlacklist([domain], 'userGeneratedBlacklist');
         } 
@@ -40,7 +40,9 @@ $(document).ready(function(){
   });
 
   $('body').on('click', '#removeFromBlacklist', function(){
-   
+    getCurrentTabUrl(function(url) {
+      
+    }); 
   });
 
   $('body').on('click', '#pause', function(){
