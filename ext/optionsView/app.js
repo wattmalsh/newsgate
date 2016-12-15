@@ -13,5 +13,5 @@ angular.module('options', [
         templateUrl: '../optionsView/blacklist/blacklist.html',
         controller: 'blacklistController'
       })
-      .otherwise({redirectTo: '/themes'});
+      .otherwise({redirectTo: '/blacklist'});
   });
