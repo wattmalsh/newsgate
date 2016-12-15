@@ -1,5 +1,27 @@
-<div> themes </div>
-<span>
+<div class="themes-title"><h1>Themes</h1></div>
+<!--<span>
   <img src="../../assets/default_theme.png" alt="default theme" ng-click="setTheme(defaultTheme)"/>
   <img src="../../assets/censor_theme.png" alt="censor theme" ng-click="setTheme(censorTheme)"/>
-</span>
+</span>-->
+<div class="radio themes-div">
+<form ng-controller="themesController">
+  <label>
+    <input type="radio" ng-model="radioButton.selected" value="default" ng-click="setTheme(defaultTheme)">
+    Default
+    <div>
+      Preview: <br />
+      Real News site: <a class="example-defaultTheme" href="">www.npr.org</a><br />
+      Fake News site: <a class="example-defaultTheme" href="">www.theonion.com</a><br />
+    </div>
+  </label><br />
+  <label>
+    <input type="radio" ng-model="radioButton.selected" value="censorTheme" ng-click="setTheme(censorTheme)">
+    Old School Censor
+    <div>
+      Preview: <br />
+      Real News site: <a class="censorTheme" href="">www.npr.org</a><br />
+      Fake News site: <a class="example-censorTheme" href="">www.theonion.com</a><br />
+    </div>
+  </label><br />
+</form>
+</div>
