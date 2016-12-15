@@ -21,18 +21,27 @@ $(document).ready(function(){
       // Background functions are available with chrome.extension.getBackgroundPage()
       var domain = chrome.extension.getBackgroundPage().filterLinks(url);
       
-      // Make sure url we are inserting is not already in storage
+      // Update userGeneratedBlacklist only on unique urls
       chrome.extension.getBackgroundPage().getUserlist(function(results) {
-        
+        var pattern = new RegExp(domain);
+        var unique = true;
+        results.forEach(function(url) {
+          if (pattern.test(url)) {
+            unique = false;
+          }
+        });
+        if (unique) {
+          chrome.extension.getBackgroundPage().updateBlacklist([domain], 'userGeneratedBlacklist');
+        } 
       })
-
-      // use getUserlist(function(results) { console.log(results); }); to test in local storage
-      chrome.extension.getBackgroundPage().updateBlacklist([domain], 'userGeneratedBlacklist');
     });
   });
 
   $('body').on('click', '#removeFromBlacklist', function(){
-   
+    getCurrentTabUrl(function(url) {
+      var domain = chrome.extension.getBackgroundPage().filterLinks(url);
+      chrome.extension.getBackgroundPage().removeUrl([domain]);  
+    }); 
   });
 
   $('body').on('click', '#pause', function(){
