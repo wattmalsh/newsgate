@@ -6,7 +6,8 @@
     "tabs",
     "activeTab",
     "storage",
-    "https://newsgate.herokuapp.com/*"
+    "https://newsgate.herokuapp.com/*",
+    "contextMenus"
   ],
   "browser_action": {
     "default_icon": "assets/icon.png",
@@ -17,7 +18,8 @@
       "lib/jquery.min.js",
       "storageController/storageController.js",
       "models/checkForFakes.js",
-      "alertFakeSite/checkAddressBarUrl.js"
+      "alertFakeSite/checkAddressBarUrl.js",
+      "models/contextMenu.js"
     ]
   },
   "options_page": "options/options.html",
