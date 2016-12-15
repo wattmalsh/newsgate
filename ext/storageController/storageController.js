@@ -98,7 +98,6 @@ var removeUrl = function(urls) {
   getUserlist(function(results) {
     newList = results;
     
-    console.log(newList);
     // Remove any urls given from newList
     urls.forEach(function(url) {
       var pattern = new RegExp(url);
@@ -112,7 +111,7 @@ var removeUrl = function(urls) {
     // Set chrome storage to newList
     chrome.storage.sync.set({ 'userGeneratedBlacklist': newList }, function() {
       console.log('Successfully removed: ', urls);
-      getUserlist((results) => {console.log('new list..', results)});
+      getUserlist((results) => {console.log('new list: ', results)});
     });
   });
 };
