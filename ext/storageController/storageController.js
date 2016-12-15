@@ -44,9 +44,10 @@ var initLocalStorage = function() {
 chrome.runtime.onInstalled.addListener(initLocalStorage); // Initializes local storage variables
 
 ////////////////////////////////////////////////////////////////////////////////
-// UPDATE BLACK LIST:
+// UPDATE BLACK LIST - AKA BLACKLIST SETTER FUNCTION
 // @input1: An array of new URL objects to append to current black list
-// @input2: Name of blackList to be updated 'blackListedURLs' or 'userGeneratedBlacklist'
+// @input2: Name of blacklist to update
+//          OPTIONS: 'blackListedURLs', 'userGeneratedBlacklist', or 'whiteListedURLs'
 ////////////////////////////////////////////////////////////////////////////////
 var updateBlacklist = function(newURLs, blackListToUpdate) {
   if (blackListToUpdate === 'blackListedURLs') {
@@ -57,6 +58,10 @@ var updateBlacklist = function(newURLs, blackListToUpdate) {
     getUserlist(function(oldURLs) {
       combineBlackList(newURLs, oldURLs, blackListToUpdate);
     });
+  } else if (blackListToUpdate === 'whiteListedURLs') {
+    getWhitelist(function(oldURLs) {
+      combineBlackList(newURLs, oldURLs, blackListToUpdate);
+    });
   } else {
     console.error('COULD NOT FIND BLACK LIST TO UPDATE');
   }
@@ -65,15 +70,19 @@ var updateBlacklist = function(newURLs, blackListToUpdate) {
 // Helper function for updateBlackList:
 // Combines old and new blacklist and saves it to local storage on chrome
 var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
-  var newBlackList = oldURLs.concat(newURLs);
+  var newListURLs = oldURLs.concat(newURLs);
 
   if (blackListToUpdate === 'blackListedURLs') {
-    chrome.storage.local.set({ 'blackListedURLs': newBlackList }, function() {
+    chrome.storage.local.set({ 'blackListedURLs' : newListURLs }, function() {
       console.log('Successfully updated blackListedURLs');
     });
   } else if (blackListToUpdate === 'userGeneratedBlacklist') {
-    chrome.storage.sync.set({ 'userGeneratedBlacklist': newBlackList }, function() {
+    chrome.storage.sync.set({ 'userGeneratedBlacklist' : newListURLs }, function() {
       console.log('Successfully updated userGeneratedBlacklist');
+    });
+  } else if (blackListToUpdate === 'whiteListedURLs') {
+    chrome.storage.sync.set({ 'whiteListedURLs' : newListURLs }, function() {
+      console.log('Successfully updated whiteListedURLs');
     });
   } else {
     console.error('COULD NOT FIND BLACK LIST TO UPDATE');
@@ -140,7 +149,7 @@ var getWhitelist = function(callback) {
     var whitelist = syncStore['whiteListedURLs'];
     callback(whitelist);
   });
-}
+};
 
 // Gets last URL that was pulled from server
 // and updates the list in local storage

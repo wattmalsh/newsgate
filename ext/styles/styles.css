@@ -37,13 +37,12 @@
   color: 'black';
 }
 
-.themes-title {
+.themes-title, .blacklist-title {
   padding-left: 10%;
   padding-top: 90px;
 }
 
-.themes-div {
-  color: 'red';
+.themes-div, .blacklist-div {
   padding-left: 10%;
 }
 

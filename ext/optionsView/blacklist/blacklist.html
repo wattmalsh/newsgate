@@ -1,1 +1,19 @@
-<div> hey blacklist </div>
+<div class="blacklist-title">
+  <h1>Blacklist Settings</h1>
+</div>
+
+<div class="blacklist-div">
+  <h3>Custom Blacklist</h3>
+  <p>URLs that will be added to the blacklist</p>
+  <div class="userBlacklistField">
+    <textarea class="form-control" rows="3" placeholder="https://www.fakenews.com">{{userBlacklistURLs}}</textarea>
+  </div>
+  <br />
+  <h3>Custom Whitelist</h3>
+  <p>URLs that will NOT show up as a fake site</p>
+  <div class="whitelistField">
+    <textarea class="form-control" rows="3" placeholder="https://www.realnews.com">{{whiteListedURLs}}</textarea>
+  </div>
+  <br />
+  <button class="btn btn-danger">Update Settings</button>
+</div>
