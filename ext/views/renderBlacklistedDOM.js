@@ -41,15 +41,15 @@ $(document).ready(function() {
 
   // populate sites and shortSites with DOM links
   var populateSites = function() {
-    var DOMLinks = $('a[href]');
+    // var DOMLinks = $('a[href]');
+    var DOMLinks = $('a');
+    console.log(DOMLinks);
     var cache = {};
 
     DOMLinks.each(function(index, element) {
       var href = $(element).attr('href');
       var filtered = filterLinks(href);
-
       unfilteredSites.push(href);
-
       if (!cache[filtered]) {
 
         // if a short link, add original link to shortSites
