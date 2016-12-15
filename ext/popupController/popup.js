@@ -66,10 +66,6 @@ function getCurrentTabUrl(callback) {
     // tabs is required to see info for other tabs
     callback(url);
   });
-<<<<<<< HEAD
-}
-=======
 };
 
 console.log('POPUP DONE');
->>>>>>> Shell out add user functionality
