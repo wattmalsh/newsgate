@@ -3,7 +3,7 @@ var request = require('request');
 var mongoose = require('mongoose');
 var News = require('../server/models/newsModel.js');
 
-mongoose.connect('mongodb://localhost/newsgate');
+mongoose.connect('mongodb://heroku_z3pg5nvm:b6bla21nua9a0opbmvju1ub1pa@ds133378.mlab.com:33378/heroku_z3pg5nvm/newsgate');
 
 var blacklistFile = './blacklist/blacklist.js';
 var blacklistFileOut = './blacklist/blacklist.js';

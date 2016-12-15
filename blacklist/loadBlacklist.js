@@ -2,8 +2,7 @@
 // Run this file via "npm run blacklist"
 var mongoose = require('mongoose');
 var fs = require('fs');
-mongoose.connect('mongodb://localhost/newsgate');
-var News = require('../server/models/newsModel.js');
+mongoose.connect('mongodb://heroku_z3pg5nvm:b6bla21nua9a0opbmvju1ub1pa@ds133378.mlab.com:33378/heroku_z3pg5nvm/newsgate');var News = require('../server/models/newsModel.js');
 
 fs.readFile('./blacklist/blacklist.js', function(err, data){
   if (err) {
