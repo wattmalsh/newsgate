@@ -1,28 +1,13 @@
 <!DOCTYPE html>
 <html ng-app='options'>
 <head>
+  <link rel="stylesheet" type="text/css" href="../styles.css" />
   <title>
     Settings
   </title>
 </head>
   <body>
-    <div ng-view>
-    </div>
-    Favorite color:
-    <select id="color">
-      <option value="red">red</option>
-      <option value="green">green</option>
-      <option value="blue">blue</option>
-      <option value="yellow">yellow</option>
-    </select>
-
-    <label>
-      <input type="checkbox" id="like">
-      I like colors.
-    </label>
-
-    <div id="status"></div>
-    <button id="save">Save</button>
+    <div ng-view></div>
 
     <script src="../lib/jquery.min.js"></script>
     <script src="../lib/angular.min.js"></script>
