@@ -7,11 +7,7 @@ var renderBlacklist = function() {
   // Short links are handled through live-connection where short
   // links are sent to background scripts and the respective DOM
   // element is modified as responses are received
-<<<<<<< HEAD
-  // console.log('RUNNING CONTEXT');
-=======
-  console.log('RUNNING CONTEXT');
->>>>>>> renderBlackListed WIP
+
   var sites = [];
   var unfilteredSites = [];
 
