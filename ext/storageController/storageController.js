@@ -80,6 +80,34 @@ var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
   }
 };
 
+// Function to remove array of urls from userGeneratedBlacklist
+// Enter an array of urls, entering in 'soundcloud' or 'soundcloud.com'
+// will remove a url listed as 'soundcloud.com'
+var removeUrl = function(urls) {
+  var newList;
+  
+  getUserlist(function(results) {
+    newList = results;
+    
+    console.log(newList);
+    // Remove any urls given from newList
+    urls.forEach(function(url) {
+      var pattern = new RegExp(url);
+      newList.forEach(function(userlistUrl, index) {
+        if (pattern.test(userlistUrl)) {
+          newList.splice(index, 1);
+        }
+      })
+    });
+
+    // Set chrome storage to newList
+    chrome.storage.sync.set({ 'userGeneratedBlacklist': newList }, function() {
+      console.log('Successfully removed: ', urls);
+      getUserlist((results) => {console.log('new list..', results)});
+    });
+  });
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 //   _______  _______ .___________.___________. _______ .______          _______.
 //  /  _____||   ____||           |           ||   ____||   _  \        /       |
