@@ -22,7 +22,7 @@ $(document).ready(function(){
       var domain = chrome.extension.getBackgroundPage().filterLinks(url);
       
       // use getUserlist(function(results) { console.log(results); }); to test in local storage
-      chrome.extension.getBackgroundPage().updateBlacklist([url], 'userGeneratedBlacklist');
+      chrome.extension.getBackgroundPage().updateBlacklist([domain], 'userGeneratedBlacklist');
     });
   });
 
