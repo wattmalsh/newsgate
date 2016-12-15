@@ -10,7 +10,7 @@ $(document).ready(function(){
         url: $(this).attr('href'),
         index: index + 1
       });
-    })
+    });
     return false;
   });
 
@@ -34,6 +34,7 @@ function getCurrentTabUrl(callback) {
     currentWindow: true
   };
 
+  console.log('CHROME TABS OLD ===>', chrome.tabs);
   chrome.tabs.query(queryInfo, function(tabs) {
     // One tab available in active window array
     var tab = tabs[0];
@@ -43,4 +44,4 @@ function getCurrentTabUrl(callback) {
     // tabs is required to see info for other tabs
     callback(url);
   });
-};
+}
