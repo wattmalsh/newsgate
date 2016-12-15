@@ -73,17 +73,11 @@ var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
   var newListURLs = oldURLs.concat(newURLs);
 
   if (blackListToUpdate === 'blackListedURLs') {
-    chrome.storage.local.set({ 'blackListedURLs' : newListURLs }, function() {
-      console.log('Successfully updated blackListedURLs');
-    });
+    setBlacklistTo(newListURLs);
   } else if (blackListToUpdate === 'userGeneratedBlacklist') {
-    chrome.storage.sync.set({ 'userGeneratedBlacklist' : newListURLs }, function() {
-      console.log('Successfully updated userGeneratedBlacklist');
-    });
+    setUserlistTo(newListURLs);
   } else if (blackListToUpdate === 'whiteListedURLs') {
-    chrome.storage.sync.set({ 'whiteListedURLs' : newListURLs }, function() {
-      console.log('Successfully updated whiteListedURLs');
-    });
+    setWhitelistTo(newListURLs);
   } else {
     console.error('COULD NOT FIND BLACK LIST TO UPDATE');
   }
@@ -94,7 +88,7 @@ var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
 // will remove a url listed as 'soundcloud.com'
 var removeUrl = function(urls) {
   var newList;
-  
+
   getUserlist(function(results) {
     newList = results;
     
@@ -105,7 +99,7 @@ var removeUrl = function(urls) {
 
     // Remove any urls given from newList
     urls.forEach(function(url) {
-      var pattern = new RegExp(url);  
+      var pattern = new RegExp(url);
       newList.forEach(function(userlistUrl, index) {
         if (pattern.test(userlistUrl)) {
           newList.splice(index, 1);
@@ -169,5 +163,34 @@ var getLastUpdated = function() {
       var lastURLdate = lastURLobj.createdAt;
       makePostReq({ date: lastURLdate });
     }
+  });
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//      _______. _______ .___________.___________. _______ .______          _______.
+//     /       ||   ____||           |           ||   ____||   _  \        /       |
+//    |   (----`|  |__   `---|  |----`---|  |----`|  |__   |  |_)  |      |   (----`
+//     \   \    |   __|      |  |        |  |     |   __|  |      /        \   \
+// .----)   |   |  |____     |  |        |  |     |  |____ |  |\  \----.----)   |
+// |_______/    |_______|    |__|        |__|     |_______|| _| `._____|_______/
+////////////////////////////////////////////////////////////////////////////////
+// setter for white list to be everything in newWhitelistArray
+var setWhitelistTo = function(newWhitelistArray) {
+  chrome.storage.sync.set({ 'whiteListedURLs' : newWhitelistArray }, function() {
+    console.log('Successfully updated whiteListedURLs');
+  });
+};
+
+// setter for user generated blacklist
+var setUserlistTo = function(newUserlistArray) {
+  chrome.storage.sync.set({ 'userGeneratedBlacklist' : newUserlistArray }, function() {
+    console.log('Successfully updated userGeneratedBlacklist');
+  });
+};
+
+// setter for blacklist from server
+var setBlacklistTo = function(newBlacklistArray) {
+  chrome.storage.local.set({ 'blackListedURLs' : newBlacklistArray }, function() {
+    console.log('Successfully updated blackListedURLs');
   });
 };
