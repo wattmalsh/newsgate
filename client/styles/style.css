@@ -10,9 +10,13 @@ background: linear-gradient(135deg, rgba(226,226,226,1) 0%, rgba(209,209,209,1) 
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe', GradientType=1 );
 }
 
+h1 {
+  font-size: 250%;
+}
 .container {
-  height: 390px;
+  height: 408px;
   margin: auto;
   text-align: center;
-  margin-top: 20%;
+  margin-top: 19%;
+  font-size: 200%;
 }
