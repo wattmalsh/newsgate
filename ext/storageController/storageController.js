@@ -30,6 +30,10 @@ var initLocalStorage = function() {
   // Initialize storage containers
   chrome.storage.local.set({'blackListedURLs': []});
   chrome.storage.local.set({'userGeneratedBlacklist': []});
+  chrome.storage.sync.set({
+    'theme':
+      { 'background-color': 'red' }
+    });
 
   // Fill blackListedURLs with data from server
   getLastUpdated();
