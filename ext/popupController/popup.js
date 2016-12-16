@@ -40,7 +40,7 @@ $(document).ready(function(){
   $('body').on('click', '#removeFromBlacklist', function(){
     getCurrentTabUrl(function(url) {
       var domain = chrome.extension.getBackgroundPage().filterLinks(url);
-      chrome.extension.getBackgroundPage().removeUrl([domain]);  
+      chrome.extension.getBackgroundPage().unBlacklist(domain);  
     }); 
   });
 
