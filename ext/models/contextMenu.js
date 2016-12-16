@@ -1,3 +1,7 @@
+///////////////////////////////////////////////////////////////////////////
+// WHITELIST CONTEXT MENU
+///////////////////////////////////////////////////////////////////////////
+
 //LISTENS FOR HOVERED ELEMENTS. CHANGING CONTEXT MENU IF HOVERED ELEMENT IS IN WHITELIST
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.text === 'sending element') {
@@ -44,12 +48,15 @@ function addUrlWhiteListParse(word) {
 
 
 // REFRESH RENDERING AFTER ADDING/REMOVING FROM WHITELIST
+// HACK TO REFRESH AFTER WHITELIST UPDATED
 function refreshRender() {
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {refresh: "refresh"}, function(response) {
-      console.log(response.refresh);
+  setTimeout(function() {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, {refresh: "refresh"}, function(response) {
+        console.log(response.refresh);
+      });
     });
-  });
+  }, 500);
 };
 
 //HELPER FUNCTION TO FILTER GOOGLE SEARCH CHANGING HREFS (WHY!?!?)
@@ -76,4 +83,29 @@ chrome.runtime.onInstalled.addListener(function() {
 });
 
 
+///////////////////////////////////////////////////////////////////////////
+// BLACKLIST CONTEXT MENU
+///////////////////////////////////////////////////////////////////////////
 
+function contextMenuBlacklist(word) {
+  var domain = filterLinks(word.linkUrl) === 'google.com' ? filterGoogleDomain(word.linkUrl) : filterLinks(word.linkUrl);
+  getUserlist(function(blacklist) {
+    if (_.contains(blacklist, domain)) {
+      return;
+    } else {
+      updateBlacklist([domain], 'userGeneratedBlacklist');
+      refreshRender();
+    }
+  })
+}
+
+chrome.runtime.onInstalled.addListener(function() {
+  var context = "link";
+  var title = "Add to Blacklist";
+  chrome.contextMenus.create({
+    "id": "blacklistMenu",
+    "title": title,
+    "contexts": [context],
+    "onclick" : contextMenuBlacklist
+  });
+});
