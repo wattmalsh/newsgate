@@ -15,14 +15,24 @@ blacklist.controller('blacklistController', function($scope) {
   });
 
   // ON SAVE SETTINGS BUTTON CLICK
-  // Call setter functions from storageController to reset whitelist and user blacklist
-  // ex: resetWhitelistTo(anArray), resetUserBlacklistTo(anArray)
   $scope.saveSettings = function() {
     // Turn textarea text into arrays of new user data
     var newUserlist = $scope.userBlacklistURLs.length > 0 ?
                       $scope.userBlacklistURLs.split('\n') : [];
     var newWhitelist = $scope.whiteListedURLs.length > 0 ?
                        $scope.whiteListedURLs.split('\n') : [];
+
+    // Strip off https:// to leave just the domain name
+    _.each(newUserlist, function(url, index) {
+      newUserlist[index] = chrome.extension.getBackgroundPage().filterLinks(url);
+    });
+    _.each(newWhitelist, function(url, index) {
+      newWhitelist[index] = chrome.extension.getBackgroundPage().filterLinks(url);
+    });
+
+    // Remove duplicates
+    newUserlist = _.uniq(newUserlist);
+    newWhitelist = _.uniq(newWhitelist);
 
     // Filter user list so it doesn't have duplicate URLs on white list
     newUserlist = _.difference(newUserlist, newWhitelist);
