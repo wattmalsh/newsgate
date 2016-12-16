@@ -193,6 +193,7 @@ var getDisabledState = function(callback) {
 // @input1: An array that will be the new white list
 // @input2: (optional) callback with no arguments to be executed after storage is set
 var setWhitelistTo = function(newWhitelistArray, callback) {
+  console.log(newWhitelistArray, 'ADDING TO WHITELIST INSIDE SETWHITELIST TO');
   chrome.storage.sync.set({ 'whiteListedURLs' : newWhitelistArray }, function() {
     console.log('Successfully updated whiteListedURLs to: ', newWhitelistArray);
     if (callback) {
