@@ -1,0 +1,16 @@
+// THIS FUNCTION MAKES THE INITIAL CALL ON PAGE LOAD
+// TO checkUrlBackground.js
+chrome.runtime.sendMessage({action: 'getUrl'}, function(getUrlResponse) { 
+  console.log('The current url is: ', getUrlResponse.url);
+  // Make a second call once the address url bar is determined whether to render the alert banner
+  // or render the hrefs in the DOM (both functions are in ext/views
+  chrome.runtime.sendMessage({action: 'checkUrl', url: getUrlResponse.url}, function(checkUrlResponse) {
+    console.log('Response from checkUrl came back.', checkUrlResponse);
+    if ( checkUrlResponse.fake ) {
+      console.log('This is a fake site: ', getUrlResponse.url);
+      alertFakeSite();
+    } else {
+      renderDom();
+    }
+  });
+});

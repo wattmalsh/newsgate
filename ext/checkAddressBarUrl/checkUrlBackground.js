@@ -1,3 +1,4 @@
+// THIS IS A BACKGROUND SCRIPT THAT GRABS THE URL FROM THE ADDRESS BAR
 function getCurrentTabUrl(callback) {
   var queryInfo = {
     active: true,
@@ -12,6 +13,8 @@ function getCurrentTabUrl(callback) {
   });
 }
 
+// THIS IS A LISTENER FOR REQUESTS FROM CONTENT SCRIPTS THAT REQUIRE 
+// THE ADDRESS BAR URL OR DATA FROM STORAGE
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if (request.action === 'getUrl') {
@@ -24,11 +27,9 @@ chrome.runtime.onMessage.addListener(
       getBlacklist(function(blackList) {
         getUserlist(function(userList) {
           getWhitelist(function(whiteList) {
-            userList.concat(blackList).filter(function(obj) {return whiteList.indexOf(obj) === -1;}).forEach(function(obj) {
-              if (obj.url === url) {
-                sendResponse({fake: true});
-              }
-            });
+            sendResponse(userList.concat(blackList).filter(function(obj) {return whiteList.indexOf(obj) === -1;}).reduce(function(pre, cur) {
+              return cur.url === url ? {fake: true} : pre;
+            }, {fake: false}));
           });
         });
       });
