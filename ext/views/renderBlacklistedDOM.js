@@ -69,14 +69,13 @@ var renderDom = function() {
       $(element).off('mouseover');
      })
     $('a[href]').mouseover(function(event) {
-
-    reference = $(event.target).attr('href');
-    if (reference !== undefined) {
-      chrome.runtime.sendMessage({text: 'sending element', href: reference}, function(response) {
-        console.log(response.text);
-      });
-    }
-  });
+      reference = $(event.target).attr('href');
+      if (reference !== undefined) {
+        chrome.runtime.sendMessage({text: 'sending element', href: reference}, function(response) {
+          console.log(response.text);
+        });
+      }
+    });
     // This file pings background scripts and compares DOM hrefs with
     // ones found on the blacklist and user-preferenced blacklist
     // and modifies the matching elements on the DOM
@@ -139,6 +138,13 @@ var renderDom = function() {
     }
 
     populateSites();
+
+    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+      if (request.refresh === 'refresh') {
+        renderDom();
+        sendResponse({refresh: 'PAGE GOT RENDERED'})
+      }
+    });
 
     // sends to background script array of sites in form ['xxx.com']
 
