@@ -1,10 +1,15 @@
 angular.module('options', [
     'options.services',
+    'options.general',
     'options.blacklist',
     'options.themes',
     'ngRoute'])
   .config(function($routeProvider, $httpProvider) {
     $routeProvider
+      .when('/general', {
+        templateUrl: '../optionsView/general/general.html',
+        controller: 'generalController'
+      })
       .when('/themes', {
         templateUrl: '../optionsView/themes/themes.html',
         controller: 'themesController'
@@ -13,5 +18,5 @@ angular.module('options', [
         templateUrl: '../optionsView/blacklist/blacklist.html',
         controller: 'blacklistController'
       })
-      .otherwise({redirectTo: '/blacklist'});
+      .otherwise({redirectTo: '/general'});
   });
