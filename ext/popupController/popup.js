@@ -45,12 +45,10 @@ $(document).ready(function(){
   });
 
   $('body').on('click', '#disable', function(){
-    chrome.extension.getBackgroundPage().console.log('clicked')
+    // image needs to be exactly 16x16
     chrome.extension.getBackgroundPage().chrome.browserAction.setIcon({
-      path: 'circle-512.png'
-      // tabId: tabs[0].id
+      path: "assets/icon-disabled.png"
     });
-    chrome.extension.getBackgroundPage().console.log('after seticon')
   });  
 });
 

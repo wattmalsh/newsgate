@@ -13,10 +13,6 @@
     "default_icon": "assets/icon.png",
     "default_popup": "popup/popup.html"
   },
-  // "icons": {
-  //   "32": "assets/circle-512.png",
-  //   "32": "assets/icon.png"
-  // },
   "background": {
     "scripts": [
       "lib/underscore.min.js",
