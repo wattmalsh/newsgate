@@ -18,9 +18,20 @@ function getCurrentTabUrl(callback) {
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if (request.action === 'getUrl') {
-      getCurrentTabUrl(function(tabUrl) {
-        sendResponse({url: filterLinks(tabUrl)});
-      });
+      
+      // DISABLER /////////////////////////////////////////////////////////////////////////////
+      // Tells content scripts to not kick off process if in disabled state 
+      /////////////////////////////////////////////////////////////////////////////////////////
+      getDisabledState(function(isDisabled) {
+        if (isDisabled) {
+          sendResponse({disabled: 'Disabled State'});  
+      /////////////////////////////////////////////////////////////////////////////////////////
+        } else {
+          getCurrentTabUrl(function(tabUrl) {
+            sendResponse({url: filterLinks(tabUrl)});
+          });
+        }        
+      })
     }
     if (request.action === 'checkUrl') {
       var url = request.url;

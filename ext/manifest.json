@@ -10,11 +10,10 @@
     "contextMenus"
   ],
   "browser_action": {
-    "default_icon": {
+    "default_icon": 
       // when changing, remove renderIcon file and use png
       // specify pixels
-      "16": "assets/turnip-white.png"
-    },
+      "assets/Turnip.png",
     "default_popup": "popup/popup.html"
   },
   "background": {
