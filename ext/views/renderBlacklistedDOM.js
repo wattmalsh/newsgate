@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // THIS IS A CONTEXT SCRIPT THAT WILL RENDER HREFS IN
 // THE DOM IF CALLED BY checkUrlContentScript.js
 var renderDom = function() {
