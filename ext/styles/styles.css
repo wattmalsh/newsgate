@@ -37,12 +37,12 @@
   color: 'black';
 }
 
-.themes-title, .blacklist-title {
+.themes-title, .blacklist-title, .general-title {
   padding-left: 10%;
   padding-top: 90px;
 }
 
-.themes-div, .blacklist-div {
+.themes-div, .blacklist-div, .general-div {
   padding-left: 10%;
 }
 
