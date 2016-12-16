@@ -25,6 +25,11 @@ blacklist.controller('blacklistController', function($scope) {
                        $scope.whiteListedURLs.split('\n') : [];
 
     // Filter user list so it doesn't have duplicate URLs on white list
+    newUserlist = _.difference(newUserlist, newWhitelist);
+
+    // Update textarea links in angular to provide nicer UX
+    $scope.userBlacklistURLs = newUserlist.join('\n');
+    $scope.whiteListedURLs = newWhitelist.join('\n');
 
     // Call setter functions from storageController to reset whitelist and user blacklist
     chrome.extension.getBackgroundPage().setUserlistTo(newUserlist, function() {
