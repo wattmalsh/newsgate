@@ -82,6 +82,7 @@ var filterLinks = function(unfilteredLink) {
   domain = domain.replace(/^(\/*)/, ''); // Strip off any // remaining
   domain = domain.split('/')[0]; // Get the domain and just the domain (not the path)
   domain = domain.split('.').slice(-2).join('.'); // remove prefixes ie: mail.google.com to google.com
+  domain = (domain + '%').split('%')[0];
   return domain;
 };
 

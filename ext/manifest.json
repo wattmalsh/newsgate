@@ -35,7 +35,6 @@
       "css": ["styles/clearall.css", "styles/styles.css"],
       "js": [
         "lib/jquery.min.js",
-        "views/getDOM.js",
         "views/alertFakeSite.js",
         "views/renderBlacklistedDOM.js",
         "checkAddressBarUrl/checkUrlContentScript.js"
