@@ -19,8 +19,8 @@
       "lib/jquery.min.js",
       "storageController/storageController.js",
       "models/checkForFakes.js",
-      "alertFakeSite/checkAddressBarUrl.js",
-      "models/contextMenu.js"
+      "models/contextMenu.js",
+      "checkAddressBarUrl/checkUrlBackground.js"
     ]
   },
   "options_page": "options/options.html",
@@ -31,8 +31,9 @@
       "js": [
         "lib/jquery.min.js",
         "views/getDOM.js",
-        "alertFakeSite/alertFakeSite.js",
-        "views/renderBlacklistedDOM.js"
+        "views/alertFakeSite.js",
+        "views/renderBlacklistedDOM.js",
+        "checkAddressBarUrl/checkUrlContentScript.js"
       ]
     }
   ],
