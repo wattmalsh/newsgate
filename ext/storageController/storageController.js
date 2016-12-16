@@ -83,6 +83,7 @@ var updateBlacklist = function(newURLs, blackListToUpdate) {
 // |  |  |  | |  |____ |  `----.|  |      |  |____ |  |\  \----.----)   |
 // |__|  |__| |_______||_______|| _|      |_______|| _| `._____|_______/
 ////////////////////////////////////////////////////////////////////////////////
+
 // Helper function for updateBlackList
 // Combines old and new blacklist and saves it to local storage on chrome
 var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
@@ -124,6 +125,18 @@ var unBlacklist = function(url) {
   });
 };
 
+// Toggles disabledState, does callback if any
+// @input1: (optional) callback
+var toggleDisabledState = function(callback) {
+  getDisabledState(function(isDisabled) {
+    setDisabledState(!isDisabled, function() {
+      if (callback) {
+        callback();
+      }
+    });
+  });
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 //   _______  _______ .___________.___________. _______ .______          _______.
 //  /  _____||   ____||           |           ||   ____||   _  \        /       |
@@ -133,6 +146,7 @@ var unBlacklist = function(url) {
 //  \______| |_______|    |__|        |__|     |_______|| _| `._____|_______/
 //
 ////////////////////////////////////////////////////////////////////////////////
+
 // Getter for server blacklist
 var getBlacklist = function(callback) {
   chrome.storage.local.get('blackListedURLs', function(localStorage) {
@@ -179,7 +193,7 @@ var getDisabledState = function(callback) {
   chrome.storage.sync.get('disabled', function(result) {
     callback(result.disabled);
   });
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 //      _______. _______ .___________.___________. _______ .______          _______.
@@ -189,6 +203,7 @@ var getDisabledState = function(callback) {
 // .----)   |   |  |____     |  |        |  |     |  |____ |  |\  \----.----)   |
 // |_______/    |_______|    |__|        |__|     |_______|| _| `._____|_______/
 ////////////////////////////////////////////////////////////////////////////////
+
 // setter for white list to be everything in newWhitelistArray
 // @input1: An array that will be the new white list
 // @input2: (optional) callback with no arguments to be executed after storage is set
@@ -215,6 +230,7 @@ var setUserlistTo = function(newUserlistArray, callback) {
 };
 
 // setter for blacklist from server
+// @input1: An array that will be the new white list
 var setBlacklistTo = function(newBlacklistArray) {
   chrome.storage.local.set({ 'blackListedURLs' : newBlacklistArray }, function() {
     console.log('Successfully updated blackListedURLs');
@@ -228,26 +244,12 @@ var setDisabledState = function(boolean, callback) {
   if (callback) {
     callback();
   }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//  __    __   _______  __      .______    _______ .______          _______.
-// |  |  |  | |   ____||  |     |   _  \  |   ____||   _  \        /       |
-// |  |__|  | |  |__   |  |     |  |_)  | |  |__   |  |_)  |      |   (----`
-// |   __   | |   __|  |  |     |   ___/  |   __|  |      /        \   \
-// |  |  |  | |  |____ |  `----.|  |      |  |____ |  |\  \----.----)   |
-// |__|  |__| |_______||_______|| _|      |_______|| _| `._____|_______/
-////////////////////////////////////////////////////////////////////////////////
-
-// Toggles disabledState, does callback if any
-// @input1: (optional) callback
-var toggleDisabledState = function(callback) {
-  getDisabledState(function(isDisabled) {
-    setDisabledState(!isDisabled, function() {
-      if (callback) {
-        callback();
-      }
-    });
-  });
 };
 
+// Sets theme object in sync storage
+// @input1: Theme object that will be the theme
+var setThemeTo = function(theme) {
+  chrome.storage.sync.set(theme, function() {
+    console.log('Theme successfully saved');
+  });
+};
