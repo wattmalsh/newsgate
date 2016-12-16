@@ -1,5 +1,6 @@
 
 var clickHandler = function(word) {
+  console.log(this);
   if (filterLinks(word.linkUrl) === 'google.com') {
     var domain = filterGoogleDomain(word.linkUrl);
   } else {
