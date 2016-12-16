@@ -1,9 +1,10 @@
-/* storageController.js - useful functions to help manage blacklist in local storage
+/* storageController.js - useful functions to help manage blacklist in storage
  * @Author: David Wayman - github.com/r3dcrosse
  * @CreatedOn: 12/14/16
- *
 */
-
+////////////////////////////////////////////////////////////////////////////////
+// SERVER info for blacklist database & post request function
+////////////////////////////////////////////////////////////////////////////////
 var server = 'https://newsgate.herokuapp.com/dateFilter'; // Deployed server db
 
 // Makes post request to server for new blacklisted URLs
@@ -11,7 +12,7 @@ var makePostReq = function(dateObj) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", server, true);
 
-  //Send the proper header information along with the request
+  //Send header information about dateObj along with the request
   xhr.setRequestHeader("Content-type", "application/json");
 
   xhr.onreadystatechange = function(data) { //Call a function when the state changes.
@@ -25,29 +26,35 @@ var makePostReq = function(dateObj) {
   xhr.send(dateObj);
 };
 
+////////////////////////////////////////////////////////////////////////////////
+// CHROME LOCAL & SYNC STORAGE INITIALIZATION
+////////////////////////////////////////////////////////////////////////////////
 // Initialize local storage variables for black list
 var initLocalStorage = function() {
   // Initialize storage containers
   chrome.storage.local.set({ 'blackListedURLs' : [] });
   chrome.storage.sync.set({ 'userGeneratedBlacklist' : [] });
   chrome.storage.sync.set({ 'whiteListedURLs' : [] });
-  chrome.storage.sync.set({ // Set's default theme
+
+  // Set the default theme
+  chrome.storage.sync.set({
     'theme':
       { 'background-color': 'red' }
     });
 
-  // Fill blackListedURLs with data from server
-  getLastUpdated();
+  getLastUpdated(); // Fill blackListedURLs with data from server
 };
 
-// EVENT LISTENER FOR WHEN EXTENSION IS INSTALLED OR CHROME IS UPDATED
+////////////////////////////////////////////////////////////////////////////////
+// EVENT LISTENER FOR WHEN THE EXTENSION IS INSTALLED OR CHROME IS UPDATED
 chrome.runtime.onInstalled.addListener(initLocalStorage); // Initializes local storage variables
+////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 // UPDATE BLACK LIST - AKA BLACKLIST SETTER FUNCTION
 // @input1: An array of new URL objects to append to current black list
 // @input2: Name of blacklist to update
-//          OPTIONS: 'blackListedURLs', 'userGeneratedBlacklist', or 'whiteListedURLs'
+//    OPTIONS: 'blackListedURLs', 'userGeneratedBlacklist', or 'whiteListedURLs'
 ////////////////////////////////////////////////////////////////////////////////
 var updateBlacklist = function(newURLs, blackListToUpdate) {
   if (blackListToUpdate === 'blackListedURLs') {
@@ -67,7 +74,15 @@ var updateBlacklist = function(newURLs, blackListToUpdate) {
   }
 };
 
-// Helper function for updateBlackList:
+////////////////////////////////////////////////////////////////////////////////
+//  __    __   _______  __      .______    _______ .______          _______.
+// |  |  |  | |   ____||  |     |   _  \  |   ____||   _  \        /       |
+// |  |__|  | |  |__   |  |     |  |_)  | |  |__   |  |_)  |      |   (----`
+// |   __   | |   __|  |  |     |   ___/  |   __|  |      /        \   \
+// |  |  |  | |  |____ |  `----.|  |      |  |____ |  |\  \----.----)   |
+// |__|  |__| |_______||_______|| _|      |_______|| _| `._____|_______/
+////////////////////////////////////////////////////////////////////////////////
+// Helper function for updateBlackList
 // Combines old and new blacklist and saves it to local storage on chrome
 var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
   var newListURLs = oldURLs.concat(newURLs);
@@ -83,18 +98,18 @@ var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
   }
 };
 
+// Helper function to add a url string to the white list
 var addToWhitelist = function(url) {
-  console.log('INSIDE WHITELIST WITH', url);
   getWhitelist(function(results) {
     results = _.uniq(results);
     combineBlackList([url], results, 'whiteListedURLs');
   });
 };
 
-// Function to remove url from user list and adds to white list
+// Function to remove url string from user list and adds to white list
 // Handles duplicates and filters to just domain name
 var unBlacklist = function(url) {
-  url = filterLinks(url);
+  url = filterLinks(url); // Strips 'https://' off url
   getUserlist(function(results) {
     results = _.uniq(results);
     results.forEach(function(result, index) {
@@ -102,9 +117,7 @@ var unBlacklist = function(url) {
         results.splice(index, 1);
       }
     });
-    console.log('here with RESULTS: ', results);
     setUserlistTo(results, function() {
-      console.log('ABOUT TO ADD TO WHITELIST WITH', url);
       addToWhitelist(url);
     });
   });
@@ -198,13 +211,3 @@ var setBlacklistTo = function(newBlacklistArray) {
     console.log('Successfully updated blackListedURLs');
   });
 };
-
-////////////////////////////////////////////////////////////////////////////////
-//  __    __   _______  __      .______    _______ .______          _______.
-// |  |  |  | |   ____||  |     |   _  \  |   ____||   _  \        /       |
-// |  |__|  | |  |__   |  |     |  |_)  | |  |__   |  |_)  |      |   (----`
-// |   __   | |   __|  |  |     |   ___/  |   __|  |      /        \   \
-// |  |  |  | |  |____ |  `----.|  |      |  |____ |  |\  \----.----)   |
-// |__|  |__| |_______||_______|| _|      |_______|| _| `._____|_______/
-////////////////////////////////////////////////////////////////////////////////
-
