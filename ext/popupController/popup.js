@@ -44,8 +44,13 @@ $(document).ready(function(){
     }); 
   });
 
-  $('body').on('click', '#pause', function(){
-    
+  $('body').on('click', '#disable', function(){
+    chrome.extension.getBackgroundPage().console.log('clicked')
+    chrome.extension.getBackgroundPage().chrome.browserAction.setIcon({
+      path: 'circle-512.png'
+      // tabId: tabs[0].id
+    });
+    chrome.extension.getBackgroundPage().console.log('after seticon')
   });  
 });
 
