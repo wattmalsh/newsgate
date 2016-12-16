@@ -1,4 +1,12 @@
 $(document).ready(function(){
+  // hide enable / disable based on state of disable
+  chrome.extension.getBackgroundPage().getDisabledState(function(isDisabled) {
+    if (isDisabled) {
+      $('#disable').hide();
+    } else {
+      $('#enable').hide();
+    }
+  });
 
   // Navigate to settings page in next tab
   $('body').on('click', '#settings', function(){
@@ -45,9 +53,18 @@ $(document).ready(function(){
   });
 
   $('body').on('click', '#disable', function(){
+    toggleDisable();
     // image needs to be exactly 16x16
     chrome.extension.getBackgroundPage().chrome.browserAction.setIcon({
       path: "assets/icon-disabled.png"
+    });
+  });
+
+  $('body').on('click', '#enable', function(){
+    toggleDisable();
+    // image needs to be exactly 16x16
+    chrome.extension.getBackgroundPage().chrome.browserAction.setIcon({
+      path: "assets/turnip-white.gif"
     });
   });  
 });
@@ -69,3 +86,10 @@ function getCurrentTabUrl(callback) {
     callback(url);
   });
 };
+
+function toggleDisable() {
+  $('#disable').toggle();
+  $('#enable').toggle();
+  // change state to disabled / enabled
+  chrome.extension.getBackgroundPage().toggleDisabledState();
+}
