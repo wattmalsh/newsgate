@@ -1,3 +1,4 @@
+
 // THIS IS A CONTEXT SCRIPT THAT WILL RENDER HREFS IN
 // THE DOM IF CALLED BY checkUrlContentScript.js
 var renderDom = function() {
@@ -11,14 +12,12 @@ var renderDom = function() {
       $(element).off('mouseover');
      })
     $('a[href]').mouseover(function(event) {
-
-    reference = $(event.target).attr('href');
-    if (reference !== undefined) {
-      chrome.runtime.sendMessage({text: 'sending element', href: reference}, function(response) {
-        console.log(response.text);
-      });
-    }
-  });
+      reference = $(event.target).attr('href');
+      if (reference !== undefined) {
+        chrome.runtime.sendMessage({text: 'sending element', href: reference}, function(response) {
+        });
+      }
+    });
     // This file pings background scripts and compares DOM hrefs with
     // ones found on the blacklist and user-preferenced blacklist
     // and modifies the matching elements on the DOM
@@ -82,6 +81,7 @@ var renderDom = function() {
 
     populateSites();
 
+
     // sends to background script array of sites in form ['xxx.com']
 
     // ONLY GETS FIRST RESPONSE, THEN REAL RESPONSE COMES IN ~5 SEC LATER
@@ -107,6 +107,9 @@ var renderDom = function() {
               $(element).css(prop, syncStore.theme[prop]);
             }
           });
+        } else {
+          // console.log('HERE CHANGING BACKGROUND OCLOR TO NONE');
+          $(element).css({'background-color':'transparent'});
         }
       });
       console.log(response.data, 'response data');
@@ -128,6 +131,14 @@ var renderDom = function() {
     });
   };
 
+// THIS ADDS A MESSAGE TO REFRESH IF ADDED INTO WHITELIST
+  chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.refresh === 'refresh') {
+      renderBlacklist();
+      sendResponse({refresh: 'PAGE GOT RENDERED'})
+    }
+  });
+
   //MUTATION OBSERVER WATCHES FOR CHANGES
   MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
@@ -142,3 +153,5 @@ var renderDom = function() {
   });
 
 };
+
+

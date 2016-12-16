@@ -1,3 +1,8 @@
+///////////////////////////////////////////////////////////////////////////
+// WHITELIST CONTEXT MENU
+///////////////////////////////////////////////////////////////////////////
+
+//LISTENS FOR HOVERED ELEMENTS. CHANGING CONTEXT MENU IF HOVERED ELEMENT IS IN WHITELIST
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.text === 'sending element') {
     // console.log(request.href);
@@ -19,20 +24,42 @@ function clickHandler() {
   console.log('OOPS');
 };
 
+// FUNCTION TO REMOVE FROM WHITELIST ON CONTEXTMENU CLICK
 function removeUrlWhiteListParse(word) {
   var domain = filterLinks(word.linkUrl) === 'google.com' ? filterGoogleDomain(word.linkUrl) : filterLinks(word.linkUrl);
   getWhitelist(function(whitelist) {
-    setWhitelistTo(_.filter(whitelist, function(item) {
+    setWhitelistTo(_.filter(whitelist, item => {
       return item !== domain;
-    })/* optional callback here*/);
+    }), function () {
+      //THIS IS WHERE ID CALL RENDER AGAIN
+      refreshRender();
+    });
+
   });
 };
 
+
+// FUNCTION TO ADD TO WHITELIST ON CONTEXTMENU CLICK
+
 function addUrlWhiteListParse(word) {
   var domain = filterLinks(word.linkUrl) === 'google.com' ? filterGoogleDomain(word.linkUrl) : filterLinks(word.linkUrl);
-  unBlacklist(domain);
+  unBlacklist(domain, function() {refreshRender()});
 };
 
+
+// REFRESH RENDERING AFTER ADDING/REMOVING FROM WHITELIST
+// HACK TO REFRESH AFTER WHITELIST UPDATED
+function refreshRender() {
+  setTimeout(function() {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, {refresh: "refresh"}, function(response) {
+        console.log(response.refresh);
+      });
+    });
+  }, 500);
+};
+
+//HELPER FUNCTION TO FILTER GOOGLE SEARCH CHANGING HREFS (WHY!?!?)
 function filterGoogleDomain(unfilteredLink) {
   var domain = unfilteredLink.split('url=');
   domain = filterLinks(domain[1]);
@@ -40,6 +67,8 @@ function filterGoogleDomain(unfilteredLink) {
   return domain;
 };
 
+
+// ADD THE CONTEXT MENU ON INSTALL
 var menu;
 
 chrome.runtime.onInstalled.addListener(function() {
@@ -54,4 +83,29 @@ chrome.runtime.onInstalled.addListener(function() {
 });
 
 
+///////////////////////////////////////////////////////////////////////////
+// BLACKLIST CONTEXT MENU
+///////////////////////////////////////////////////////////////////////////
 
+function contextMenuBlacklist(word) {
+  var domain = filterLinks(word.linkUrl) === 'google.com' ? filterGoogleDomain(word.linkUrl) : filterLinks(word.linkUrl);
+  getUserlist(function(blacklist) {
+    if (_.contains(blacklist, domain)) {
+      return;
+    } else {
+      updateBlacklist([domain], 'userGeneratedBlacklist');
+      refreshRender();
+    }
+  })
+}
+
+chrome.runtime.onInstalled.addListener(function() {
+  var context = "link";
+  var title = "Add to Blacklist";
+  chrome.contextMenus.create({
+    "id": "blacklistMenu",
+    "title": title,
+    "contexts": [context],
+    "onclick" : contextMenuBlacklist
+  });
+});

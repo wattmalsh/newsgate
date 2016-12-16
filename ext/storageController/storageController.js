@@ -101,16 +101,17 @@ var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
 };
 
 // Helper function to add a url string to the white list
-var addToWhitelist = function(url) {
+var addToWhitelist = function(url, cb) {
   getWhitelist(function(results) {
     results = _.uniq(results);
     combineBlackList([url], results, 'whiteListedURLs');
+    cb();
   });
 };
 
 // Function to remove url string from user list and adds to white list
 // Handles duplicates and filters to just domain name
-var unBlacklist = function(url) {
+var unBlacklist = function(url, cb) {
   url = filterLinks(url); // Strips 'https://' off url
   getUserlist(function(results) {
     results = _.uniq(results);
@@ -120,7 +121,7 @@ var unBlacklist = function(url) {
       }
     });
     setUserlistTo(results, function() {
-      addToWhitelist(url);
+      addToWhitelist(url,cb);
     });
   });
 };
