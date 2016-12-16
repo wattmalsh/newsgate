@@ -83,64 +83,28 @@ var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
   }
 };
 
-var addToWhitelist = function(urls) {
-  
+var addToWhitelist = function(url) { 
+  getWhitelist(function(results) {
+    results = _.uniq(results);
+    combineBlackList([url], results, 'whiteListedURLs');
+  });
 };
 
-// Function to remove array of urls from userGeneratedBlacklist
-// If not found in userlist, will add to whitelist
-// Handles duplicates
-// Enter an array of urls
-// will remove a url listed as 'soundcloud.com'
-var removeUrl = function(urls) {
-  var addToWhitelist = true;
-  var newList;
-
-  // remove any urls in input
-  urls = urls.filter(function(e, i) {
-    return urls.indexOf(e) === i;
-  });
-
+// Function to remove url from user list and adds to white list
+// Handles duplicates and filters to just domain name
+var unBlacklist = function(url) {
+  url = filterLinks(url);
   getUserlist(function(results) {
-    newList = results;
-    // Remove any duplicates in storage
-    newList = newList.filter(function(e, i) {
-      return newList.indexOf(e) === i;
+    results = _.uniq(results);
+    results.forEach(function(result, index) {
+      if (url === result) {
+        results.splice(index, 1);
+      }
     });
-    // Remove any urls given from newList
-    // If none are removed, will add to whitelist
-    urls.forEach(function(url) {
-      var pattern = new RegExp(url);
-      newList.forEach(function(userlistUrl, index) {
-        if (pattern.test(userlistUrl)) {
-          addToWhitelist = false;
-          newList.splice(index, 1);
-        }
-      });
+    setUserlistTo(results, function() {
+      addToWhitelist(url);
     });
-    // If not found, then need to add urls to whitelist
-    // Add to whitelist no matter what
-    // Only add unique elements not in whitelist
-    if (addToWhitelist) {
-      getWhitelist(function(results) {
-        // Only add urls in array that are not already in whitelist
-        var uniqueUrlsToAdd = [];
-        urls.forEach(function(url) {
-          if (results.indexOf(url) === -1) {
-            uniqueUrlsToAdd.push(url);
-          }
-        })
-        combineBlackList(uniqueUrlsToAdd, results, 'whiteListedURLs');
-        console.log('Successfully updated to whitelist');
-      });
-    } else {
-    // Set chrome storage to newList
-      chrome.storage.sync.set({ 'userGeneratedBlacklist': newList }, function() {
-        console.log('Successfully removed: ', urls);
-        getUserlist((results) => {console.log('new list: ', results)});
-      });
-    }
-  });
+  });  
 };
 
 ////////////////////////////////////////////////////////////////////////////////
