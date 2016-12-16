@@ -1,3 +1,3 @@
 chrome.browserAction.setIcon({
-  path: "assets/turnip-white.gif"
+  path: "assets/turnip-white.png"
 });
