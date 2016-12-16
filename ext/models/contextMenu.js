@@ -1,11 +1,7 @@
 
-var clickHandler = function(word) {
-  var domain = filterLinks(word.linkUrl) === 'google.com' ? filterGoogleDomain(word.linkUrl) : filterLinks(word.linkUrl);
-  if (_.contains(whitelist, domain)) {
-      chrome.contextMenus.update(menu, {"title": "Remove from Whitelist", "onclick": removeFromWhitelist});
-  } else {
-    chrome.contextMenus.update(menu, {"onclick": addToWhitelist});
-  }
+
+var clickHandler = function() {
+  console.log('YYAY');
 };
 
 var removeFromWhitelist = function(word) {
@@ -19,6 +15,7 @@ var removeFromWhitelist = function(word) {
 
 var addToWhitelist = function(word) {
   var domain = filterLinks(word.linkUrl) === 'google.com' ? filterGoogleDomain(word.linkUrl) : filterLinks(word.linkUrl);
+  unBlacklist(domain);
 };
 
 var filterGoogleDomain = function(unfilteredLink) {
@@ -28,11 +25,12 @@ var filterGoogleDomain = function(unfilteredLink) {
   return domain;
 };
 
+var menu;
+
 chrome.runtime.onInstalled.addListener(function() {
   var context = "link";
   var title = "Add to Whitelist";
-  var menu = chrome.contextMenus.create({
-    "id":
+  menu = chrome.contextMenus.create({
     "title": title,
     "contexts": [context],
     "onclick" : clickHandler
@@ -40,5 +38,23 @@ chrome.runtime.onInstalled.addListener(function() {
   console.log('INSTALLED');
 });
 
-// add click event
-// The onClicked callback function.
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  // console.log('GOT MESSAGE');
+  if (request.text === 'sending element') {
+    // console.log(request.href);
+    var domain = filterLinks(request.href) !== 'google.com' ? filterGoogleDomain(request.href) : filterLinks(request.href);
+    getWhitelist(function(whitelist) {
+      console.log('THIS IS DOMAIN', domain);
+      console.log('THIS IS WHITELIST', whitelist);
+      if (_.contains(whitelist, domain)) {
+        console.log('IT CONTAINS!');
+        chrome.contextMenus.update(menu, {'title': 'Remove from Whitelist', 'onclick':removeFromWhitelist});
+      } else {
+        chrome.contextMenus.update(menu, {'title': 'Add to Whitelist' , 'onclick':addToWhitelist});
+      }
+    });
+    sendResponse({text: 'yolo'});
+  }
+});
+
+
