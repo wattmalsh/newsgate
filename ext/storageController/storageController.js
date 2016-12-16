@@ -83,7 +83,8 @@ var combineBlackList = function(newURLs, oldURLs, blackListToUpdate) {
   }
 };
 
-var addToWhitelist = function(url) { 
+var addToWhitelist = function(url) {
+  console.log('INSIDE WHITELIST WITH', url);
   getWhitelist(function(results) {
     results = _.uniq(results);
     combineBlackList([url], results, 'whiteListedURLs');
@@ -101,10 +102,12 @@ var unBlacklist = function(url) {
         results.splice(index, 1);
       }
     });
+    console.log('here with RESULTS: ', results);
     setUserlistTo(results, function() {
+      console.log('ABOUT TO ADD TO WHITELIST WITH', url);
       addToWhitelist(url);
     });
-  });  
+  });
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -204,4 +207,4 @@ var setBlacklistTo = function(newBlacklistArray) {
 // |  |  |  | |  |____ |  `----.|  |      |  |____ |  |\  \----.----)   |
 // |__|  |__| |_______||_______|| _|      |_______|| _| `._____|_______/
 ////////////////////////////////////////////////////////////////////////////////
-                                                                     
+

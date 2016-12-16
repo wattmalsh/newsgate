@@ -15,6 +15,7 @@ var removeFromWhitelist = function(word) {
 
 var addToWhitelist = function(word) {
   var domain = filterLinks(word.linkUrl) === 'google.com' ? filterGoogleDomain(word.linkUrl) : filterLinks(word.linkUrl);
+  console.log('about to add to whitelist from contextmenu', domain);
   unBlacklist(domain);
 };
 
