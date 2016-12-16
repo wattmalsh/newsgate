@@ -72,7 +72,6 @@ var renderDom = function() {
       reference = $(event.target).attr('href');
       if (reference !== undefined) {
         chrome.runtime.sendMessage({text: 'sending element', href: reference}, function(response) {
-          console.log(response.text);
         });
       }
     });
@@ -139,12 +138,6 @@ var renderDom = function() {
 
     populateSites();
 
-    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-      if (request.refresh === 'refresh') {
-        renderDom();
-        sendResponse({refresh: 'PAGE GOT RENDERED'})
-      }
-    });
 
     // sends to background script array of sites in form ['xxx.com']
 
@@ -171,6 +164,9 @@ var renderDom = function() {
               $(element).css(prop, syncStore.theme[prop]);
             }
           });
+        } else {
+          // console.log('HERE CHANGING BACKGROUND OCLOR TO NONE');
+          $(element).css({'background-color':'transparent'});
         }
       });
       console.log(response.data, 'response data');
@@ -192,6 +188,14 @@ var renderDom = function() {
     });
   };
 
+// THIS ADDS A MESSAGE TO REFRESH IF ADDED INTO WHITELIST
+  chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.refresh === 'refresh') {
+      renderBlacklist();
+      sendResponse({refresh: 'PAGE GOT RENDERED'})
+    }
+  });
+
   //MUTATION OBSERVER WATCHES FOR CHANGES
   MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
@@ -206,3 +210,5 @@ var renderDom = function() {
   });
 
 };
+
+

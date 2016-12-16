@@ -86,12 +86,12 @@ var filterLinks = function(unfilteredLink) {
   return domain;
 };
 
-var filterFakes = function(userlist, blacklist, links) {
+var filterFakes = function(userlist, blacklist, whitelist, links) {
   var userlist_storage = {};
   var blacklist_storage = {};
   var results = [];
   userlist.forEach(function(link) {
-    userlist_storage[link.url] = link.url;
+    userlist_storage[link] = link;
   });
 
   blacklist.forEach(function(link) {
@@ -99,7 +99,9 @@ var filterFakes = function(userlist, blacklist, links) {
   });
   links.forEach(function(href) {
     if (href in userlist_storage || href in blacklist_storage) {
-      results.push(href);
+      if (!_.contains(whitelist, href)) {
+        results.push(href);
+      }
     }
   });
   return results;
@@ -118,16 +120,19 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 function checkForFakes(request, callback) {
   var blacklist;
   var userlist;
-
+  var whitelist;
   getBlacklist(function(blacklistResults) {
     blacklist = blacklistResults;
     getUserlist(function(userlistResults) {
       userlist = userlistResults;
-      var fakeDOMLinks = filterFakes(userlist, blacklist, request.data);
+      getWhitelist(function(whitelistResults) {
+        whitelist = whitelistResults;
+        var fakeDOMLinks = filterFakes(userlist, blacklist, whitelist, request.data);
+        callback({data: fakeDOMLinks})
+      })
       // console.log(blacklist, '...BLACKLIST');
       // console.log(userlist, '...USERLIST');
       // console.log(fakeDOMLinks, '...fakeDOMLINKS');
-      callback({data: fakeDOMLinks})
       // callback({data: ['google.com']})
     });
   });
