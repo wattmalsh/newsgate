@@ -41,8 +41,9 @@ var initLocalStorage = function() {
     'theme':
       { 'background-color': 'red' }
     });
-
-  getLastUpdated(); // Fill blackListedURLs with data from server
+  chrome.storage.sync.set({ 'disabled' : false });
+  // Fill blackListedURLs with data from server
+  getLastUpdated();
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -173,6 +174,13 @@ var getLastUpdated = function() {
   });
 };
 
+// Gets disabled setting re DOM rendering and banner
+var getDisabledState = function(callback) {
+  chrome.storage.sync.get('disabled', function(result) {
+    callback(result.disabled);
+  });
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //      _______. _______ .___________.___________. _______ .______          _______.
 //     /       ||   ____||           |           ||   ____||   _  \        /       |
@@ -209,5 +217,35 @@ var setUserlistTo = function(newUserlistArray, callback) {
 var setBlacklistTo = function(newBlacklistArray) {
   chrome.storage.local.set({ 'blackListedURLs' : newBlacklistArray }, function() {
     console.log('Successfully updated blackListedURLs');
+  });
+};
+
+// Sets disabled setting re DOM rendering and banner
+// @input1: (optional) callback
+var setDisabledState = function(boolean, callback) {
+  chrome.storage.sync.set({ 'disabled' : boolean });
+  if (callback) {
+    callback();
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//  __    __   _______  __      .______    _______ .______          _______.
+// |  |  |  | |   ____||  |     |   _  \  |   ____||   _  \        /       |
+// |  |__|  | |  |__   |  |     |  |_)  | |  |__   |  |_)  |      |   (----`
+// |   __   | |   __|  |  |     |   ___/  |   __|  |      /        \   \
+// |  |  |  | |  |____ |  `----.|  |      |  |____ |  |\  \----.----)   |
+// |__|  |__| |_______||_______|| _|      |_______|| _| `._____|_______/
+////////////////////////////////////////////////////////////////////////////////
+
+// Toggles disabledState, does callback if any
+// @input1: (optional) callback
+var toggleDisabledState = function(callback) {
+  getDisabledState(function(isDisabled) {
+    setDisabledState(!isDisabled, function() {
+      if (callback) {
+        callback();
+      }
+    });
   });
 };
