@@ -56,7 +56,6 @@ var renderBlacklist = function() {
         } else {
           sites.push(filtered);
           cache[filtered] = filtered;
-=======
 // THIS IS A CONTEXT SCRIPT THAT WILL RENDER HREFS IN
 // THE DOM IF CALLED BY checkUrlContentScript.js
 var renderDom = function() {
@@ -64,7 +63,20 @@ var renderDom = function() {
   console.log('Running renderBlacklistedDOM.js');
 
   var renderBlacklist = function() {
+    var reference = null;
+    // $(document).ready(function() {
+    $('a[href]').each(function(index, element) {
+      $(element).off('mouseover');
+     })
+    $('a[href]').mouseover(function(event) {
 
+    reference = $(event.target).attr('href');
+    if (reference !== undefined) {
+      chrome.runtime.sendMessage({text: 'sending element', href: reference}, function(response) {
+        console.log(response.text);
+      });
+    }
+  });
     // This file pings background scripts and compares DOM hrefs with
     // ones found on the blacklist and user-preferenced blacklist
     // and modifies the matching elements on the DOM
@@ -122,10 +134,9 @@ var renderDom = function() {
             sites.push(filtered);
             cache[filtered] = filtered;
           }
->>>>>>> ba44c39... close #46.
         }
       });
-    };
+    }
 
     populateSites();
 
