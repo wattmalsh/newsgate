@@ -24,6 +24,8 @@ blacklist.controller('blacklistController', function($scope) {
     var newWhitelist = $scope.whiteListedURLs.length > 0 ?
                        $scope.whiteListedURLs.split('\n') : [];
 
+    // Filter user list so it doesn't have duplicate URLs on white list
+
     // Call setter functions from storageController to reset whitelist and user blacklist
     chrome.extension.getBackgroundPage().setUserlistTo(newUserlist, function() {
       // This is where we can put an alert message that data was saved.
