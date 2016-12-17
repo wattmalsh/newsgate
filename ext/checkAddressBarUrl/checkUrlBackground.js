@@ -38,7 +38,6 @@ chrome.tabs.onUpdated.addListener(function (loadTabId, loadChangeInfo) {
                 chrome.tabs.sendMessage(completeTabId, userList.concat(blackList)
                   .filter(function(obj) {return whiteList.indexOf(obj) === -1;})
                   .reduce(function(pre, cur) {
-                    console.log('CUR', cur);
                     return cur.url === url ? {fake: true, urlObj: cur} : pre;
                   }, {fake: false}));
               });
