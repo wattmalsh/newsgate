@@ -5,9 +5,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 chrome.runtime.onMessage.addListener(function(message) {
-  console.log('Message', message);
   if ( message.fake ) {
-    alertFakeSite();
+    alertFakeSite(message.urlObj.rating.type);
   } else {
     renderDom();
   }
