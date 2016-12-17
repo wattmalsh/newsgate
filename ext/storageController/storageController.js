@@ -196,6 +196,12 @@ var getDisabledState = function(callback) {
   });
 };
 
+var getDomainCountData = function(callback) {
+  chrome.storage.sync.get('domainCount', function(result) {
+    console.log('Returning domainCount: ', result.domainCount)
+    callback(result.domainCount);
+  })
+}
 ////////////////////////////////////////////////////////////////////////////////
 //      _______. _______ .___________.___________. _______ .______          _______.
 //     /       ||   ____||           |           ||   ____||   _  \        /       |
@@ -254,3 +260,9 @@ var setThemeTo = function(theme) {
     console.log('Theme successfully saved');
   });
 };
+
+var setDomainCountDataTo = function(domainCount) {
+  chrome.storage.sync.set({"domainCount": domainCount }, function (){
+    console.log('Successfully set domain count');
+  })
+}

@@ -27,54 +27,6 @@ var shorts = {
 };
 
 console.log(getBlacklist, 'getBlacklist FUNCTION');
-// var getBlacklist = function(callback) {
-//   // TO DO
-
-//   var results = [
-//     {
-//       url: 'stackoverflow.com',
-//       rating: '',
-//       createdAt: '',
-//       updatedAt: ''
-//     }, {
-//       url: 'stackoverflow.com',
-//       rating: '',
-//       createdAt: '',
-//       updatedAt: ''
-//     }, {
-//       url: 'twitch.tv',
-//       rating: '',
-//       createdAt: '',
-//       updatedAt: ''
-//     }
-//   ];
-
-//   if (callback) {
-//     callback(results);
-//   }
-// };
-
-// var getUserlist = function(callback) {
-//   // TO DO
-
-//   var results = [
-//     {
-//       url: 'google.com',
-//       rating: '',
-//       createdAt: '',
-//       updatedAt: ''
-//     }, {
-//       url: 'twitch.com',
-//       rating: '',
-//       createdAt: '',
-//       updatedAt: ''
-//     }
-//   ];
-
-//   if (callback) {
-//     callback(results);
-//   }
-// };
 
 var filterLinks = function(unfilteredLink) {
   var domain = unfilteredLink.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
@@ -117,6 +69,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   return true;
 });
 
+
 function checkForFakes(request, callback) {
   var blacklist;
   var userlist;
@@ -128,7 +81,9 @@ function checkForFakes(request, callback) {
       getWhitelist(function(whitelistResults) {
         whitelist = whitelistResults;
         var fakeDOMLinks = filterFakes(userlist, blacklist, whitelist, request.data);
-        callback({data: fakeDOMLinks})
+        fakeDomains = fakeDOMLinks.length;
+        setDomainCountDataTo(fakeDomains);
+        callback({data: fakeDOMLinks});
       })
       // console.log(blacklist, '...BLACKLIST');
       // console.log(userlist, '...USERLIST');
@@ -137,40 +92,42 @@ function checkForFakes(request, callback) {
     });
   });
 }
-
+// function returnLength () {
+//   return fakeDomains;
+// }
 ///////////////////////////////////////////////////////////////////
 // Listener for Shortened Links
 ///////////////////////////////////////////////////////////////////
 // https://unshorten.me/json/{short_url}
-var grabUnshortenedUrl = function(shortUrl, cb) {
-  $.ajax({
-    type: 'GET',
-    url: 'https://unshorten.me/json/' + shortUrl,
-    success: function(data) {
-      cb(JSON.parse(data).resolvedURL); // located in updateStorage.js
-    },
-    error: function(data) {
-      // console.log('SHORT URL USED IN GRABBING...', shortUrl);
-    }
-  });
-};
+// var grabUnshortenedUrl = function(shortUrl, cb) {
+//   $.ajax({
+//     type: 'GET',
+//     url: 'https://unshorten.me/json/' + shortUrl,
+//     success: function(data) {
+//       cb(JSON.parse(data).resolvedURL); // located in updateStorage.js
+//     },
+//     error: function(data) {
+//       // console.log('SHORT URL USED IN GRABBING...', shortUrl);
+//     }
+//   });
+// };
 
-chrome.runtime.onConnect.addListener(function(port) {
-  console.assert(port.name === 'shorts');
-  port.onMessage.addListener(function(request) {
-    request.data.forEach(function(shortLink) {
-      grabUnshortenedUrl(shortLink, function(longLink) {
-        var filteredLongLink = filterLinks(longLink)
-        // console.log('RUNNING CHECK FOR FAKES IN SHORT LINK');
-        checkForFakes({data: [filteredLongLink]}, function(fakeDOMLinks) {
-          // check if link was fake (will only be one)
-          if (fakeDOMLinks.data[0]) {
-            port.postMessage({ data: shortLink });
-          }
-        })
-      });
-    });
-  });
-  return true;
-});
+// chrome.runtime.onConnect.addListener(function(port) {
+//   console.assert(port.name === 'shorts');
+//   port.onMessage.addListener(function(request) {
+//     request.data.forEach(function(shortLink) {
+//       grabUnshortenedUrl(shortLink, function(longLink) {
+//         var filteredLongLink = filterLinks(longLink)
+//         // console.log('RUNNING CHECK FOR FAKES IN SHORT LINK');
+//         checkForFakes({data: [filteredLongLink]}, function(fakeDOMLinks) {
+//           // check if link was fake (will only be one)
+//           if (fakeDOMLinks.data[0]) {
+//             port.postMessage({ data: shortLink });
+//           }
+//         })
+//       });
+//     });
+//   });
+//   return true;
+// });
 

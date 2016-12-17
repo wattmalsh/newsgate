@@ -1,6 +1,7 @@
-// THIS IS A CONTEXT SCRIPT THAT WILL RENDER AN ALERT BANNER
-// IF CALLED BY checkUrlContentScript.js
-console.log('Running alertFakeSite.js');
+////////////////////////////////////////////////////////////////////////////////
+// CONTENT SCRIPT
+// If the site loaded is a fake site, render the alert banner.
+////////////////////////////////////////////////////////////////////////////////
 
 // Function to add alert popup message to DOM
 function alertFakeSite(type) {
@@ -11,7 +12,6 @@ function alertFakeSite(type) {
     + alertInfo.closeClass + '">close</p><p class="'
     + alertInfo.alertClass + '">'
     + alertInfo.msg + '</p></div>');
-
   $('.fake-site-popup').click(function() {
     $('.fake-site-popup').hide();
   });

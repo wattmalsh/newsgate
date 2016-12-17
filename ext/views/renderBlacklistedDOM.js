@@ -1,66 +1,10 @@
-var renderBlacklist = function() {
+////////////////////////////////////////////////////////////////////////////////
+// CONTENT SCRIPT
+// If the site loaded is not a fake site, renderDom checks each href in the
+// DOM.
+////////////////////////////////////////////////////////////////////////////////
 
-  // This file pings background scripts and compares DOM hrefs with
-  // ones found on the blacklist and user-preferenced blacklist
-  // and modifies the matching elements on the DOM
-
-  // Short links are handled through live-connection where short
-  // links are sent to background scripts and the respective DOM
-  // element is modified as responses are received
-  var sites = [];
-  var unfilteredSites = [];
-
-  var shortSites = [];
-  var shorts = {
-    'bit.do': 'bit.do',
-    'bit.ly': 'bit.ly',
-    'cutt.us': 'cutt.us',
-    'goo.gl': 'goo.gl',
-    'ht.ly': 'ht.ly',
-    'is.gd': 'is.gd',
-    'ow.ly': 'ow.ly',
-    'po.st': 'po.st',
-    'tinyurl.com': 'tinyurl.com',
-    'tr.im': 'tr.im',
-    'trib.al': 'trib.al',
-    'u.to': 'u.to',
-    'v.gd': 'v.gd',
-    'x.co': 'x.co'
-  };
-
-  // regex to reduce down to XXXXX.com
-  var filterLinks = function(unfilteredLink) {
-    var domain = unfilteredLink.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
-    domain = domain.replace(/^(www\.)/,''); // Strip off www.
-    domain = domain.replace(/^(\/*)/, ''); // Strip off any // remaining
-    domain = domain.split('/')[0]; // Get the domain and just the domain (not the path)
-    domain = domain.split('.').slice(-2).join('.'); // remove prefixes ie: mail.google.com to google.com
-    return domain;
-  };
-
-  // populate sites and shortSites with DOM links
-  var populateSites = function() {
-    // var DOMLinks = $('a[href]');
-    var DOMLinks = $('a[href]');
-    var cache = {};
-
-    DOMLinks.each(function(index, element) {
-      var href = $(element).attr('href');
-      var filtered = filterLinks(href);
-      unfilteredSites.push(href);
-      if (!cache[filtered]) {
-
-        // if a short link, add original link to shortSites
-        if (shorts[filtered]) {
-          shortSites.push(href);
-        } else {
-          sites.push(filtered);
-          cache[filtered] = filtered;
-// THIS IS A CONTEXT SCRIPT THAT WILL RENDER HREFS IN
-// THE DOM IF CALLED BY checkUrlContentScript.js
 var renderDom = function() {
-
-  console.log('Running renderBlacklistedDOM.js');
 
   var renderBlacklist = function() {
     var reference = null;
@@ -153,6 +97,8 @@ var renderDom = function() {
 
     // compares all links on page with what model returns
     function renderDOM(response, DOMLinks) {
+      // console.log(response.data.length, "HAS LENGTH OF ?");
+      fakeDomains = response.data.length
       DOMLinks.each(function(index, element) {
         var href = $(element).attr('href');
         var domain = filterLinks(href);
@@ -196,10 +142,14 @@ var renderDom = function() {
     }
   });
 
+  // MAKE INITIAL CALL TO CHECK THE DOM
+  renderBlacklist();
+
   //MUTATION OBSERVER WATCHES FOR CHANGES
   MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
   // SETS THE FUNCTION TO RUN ON OBSERVING CHANGE
+
   var observer = new MutationObserver(renderBlacklist);
 
 
