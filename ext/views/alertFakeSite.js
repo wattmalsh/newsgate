@@ -15,7 +15,7 @@ function alertFakeSite(type) {
   $('.fake-site-popup').click(function() {
     $('.fake-site-popup').hide();
   });
-};
+}
 
 // Helper function, returns object with appropriate alert message info
 function getAlertMessageBasedOn(type) {
