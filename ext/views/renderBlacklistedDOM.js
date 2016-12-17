@@ -1,9 +1,10 @@
+////////////////////////////////////////////////////////////////////////////////
+// CONTENT SCRIPT
+// If the site loaded is not a fake site, renderDom checks each href in the
+// DOM.
+////////////////////////////////////////////////////////////////////////////////
 
-// THIS IS A CONTEXT SCRIPT THAT WILL RENDER HREFS IN
-// THE DOM IF CALLED BY checkUrlContentScript.js
 var renderDom = function() {
-
-  console.log('Running renderBlacklistedDOM.js');
 
   var renderBlacklist = function() {
     var reference = null;
@@ -138,6 +139,9 @@ var renderDom = function() {
       sendResponse({refresh: 'PAGE GOT RENDERED'})
     }
   });
+
+  // MAKE INITIAL CALL TO CHECK THE DOM
+  renderBlacklist();
 
   //MUTATION OBSERVER WATCHES FOR CHANGES
   MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
