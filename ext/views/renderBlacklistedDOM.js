@@ -6,6 +6,9 @@
 
 var renderDom = function() {
 
+  console.log('Running renderBlacklistedDOM.js');
+  var fakeDomains = 0;
+
   var renderBlacklist = function() {
     var reference = null;
     // $(document).ready(function() {
@@ -97,6 +100,8 @@ var renderDom = function() {
 
     // compares all links on page with what model returns
     function renderDOM(response, DOMLinks) {
+      // console.log(response.data.length, "HAS LENGTH OF ?");
+      fakeDomains = response.data.length
       DOMLinks.each(function(index, element) {
         var href = $(element).attr('href');
         var domain = filterLinks(href);
@@ -147,6 +152,7 @@ var renderDom = function() {
   MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
   // SETS THE FUNCTION TO RUN ON OBSERVING CHANGE
+
   var observer = new MutationObserver(renderBlacklist);
 
 
