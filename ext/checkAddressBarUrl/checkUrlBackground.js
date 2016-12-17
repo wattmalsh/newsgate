@@ -20,12 +20,10 @@ var listener = function() {
 chrome.tabs.onUpdated.addListener(function (loadTabId, loadChangeInfo) {
   // If it is a 'loading' change.
   if (loadChangeInfo.status === 'loading') {
-    console.log('loadChangeInfo', loadChangeInfo);
     // Listen again for any changes to a tab
     chrome.tabs.onUpdated.addListener(function listener(completeTabId, completeChangeInfo) {
       // If the tabId is the same from earlier and it is a 'complete' change.
       if ( completeChangeInfo.status === 'complete' && loadTabId === completeTabId ) {
-        console.log('completeChangeInfo', completeChangeInfo);
         // Get the url of this tab.
         chrome.tabs.get(completeTabId, function(tab) {
           var url = filterLinks(tab.url);
@@ -38,7 +36,6 @@ chrome.tabs.onUpdated.addListener(function (loadTabId, loadChangeInfo) {
                 chrome.tabs.sendMessage(completeTabId, userList.concat(blackList)
                   .filter(function(obj) {return whiteList.indexOf(obj) === -1;})
                   .reduce(function(pre, cur) {
-                    console.log('CUR', cur);
                     return cur.url === url ? {fake: true, urlObj: cur} : pre;
                   }, {fake: false}));
               });

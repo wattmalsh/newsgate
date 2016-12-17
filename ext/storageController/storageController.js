@@ -36,11 +36,14 @@ var initLocalStorage = function() {
   chrome.storage.sync.set({ 'userGeneratedBlacklist' : [] });
   chrome.storage.sync.set({ 'whiteListedURLs' : [] });
 
-  // Set the default theme
+  // Set the default theme -- this is also set in themes.js
   chrome.storage.sync.set({
-    'theme':
-      { 'background-color': 'red' }
-    });
+    'theme': {
+      fake: 'testTheme-fake',
+      satire: 'testTheme-satire',
+      biased: 'testTheme-biased'
+    }
+  });
   chrome.storage.sync.set({ 'disabled' : false });
   // Fill blackListedURLs with data from server
   getLastUpdated();

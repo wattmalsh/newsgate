@@ -6,6 +6,14 @@
 
 var renderDom = function() {
 
+  var path = chrome.extension.getURL('styles/themes.css');
+  console.log('PATH::::::', path);
+  $('head').append($('<link>')
+      .attr("rel","stylesheet")
+      .attr("type","text/css")
+      .attr("href", path));
+
+
   console.log('Running renderBlacklistedDOM.js');
   var fakeDomains = 0;
 
@@ -22,6 +30,7 @@ var renderDom = function() {
         });
       }
     });
+
     // This file pings background scripts and compares DOM hrefs with
     // ones found on the blacklist and user-preferenced blacklist
     // and modifies the matching elements on the DOM
@@ -112,8 +121,14 @@ var renderDom = function() {
           // if link is in blacklist, change css
           for (var i = 0; i < response.data.length; i++) {
             if (response.data[i].url === domain) {
-              console.log('type:::::', response.data[i].bias);
-              $(element).css({'background-color': 'red'});
+              var bias = getHrefClassBasedOn(response.data[i].bias)
+              // console.log('type:::::', getHrefClassBasedOn(response.data[i].bias));
+              chrome.storage.sync.get('theme', function(syncStore) {
+                var cssClass = syncStore.theme[bias];
+                console.log('&&&&&&&', cssClass);
+                $(element).addClass(cssClass);
+                console.log('GOT HERE>....');
+              });
             }
           }
           // if (response.data[0].url === domain) {
@@ -176,4 +191,52 @@ var renderDom = function() {
     subtree: true
   });
 
+};
+
+// Helper function, returns object with appropriate css class info
+function getHrefClassBasedOn(type) {
+  switch (type) {
+    ////////////////////////////////////////////////////////////////////////////
+    // FAKE SITE
+    ////////////////////////////////////////////////////////////////////////////
+    case 'fake ':
+    case 'fake':
+    case 'clickbait ':
+    case 'clickbait':
+    case 'fake, conspiracy':
+    case 'bias, fake':
+      return 'fake';
+
+    ////////////////////////////////////////////////////////////////////////////
+    // SATIRE SITE
+    ////////////////////////////////////////////////////////////////////////////
+    case 'satire':
+    case 'rumor':
+    case 'parody':
+      return 'satire';
+
+    ////////////////////////////////////////////////////////////////////////////
+    // BIASED SITE
+    ////////////////////////////////////////////////////////////////////////////
+    case "conspiracy ":
+    case "conspiracy":
+    case "conpisracy":
+    case "conpsiracy":
+    case "conpiracy":
+    case "unreliable ":
+    case "unreliable":
+    case "bias":
+    case "credible":
+    case "hate":
+    case "junksci":
+    case "political":
+    case "rumors":
+      return 'biased';
+
+    ////////////////////////////////////////////////////////////////////////////
+    // DEFAULT CASE
+    ////////////////////////////////////////////////////////////////////////////
+    default:
+      return 'fake';
+  };
 };

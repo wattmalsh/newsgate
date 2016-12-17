@@ -1,0 +1,11 @@
+.testTheme-fake {
+  background-color: 'red' !important;
+}
+
+.testTheme-satire {
+  background-color: #000000;
+}
+
+.testTheme-biased {
+  background-color: 'yellow' !important;
+}

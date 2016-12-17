@@ -1,7 +1,8 @@
 themes = angular.module('options.themes', []);
 
 themes.controller('themesController', function($scope) {
-  $scope.defaultTheme = {
+
+  $scope.defaultTheme = { // THIS IS INITIALIZED IN STORAGE CONTROLLER
     theme: {
       fake: {
         'background-color': 'red'
@@ -31,6 +32,14 @@ themes.controller('themesController', function($scope) {
       }
     }
   };
+
+  $scope.testTheme = {
+    theme: {
+      fake: 'testTheme-fake',
+      satire: 'testTheme-satire',
+      biased: 'testTheme-biased'
+    }
+  }
 
   $scope.radioButton = {
     selected: 'default'
