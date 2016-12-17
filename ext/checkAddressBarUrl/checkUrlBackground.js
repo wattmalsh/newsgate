@@ -34,11 +34,12 @@ chrome.tabs.onUpdated.addListener(function (loadTabId, loadChangeInfo) {
           // resulting list. Send the result to the correct tab via checkUrlContentScript.
           getBlacklist(function(blackList) {
             getUserlist(function(userList) {
-              getWhitelist(function(whiteList) {
+             getWhitelist(function(whiteList) {
                 chrome.tabs.sendMessage(completeTabId, userList.concat(blackList)
                   .filter(function(obj) {return whiteList.indexOf(obj) === -1;})
                   .reduce(function(pre, cur) {
-                    return cur.url === url ? {fake: true} : pre;
+                    console.log('CUR', cur);
+                    return cur.url === url ? {fake: true, urlObj: cur} : pre;
                   }, {fake: false}));
               });
             });
