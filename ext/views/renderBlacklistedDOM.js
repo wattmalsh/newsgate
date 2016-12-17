@@ -93,7 +93,9 @@ var renderDom = function() {
     // console.log(unfilteredSites, 'UNFILTERED SITES');
     chrome.runtime.sendMessage({data: sites}, function(response) {
       // console.log('SENDING MESSAGE');
-      // console.log(response, 'RESPONSE HERE')
+      console.log('response: ', response);
+      // response is now in the format of {data: [{url: 'google.com', bias: 'fake'}]}
+      console.log(response.data[0], 'RESPONSE HERE')
       renderDOM(response, $('a[href]'));
       // return true;
     });
@@ -105,20 +107,32 @@ var renderDom = function() {
       DOMLinks.each(function(index, element) {
         var href = $(element).attr('href');
         var domain = filterLinks(href);
-        // if link is in blacklist, change css
-        if (response.data.indexOf(domain) !== -1) {
-          chrome.storage.sync.get('theme', function(syncStore) {
-            for (var prop in syncStore.theme) {
-              // Apply all css in theme to <a href> element
-              $(element).css(prop, syncStore.theme[prop]);
+
+        if (response.data !== []) { // Check if there are any blacklisted URLs on page
+          // if link is in blacklist, change css
+          for (var i = 0; i < response.data.length; i++) {
+            if (response.data[i].url === domain) {
+              console.log('type:::::', response.data[i].bias);
+              $(element).css({'background-color': 'red'});
             }
-          });
-        } else {
-          // console.log('HERE CHANGING BACKGROUND OCLOR TO NONE');
-          $(element).css({'background-color':'transparent'});
+          }
+          // if (response.data[0].url === domain) {
+          //   console.log('&&&&&&&&&&&&&', response);
+          //   // chrome.storage.sync.get('theme', function(syncStore) {
+          //   //   for (var prop in syncStore.theme) {
+          //   //     // Apply all css in theme to <a href> element
+          //   //     $(element).css(prop, syncStore.theme[prop]);
+          //   //   }
+          //   // });
+          // } else {
+          //   // console.log('HERE CHANGING BACKGROUND OCLOR TO NONE');
+          //   $(element).css({'background-color':'transparent'});
+          // }
         }
+
+
       });
-      console.log(response.data, 'response data');
+      // console.log(response.data, 'response data');
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -163,5 +177,3 @@ var renderDom = function() {
   });
 
 };
-
-

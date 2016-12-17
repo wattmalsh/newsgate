@@ -43,24 +43,38 @@ var filterFakes = function(userlist, blacklist, whitelist, links) {
   var blacklist_storage = {};
   var results = [];
   userlist.forEach(function(link) {
-    userlist_storage[link] = link;
+    userlist_storage[link] = {
+      url: link,
+      bias: 'userAdded'
+    };
   });
 
   blacklist.forEach(function(link) {
-    blacklist_storage[link.url] = link.url;
+    blacklist_storage[link.url] = {
+      url: link.url,
+      bias: link.rating.type
+    };
   });
+
+  // This might be able to be optimized?
   links.forEach(function(href) {
-    if (href in userlist_storage || href in blacklist_storage) {
-      if (!_.contains(whitelist, href)) {
-        results.push(href);
-      }
+    if (href in userlist_storage && !_.contains(whitelist, href)) {
+      results.push(userlist_storage[href]);
     }
+    if (href in blacklist_storage && !_.contains(whitelist, href)) {
+      results.push(blacklist_storage[href]);
+    }
+    // if (href in userlist_storage || href in blacklist_storage) {
+    //   if (!_.contains(whitelist, href)) {
+    //     results.push(href);
+    //   }
+    // }
   });
+
   return results;
 };
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  // console.log('INSIDE RUNTIME ADDLISTENER', request);
   if (request.data) {
     checkForFakes(request, function(result) {
       sendResponse(result);
@@ -83,6 +97,7 @@ function checkForFakes(request, callback) {
         var fakeDOMLinks = filterFakes(userlist, blacklist, whitelist, request.data);
         fakeDomains = fakeDOMLinks.length;
         setDomainCountDataTo(fakeDomains);
+        // fakeDOMLinks is an array of link objects [{ google.com: {url: 'google.com', bias: 'userAdded'}}]
         callback({data: fakeDOMLinks});
       })
       // console.log(blacklist, '...BLACKLIST');
@@ -91,7 +106,8 @@ function checkForFakes(request, callback) {
       // callback({data: ['google.com']})
     });
   });
-}
+};
+
 // function returnLength () {
 //   return fakeDomains;
 // }
@@ -130,4 +146,3 @@ function checkForFakes(request, callback) {
 //   });
 //   return true;
 // });
-

@@ -3,14 +3,32 @@ themes = angular.module('options.themes', []);
 themes.controller('themesController', function($scope) {
   $scope.defaultTheme = {
     theme: {
-      'background-color': 'red'
+      fake: {
+        'background-color': 'red'
+      },
+      satire: {
+        'background-color': 'orange'
+      },
+      biased: {
+        'background-color': 'yellow'
+      }
     }
   };
 
   $scope.censorTheme = {
     theme: {
-      'background-color': 'black',
-      'color': 'black'
+      fake: {
+        'background-color': 'black',
+        'color': 'black'
+      },
+      satire: {
+        'background-color': 'black',
+        'color': 'black'
+      },
+      biased: {
+        'background-color': 'black',
+        'color': 'black'
+      }
     }
   };
 
