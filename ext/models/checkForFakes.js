@@ -99,35 +99,35 @@ function checkForFakes(request, callback) {
 // Listener for Shortened Links
 ///////////////////////////////////////////////////////////////////
 // https://unshorten.me/json/{short_url}
-// var grabUnshortenedUrl = function(shortUrl, cb) {
-//   $.ajax({
-//     type: 'GET',
-//     url: 'https://unshorten.me/json/' + shortUrl,
-//     success: function(data) {
-//       cb(JSON.parse(data).resolvedURL); // located in updateStorage.js
-//     },
-//     error: function(data) {
-//       // console.log('SHORT URL USED IN GRABBING...', shortUrl);
-//     }
-//   });
-// };
+var grabUnshortenedUrl = function(shortUrl, cb) {
+  $.ajax({
+    type: 'GET',
+    url: 'https://unshorten.me/json/' + shortUrl,
+    success: function(data) {
+      cb(JSON.parse(data).resolvedURL); // located in updateStorage.js
+    },
+    error: function(data) {
+      // console.log('SHORT URL USED IN GRABBING...', shortUrl);
+    }
+  });
+};
 
-// chrome.runtime.onConnect.addListener(function(port) {
-//   console.assert(port.name === 'shorts');
-//   port.onMessage.addListener(function(request) {
-//     request.data.forEach(function(shortLink) {
-//       grabUnshortenedUrl(shortLink, function(longLink) {
-//         var filteredLongLink = filterLinks(longLink)
-//         // console.log('RUNNING CHECK FOR FAKES IN SHORT LINK');
-//         checkForFakes({data: [filteredLongLink]}, function(fakeDOMLinks) {
-//           // check if link was fake (will only be one)
-//           if (fakeDOMLinks.data[0]) {
-//             port.postMessage({ data: shortLink });
-//           }
-//         })
-//       });
-//     });
-//   });
-//   return true;
-// });
+chrome.runtime.onConnect.addListener(function(port) {
+  console.assert(port.name === 'shorts');
+  port.onMessage.addListener(function(request) {
+    request.data.forEach(function(shortLink) {
+      grabUnshortenedUrl(shortLink, function(longLink) {
+        var filteredLongLink = filterLinks(longLink)
+        // console.log('RUNNING CHECK FOR FAKES IN SHORT LINK');
+        checkForFakes({data: [filteredLongLink]}, function(fakeDOMLinks) {
+          // check if link was fake (will only be one)
+          if (fakeDOMLinks.data[0]) {
+            port.postMessage({ data: shortLink });
+          }
+        })
+      });
+    });
+  });
+  return true;
+});
 
