@@ -17,7 +17,7 @@ getDisabledState(function(isDisabled) {
 
 var listener = function() {
 // Listen for any changes to a tab
-chrome.tabs.onUpdated.addListener(function (loadTabId, loadChangeInfo) {
+chrome.tabs.onUpdated.addListener(function listener2(loadTabId, loadChangeInfo) {
   // If it is a 'loading' change.
   if (loadChangeInfo.status === 'loading') {
     console.log('loadChangeInfo', loadChangeInfo);
@@ -45,6 +45,7 @@ chrome.tabs.onUpdated.addListener(function (loadTabId, loadChangeInfo) {
           });
         // Close the original listener to prevent duplicate responses.
         chrome.tabs.onUpdated.removeListener(listener);
+        chrome.tabs.onUpdated.removeListener(listener2);
         });
       }
     });
