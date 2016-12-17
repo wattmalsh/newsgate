@@ -1,3 +1,8 @@
+/* contextMenu.js - Initializing/functionality of the context menus.
+ * @Author: Evan Chang - github.com/MistrBrown
+ * @CreatedOn: 12/15/16
+*/
+
 ///////////////////////////////////////////////////////////////////////////
 // WHITELIST CONTEXT MENU
 ///////////////////////////////////////////////////////////////////////////
@@ -86,19 +91,31 @@ chrome.runtime.onInstalled.addListener(function() {
 ///////////////////////////////////////////////////////////////////////////
 // BLACKLIST CONTEXT MENU
 ///////////////////////////////////////////////////////////////////////////
-
+// CONTEXT MENU FOR ADDING INTO BLACKLIST
 function contextMenuBlacklist(word) {
   var domain = filterLinks(word.linkUrl) === 'google.com' ? filterGoogleDomain(word.linkUrl) : filterLinks(word.linkUrl);
   getUserlist(function(blacklist) {
     if (_.contains(blacklist, domain)) {
       return;
     } else {
-      updateBlacklist([domain], 'userGeneratedBlacklist');
+      getWhitelist(function(whitelist) {
+        if (_.contains(whitelist, domain)) {
+          setWhitelistTo(_.filter(whitelist, (item) => {
+            return item !== domain;
+          }), function(){
+            refreshRender();
+          });
+        } else {
+          updateBlacklist([domain], 'userGeneratedBlacklist');
+          refreshRender();
+        }
+      });
       refreshRender();
     }
   })
 }
 
+// INSTALL ADD TO BLACKLIST CONTEXTMENU
 chrome.runtime.onInstalled.addListener(function() {
   var context = "link";
   var title = "Add to Blacklist";
