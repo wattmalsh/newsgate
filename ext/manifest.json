@@ -10,7 +10,7 @@
     "contextMenus"
   ],
   "browser_action": {
-    "default_icon": 
+    "default_icon":
       // when changing, remove renderIcon file and use png
       // specify pixels
       "assets/Turnip.png",

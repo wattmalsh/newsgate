@@ -1,6 +1,8 @@
-$(document).ready(function(){
+$(document).ready(function() {
   // hide enable / disable based on state of disable
+  console.log('DOCUMENT IS READY');
   chrome.extension.getBackgroundPage().getDisabledState(function(isDisabled) {
+    console.log('RUNNING');
     if (isDisabled) {
       $('#disable').hide();
     } else {
@@ -25,10 +27,10 @@ $(document).ready(function(){
   // Add current url in active tab to userlist
   $('body').on('click', '#addToBlacklist', function() {
     getCurrentTabUrl(function(url) {
-      
+
       // Background functions are available with chrome.extension.getBackgroundPage()
       var domain = chrome.extension.getBackgroundPage().filterLinks(url);
-      
+
       // Update userGeneratedBlacklist only on unique urls
       chrome.extension.getBackgroundPage().getUserlist(function(results) {
         var pattern = new RegExp(domain);
@@ -40,7 +42,7 @@ $(document).ready(function(){
         });
         if (unique) {
           chrome.extension.getBackgroundPage().updateBlacklist([domain], 'userGeneratedBlacklist');
-        } 
+        }
       })
     });
   });
@@ -48,8 +50,8 @@ $(document).ready(function(){
   $('body').on('click', '#removeFromBlacklist', function(){
     getCurrentTabUrl(function(url) {
       var domain = chrome.extension.getBackgroundPage().filterLinks(url);
-      chrome.extension.getBackgroundPage().unBlacklist(domain);  
-    }); 
+      chrome.extension.getBackgroundPage().unBlacklist(domain);
+    });
   });
 
   $('body').on('click', '#disable', function(){
@@ -60,17 +62,25 @@ $(document).ready(function(){
     });
   });
 
+
   $('body').on('click', '#enable', function(){
     toggleDisable();
     // image needs to be exactly 16x16
-    chrome.extension.getBackgroundPage().chrome.browserAction.setIcon({
-      path: "assets/turnip-white.gif"
-    });
-  });  
+  });
+
+    //POLLING FOR STATS
+
+  chrome.extension.getBackgroundPage().getDomainCountData(function(count) {
+    console.log('IN HERE AND COUNT IS ', count);
+    $('.stats').text(`Fake Domains: ${count}`)
+  });
+
+
+
 });
 
 function getCurrentTabUrl(callback) {
-  // Query filter to be passed to chrome.tabs.query
+// Query filter to be passed to chrome.tabs.query
   var queryInfo = {
     active: true,
     currentWindow: true
@@ -87,9 +97,11 @@ function getCurrentTabUrl(callback) {
   });
 };
 
+
 function toggleDisable() {
   $('#disable').toggle();
   $('#enable').toggle();
   // change state to disabled / enabled
   chrome.extension.getBackgroundPage().toggleDisabledState();
-}
+};
+
