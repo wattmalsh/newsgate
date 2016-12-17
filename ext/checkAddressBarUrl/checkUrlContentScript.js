@@ -7,7 +7,6 @@
 chrome.runtime.onMessage.addListener(function(message) {
   if ( message.fake ) {
     alertFakeSite(message.urlObj.rating.type);
-  } else {
-    renderDom();
   }
 });
+renderDom();

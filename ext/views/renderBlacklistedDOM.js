@@ -11,7 +11,7 @@ var renderDom = function() {
     // $(document).ready(function() {
     $('a[href]').each(function(index, element) {
       $(element).off('mouseover');
-     })
+     });
     $('a[href]').mouseover(function(event) {
       reference = $(event.target).attr('href');
       if (reference !== undefined) {
@@ -78,7 +78,7 @@ var renderDom = function() {
           }
         }
       });
-    }
+    };
 
     populateSites();
 
@@ -98,7 +98,7 @@ var renderDom = function() {
     // compares all links on page with what model returns
     function renderDOM(response, DOMLinks) {
       // console.log(response.data.length, "HAS LENGTH OF ?");
-      fakeDomains = response.data.length
+      fakeDomains = response.data.length;
       DOMLinks.each(function(index, element) {
         var href = $(element).attr('href');
         var domain = filterLinks(href);
@@ -138,12 +138,9 @@ var renderDom = function() {
   chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.refresh === 'refresh') {
       renderBlacklist();
-      sendResponse({refresh: 'PAGE GOT RENDERED'})
+      sendResponse({refresh: 'PAGE GOT RENDERED'});
     }
   });
-
-  // MAKE INITIAL CALL TO CHECK THE DOM
-  renderBlacklist();
 
   //MUTATION OBSERVER WATCHES FOR CHANGES
   MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
