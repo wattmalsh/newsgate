@@ -15,9 +15,10 @@ chrome.tabs.onUpdated.addListener(function(tabid, loadInfo) {
   getDisabledState(function(isDisabled) {
     if (!isDisabled) {
       addListener();
-    } else {
-      removeListener();
     }
+    //} else {
+    //   removeListener();
+    // }
   });
 })
 
@@ -57,8 +58,9 @@ function addListener () {
                 });
               });
             // Close the original listener to prevent duplicate responses.
-            // chrome.tabs.onUpdated.removeListener(listener);
-            allListeners.push(listener);
+            chrome.tabs.onUpdated.removeListener(listener);
+            chrome.tabs.onUpdated.removeListener(listener2);
+            // allListeners.push(listener);
             });
           })
         };
@@ -69,9 +71,9 @@ function addListener () {
 }
 
 
-function removeListener () {
-  for (var i = 0; i < allListeners.length; i++) {
-    chrome.tabs.removeListener(allListeners[i]);
-  }
-  allListeners = [];
-}
+// function removeListener () {
+//   for (var i = 0; i < allListeners.length; i++) {
+//     chrome.tabs.removeListener(allListeners[i]);
+//   }
+//   allListeners = [];
+// }
