@@ -103,6 +103,13 @@
 
   border-radius: 10px;
 }
+table {
+  height: 20%;
+
+}
+.secTd{
+  padding-left:50px;
+}
 
 #header {
     background: #c0deed;
