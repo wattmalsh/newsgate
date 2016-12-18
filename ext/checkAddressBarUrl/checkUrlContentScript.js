@@ -3,8 +3,8 @@
 // Listens for messages from the background script for whether the site loaded
 // is a fake site or not. Create an alert banner or render the dom depending.
 ////////////////////////////////////////////////////////////////////////////////
-
 chrome.runtime.onMessage.addListener(function(message) {
+  console.log('THIS IS CHECKING IS MESSAGE IS FAKE');
   if ( message.fake ) {
     alertFakeSite(message.urlObj.rating.type);
   }
@@ -19,3 +19,4 @@ chrome.runtime.onMessage.addListener(function(message) {
     // removeThemeCSS();
   }
 });
+
