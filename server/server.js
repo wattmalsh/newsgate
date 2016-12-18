@@ -2,9 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const port = process.env.PORT || 8000;
 const app = express();
+const cron = require('node-cron');
+var updateBlacklist = require('../blacklist/updateBlacklist.js');
 
-var dbURI = 'mongodb://heroku_z3pg5nvm:b6bla21nua9a0opbmvju1ub1pa@ds133378.mlab.com:33378/heroku_z3pg5nvm/newsgate'
-mongoose.connect(dbURI);
+var dbURI = 'mongodb://heroku_z3pg5nvm:b6bla21nua9a0opbmvju1ub1pa@ds133378.mlab.com:33378/heroku_z3pg5nvm/newsgate';
+mongoose.createConnection(dbURI);
 
 // CONNECTION EVENTS
 mongoose.connection.on('connected', function() {
@@ -50,3 +52,10 @@ app.listen(port);
 // export our app for testing and flexibility, required by index.js
 module.exports = app;
 console.log('Server is listening at port: ' + port);
+
+// CRON JOB
+// Run cronjob to update blacklist every 12 hours
+cron.schedule('0 0 0,12 * * *', function() {
+  console.log('Running cron job: Update Blacklist');
+  updateBlacklist();
+});
