@@ -39,7 +39,6 @@ function removeUrlWhiteListParse(word) {
       //THIS IS WHERE ID CALL RENDER AGAIN
       refreshRender();
     });
-
   });
 };
 
@@ -55,6 +54,7 @@ function addUrlWhiteListParse(word) {
 // REFRESH RENDERING AFTER ADDING/REMOVING FROM WHITELIST
 // HACK TO REFRESH AFTER WHITELIST UPDATED
 function refreshRender() {
+  // IF REMOVE
   setTimeout(function() {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, {refresh: "refresh"}, function(response) {
