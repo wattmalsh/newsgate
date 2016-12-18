@@ -11,15 +11,26 @@ services.factory('Themes', function() {
 
 
 services.factory('General', function() {
-
-  // Input minutes need app to be disabled
+  
+  // Disable for x minutes
   var disable = function(min) {
-
-    // Get current state from sync storage
+    console.log('Inside General');
 
     // Set disabled to true
+    chrome.extension.getBackgroundPage().setDisabledState(true, () => {
+      
+      // Use set timeout to set back to false
+      setTimeout(() => {
+        chrome.extension.getBackgroundPage().setDisabledState(false, () => {
+          chrome.extension.getBackgroundPage().console.log('Set state to false');
+        }) 
+      }, 5000);  
+    })
 
-    // Use set timeout to toggle back to true
   }
+
+  return {
+    disable: disable
+  };
 
 });
