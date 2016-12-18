@@ -27,7 +27,6 @@ var shorts = {
   };
 // SETS THE FUNCTION TO RUN ON OBSERVING CHANGE
 var observer = new MutationObserver(renderDom);
-console.log(observer);
 
 
 //SETS WHAT TO OBSERVE WITH 'DOCUMENT' AND ITS 'CHILDLIST' AND 'SUBTREE' ELEMENTS
@@ -51,14 +50,11 @@ function renderDom() {
     subtree: true,
     attributes: false
   });
-  console.log('Running renderBlacklistedDOM.js');
   chrome.runtime.sendMessage({disabled: 'give'}, function(response) {
-    console.log(response, 'THIS IS THE DISABLED RESPONSE');
-    console.log(response.disabled, '??????????????');
     if (!response.disabled) {
       renderBlacklist();
     } else {
-      console.log('I DIDNT CALL RENDER BLACKLIST');
+      console.log("DISABLED: DIDN'T RENDERBLACKLIST");
     }
   })
 };
@@ -242,7 +238,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       if (!response.disabled) {
         renderBlacklist();
       } else {
-        console.log('I DIDNT CALL RENDER BLACKLIST');
+        console.log("DISABLED: DIDN'T RENDERBLACKLIST");
       }
     })
   }

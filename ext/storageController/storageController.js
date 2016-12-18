@@ -135,10 +135,8 @@ var unBlacklist = function(url, cb) {
 // Toggles disabledState, does callback if any
 // @input1: (optional) callback
 var toggleDisabledState = function(callback) {
-  console.log('INSIDE TOGGLE DISABLED STATE')
   getDisabledState(function(isDisabled) {
     setDisabledState(!isDisabled, function() {
-      console.log('STATE WAS TOGGLED TO', !isDisabled);
       if (callback) {
         callback();
       }
@@ -229,9 +227,7 @@ var getTheme = function(callback) {
 // @input1: An array that will be the new white list
 // @input2: (optional) callback with no arguments to be executed after storage is set
 var setWhitelistTo = function(newWhitelistArray, callback) {
-  console.log(newWhitelistArray, 'ADDING TO WHITELIST INSIDE SETWHITELIST TO');
   chrome.storage.sync.set({ 'whiteListedURLs' : newWhitelistArray }, function() {
-    console.log('Successfully updated whiteListedURLs to: ', newWhitelistArray);
     if (callback) {
       callback();
     }
@@ -243,7 +239,6 @@ var setWhitelistTo = function(newWhitelistArray, callback) {
 // @input2: (optional) callback with no arguments to be executed after storage is set
 var setUserlistTo = function(newUserlistArray, callback) {
   chrome.storage.sync.set({ 'userGeneratedBlacklist' : newUserlistArray }, function() {
-    console.log('Successfully updated userGeneratedBlacklist to: ', newUserlistArray);
     if (callback) {
       callback();
     }
@@ -254,7 +249,6 @@ var setUserlistTo = function(newUserlistArray, callback) {
 // @input1: An array that will be the new white list
 var setBlacklistTo = function(newBlacklistArray, callback) {
   chrome.storage.local.set({ 'blackListedURLs' : newBlacklistArray }, function() {
-    console.log('Successfully updated blackListedURLs');
     if (callback) {
       callback();
     }
@@ -274,7 +268,6 @@ var setDisabledState = function(boolean, callback) {
 // @input1: Theme object that will be the theme
 var setThemeTo = function(theme, cb) {
   chrome.storage.sync.set(theme, function() {
-    console.log('Theme successfully saved');
     if (cb) {
       cb();
     }
@@ -283,6 +276,5 @@ var setThemeTo = function(theme, cb) {
 
 var setDomainCountDataTo = function(domainCount) {
   chrome.storage.sync.set({"domainCount": domainCount }, function (){
-    console.log('Successfully set domain count');
   })
 }

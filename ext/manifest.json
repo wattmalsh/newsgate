@@ -19,7 +19,6 @@
   },
   "background": {
     "scripts": [
-      "views/renderIcon.js", // may remove this later
       "lib/underscore.min.js",
       "lib/jquery.min.js",
       "disableController/disable.js",

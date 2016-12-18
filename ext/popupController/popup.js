@@ -1,8 +1,6 @@
 $(document).ready(function() {
   // hide enable / disable based on state of disable
-  console.log('DOCUMENT IS READY');
   chrome.extension.getBackgroundPage().getDisabledState(function(isDisabled) {
-    console.log('RUNNING');
     if (isDisabled) {
       $('#disable').hide();
     } else {
@@ -74,7 +72,6 @@ $(document).ready(function() {
     //POLLING FOR STATS
 
   chrome.extension.getBackgroundPage().getDomainCountData(function(count) {
-    console.log('IN HERE AND COUNT IS ', count);
     $('.stats').text(`Fake Domains: ${count}`)
   });
 
@@ -105,6 +102,5 @@ function toggleDisable() {
   $('#disable').toggle();
   $('#enable').toggle();
   // change state to disabled / enabled
-  console.log('ABOUT TO TOGGLE DISABLED STATE');
   chrome.extension.getBackgroundPage().toggleDisabledState();
 };
