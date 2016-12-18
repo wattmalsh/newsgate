@@ -1,25 +1,46 @@
 themes = angular.module('options.themes', []);
 
 themes.controller('themesController', function($scope) {
-  $scope.defaultTheme = {
+
+  $scope.defaultTheme = { // THIS IS INITIALIZED IN STORAGE CONTROLLER
     theme: {
-      'background-color': 'red'
+      fake: 'defaultTheme-fake',
+      satire: 'defaultTheme-satire',
+      biased: 'defaultTheme-biased',
+      themeName: 'default'
     }
   };
+
+  $scope.radioButton = { // Initialize theme button setting
+    selected: 'default'
+  }
 
   $scope.censorTheme = {
     theme: {
-      'background-color': 'black',
-      'color': 'black'
+      fake: 'censorTheme-fake',
+      satire: 'censorTheme-satire',
+      biased: 'censorTheme-biased',
+      themeName: 'censorTheme'
     }
   };
 
-  $scope.radioButton = {
-    selected: 'default'
-  };
+  // Updates theme button setting
+  chrome.extension.getBackgroundPage().getTheme(function(theme) {
+    // Set the state of the radio button
+    $scope.radioButton = {
+      selected: theme.themeName
+    };
+  });
 
   $scope.setTheme = function(theme) {
     // Use theme setter in storage controller
     chrome.extension.getBackgroundPage().setThemeTo(theme);
+
+    chrome.tabs.query({}, function(tabs) {
+      for (var i = 0; i < tabs.length; i++) {
+        chrome.tabs.sendMessage(tabs[i].id, {action: 'refresh'});
+      }
+    });
+
   };
 });

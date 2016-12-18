@@ -38,11 +38,15 @@ var initLocalStorage = function() {
   chrome.storage.sync.set({ 'userGeneratedBlacklist' : [] });
   chrome.storage.sync.set({ 'whiteListedURLs' : [] });
 
-  // Set the default theme
+  // Set the default theme -- this is also set in themes.js
   chrome.storage.sync.set({
-    'theme':
-      { 'background-color': 'red' }
-    });
+    'theme': {
+      fake: 'defaultTheme-fake',
+      satire: 'defaultTheme-satire',
+      biased: 'defaultTheme-biased',
+      themeName: 'default'
+    }
+  });
   chrome.storage.sync.set({ 'disabled' : false });
   // Fill blackListedURLs with data from server
   getLastUpdated();
@@ -202,7 +206,13 @@ var getDomainCountData = function(callback) {
   chrome.storage.sync.get('domainCount', function(result) {
     console.log('Returning domainCount: ', result.domainCount)
     callback(result.domainCount);
-  })
+  });
+};
+
+var getTheme = function(callback) {
+  chrome.storage.sync.get('theme', function(syncStore) {
+    callback(syncStore['theme']);
+  });
 }
 ////////////////////////////////////////////////////////////////////////////////
 //      _______. _______ .___________.___________. _______ .______          _______.
@@ -260,9 +270,12 @@ var setDisabledState = function(boolean, callback) {
 
 // Sets theme object in sync storage
 // @input1: Theme object that will be the theme
-var setThemeTo = function(theme) {
+var setThemeTo = function(theme, cb) {
   chrome.storage.sync.set(theme, function() {
     console.log('Theme successfully saved');
+    if (cb) {
+      cb();
+    }
   });
 };
 

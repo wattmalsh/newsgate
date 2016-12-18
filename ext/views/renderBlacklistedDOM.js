@@ -6,6 +6,14 @@
 
 var renderDom = function() {
 
+  // Inject themes.css into head of current website page
+  var path = chrome.extension.getURL('styles/themes.css');
+  $('head').append($('<link>')
+      .attr("rel","stylesheet")
+      .attr("type","text/css")
+      .attr("href", path));
+
+
   console.log('Running renderBlacklistedDOM.js');
   var fakeDomains = 0;
 
@@ -22,6 +30,7 @@ var renderDom = function() {
         });
       }
     });
+
     // This file pings background scripts and compares DOM hrefs with
     // ones found on the blacklist and user-preferenced blacklist
     // and modifies the matching elements on the DOM
@@ -92,8 +101,6 @@ var renderDom = function() {
     // console.log(sites, 'SITES DATAS');
     // console.log(unfilteredSites, 'UNFILTERED SITES');
     chrome.runtime.sendMessage({data: sites}, function(response) {
-      // console.log('SENDING MESSAGE');
-      // console.log(response, 'RESPONSE HERE')
       renderDOM(response, $('a[href]'));
       // return true;
     });
@@ -101,24 +108,31 @@ var renderDom = function() {
     // compares all links on page with what model returns
     function renderDOM(response, DOMLinks) {
       // console.log(response.data.length, "HAS LENGTH OF ?");
-      fakeDomains = response.data.length;
+      fakeDomains = Object.keys(response.data['blacklist']).length;
+
       DOMLinks.each(function(index, element) {
         var href = $(element).attr('href');
         var domain = filterLinks(href);
-        // if link is in blacklist, change css
-        if (response.data.indexOf(domain) !== -1) {
+
+        // Check if the domain is in the blacklist, if so, inject css theme class
+        if (response.data['blacklist'][domain]) {
+          var bias = getHrefClassBasedOn(response.data.blacklist[domain]);
           chrome.storage.sync.get('theme', function(syncStore) {
+            $(element).addClass(syncStore.theme[bias]); // Inject css theme class
+          });
+        }
+
+        // If domain is in whitelist, remove the injected css classes
+        if (response.data['whitelist'][domain]) {
+          var bias = getHrefClassBasedOn(response.data.whitelist[domain]);
+          chrome.storage.sync.get('theme', function(syncStore) {
+            // Loop through possible bias types and remove those classes
             for (var prop in syncStore.theme) {
-              // Apply all css in theme to <a href> element
-              $(element).css(prop, syncStore.theme[prop]);
+              $(element).removeClass(syncStore.theme[prop]);
             }
           });
-        } else {
-          // console.log('HERE CHANGING BACKGROUND OCLOR TO NONE');
-          $(element).css({'background-color':'transparent'});
         }
       });
-      console.log(response.data, 'response data');
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -161,4 +175,50 @@ var renderDom = function() {
 
 };
 
+// Helper function, returns object with appropriate css class info
+function getHrefClassBasedOn(type) {
+  switch (type) {
+    ////////////////////////////////////////////////////////////////////////////
+    // FAKE SITE
+    ////////////////////////////////////////////////////////////////////////////
+    case 'fake ':
+    case 'fake':
+    case 'clickbait ':
+    case 'clickbait':
+    case 'fake, conspiracy':
+    case 'bias, fake':
+      return 'fake';
 
+    ////////////////////////////////////////////////////////////////////////////
+    // SATIRE SITE
+    ////////////////////////////////////////////////////////////////////////////
+    case 'satire':
+    case 'rumor':
+    case 'parody':
+      return 'satire';
+
+    ////////////////////////////////////////////////////////////////////////////
+    // BIASED SITE
+    ////////////////////////////////////////////////////////////////////////////
+    case "conspiracy ":
+    case "conspiracy":
+    case "conpisracy":
+    case "conpsiracy":
+    case "conpiracy":
+    case "unreliable ":
+    case "unreliable":
+    case "bias":
+    case "credible":
+    case "hate":
+    case "junksci":
+    case "political":
+    case "rumors":
+      return 'biased';
+
+    ////////////////////////////////////////////////////////////////////////////
+    // DEFAULT CASE
+    ////////////////////////////////////////////////////////////////////////////
+    default:
+      return 'fake';
+  };
+};
