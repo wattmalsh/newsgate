@@ -64,15 +64,6 @@
   margin-right: 30px;
 }
 
-.example-defaultTheme {
-  background-color: 'red';
-}
-
-.example-censorTheme {
-  background-color: 'black';
-  color: 'black';
-}
-
 .themes-title, .blacklist-title, .general-title {
   padding-left: 10%;
   padding-top: 90px;
@@ -82,27 +73,27 @@
   padding-left: 10%;
 }
 
-.header-nav {
+.options-header {
   float: left;
 }
 
-.header-nav ul {
+.options-header ul {
   height: auto;
   padding: 20px 0px;
   margin: 0px;
 
 }
 
-.header-nav li {
+.options-header li {
   display: inline;
   padding: 20px;
 }
 
-.header-nav li:hover {
+.options-header li:hover {
   background-color: #00BFFF;
-
   border-radius: 10px;
 }
+
 table {
   height: 20%;
 
@@ -111,18 +102,6 @@ table {
   padding-left:50px;
 }
 
-#header {
-    background: #c0deed;
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    right: 0px;
-    height: 84px;
-    z-index: 1;
-    border-bottom: 1px solid #E9E9E9;
-    -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .15);
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, .15);
-}
 /*body, html {
   background: linear-gradient(to bottom right, #DCDCDC , #D3D3D3);
   height: 100%;
@@ -140,4 +119,3 @@ a:hover {
   text-decoration: none;
   border-bottom: none;
 }
-
