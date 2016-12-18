@@ -41,26 +41,50 @@ var filterLinks = function(unfilteredLink) {
 var filterFakes = function(userlist, blacklist, whitelist, links) {
   var userlist_storage = {};
   var blacklist_storage = {};
-  var results = [];
+  var whitelist_storage = {};
+  var results = {
+    'blacklist': {},
+    'whitelist': {}
+  };
+  // { google.com: {bias: 'hrkdkd'}}
   userlist.forEach(function(link) {
-    userlist_storage[link] = link;
+    userlist_storage[link] = {
+      url: link,
+      bias: 'userAdded'
+    };
   });
 
   blacklist.forEach(function(link) {
-    blacklist_storage[link.url] = link.url;
+    blacklist_storage[link.url] = {
+      url: link.url,
+      bias: link.rating.type
+    };
   });
+
+  whitelist.forEach(function(link) {
+    whitelist_storage[link] = {
+      url: link,
+      bias: 'whiteList'
+    };
+  });
+
   links.forEach(function(href) {
-    if (href in userlist_storage || href in blacklist_storage) {
-      if (!_.contains(whitelist, href)) {
-        results.push(href);
-      }
+    if (href in userlist_storage && !_.contains(whitelist, href)) {
+      results.blacklist[href] = userlist_storage[href].bias;
+    }
+    if (href in blacklist_storage && !_.contains(whitelist, href)) {
+      results.blacklist[href] = blacklist_storage[href].bias;
+    }
+    if (_.contains(whitelist, href)) {
+      results.whitelist[href] = whitelist_storage[href].bias;
     }
   });
-  return results;
+  // { blacklist: { google.com: 'evil' }, whitelist: { duckduckgo.com: 'whitelist'}}
+
+  return results; // results is an object { google.com: { url: google.com, bias: 'evil' }}
 };
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  // console.log('INSIDE RUNTIME ADDLISTENER', request);
   if (request.data) {
     checkForFakes(request, function(result) {
       sendResponse(result);
@@ -80,18 +104,18 @@ function checkForFakes(request, callback) {
       userlist = userlistResults;
       getWhitelist(function(whitelistResults) {
         whitelist = whitelistResults;
+
         var fakeDOMLinks = filterFakes(userlist, blacklist, whitelist, request.data);
-        fakeDomains = fakeDOMLinks.length;
+        fakeDomains = Object.keys(fakeDOMLinks['blacklist']).length;
+
         setDomainCountDataTo(fakeDomains);
-        callback({data: fakeDOMLinks});
+
+        callback({ data: fakeDOMLinks });
       })
-      // console.log(blacklist, '...BLACKLIST');
-      // console.log(userlist, '...USERLIST');
-      // console.log(fakeDOMLinks, '...fakeDOMLINKS');
-      // callback({data: ['google.com']})
     });
   });
-}
+};
+
 // function returnLength () {
 //   return fakeDomains;
 // }
@@ -130,4 +154,3 @@ chrome.runtime.onConnect.addListener(function(port) {
   });
   return true;
 });
-

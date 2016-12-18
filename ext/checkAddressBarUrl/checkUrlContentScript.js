@@ -9,4 +9,13 @@ chrome.runtime.onMessage.addListener(function(message) {
     alertFakeSite(message.urlObj.rating.type);
   }
 });
-renderDom();
+
+chrome.runtime.onMessage.addListener(function(message) {
+  if ( message.action === 'refresh' ) {
+    console.log('Refreshing theme css');
+    renderDom();
+  } else if ( message.action === 'removeThemeCSS' ) {
+    console.log('Resetting theme css');
+    // removeThemeCSS();
+  }
+});
