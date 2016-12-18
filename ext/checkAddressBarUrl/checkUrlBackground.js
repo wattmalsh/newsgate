@@ -45,10 +45,10 @@ chrome.tabs.onUpdated.addListener(function listener2(loadTabId, loadChangeInfo) 
           });
         // Close the original listener to prevent duplicate responses.
         chrome.tabs.onUpdated.removeListener(listener);
-        chrome.tabs.onUpdated.removeListener(listener2);
         });
       }
     });
   }
+  // chrome.tabs.onUpdated.removeListener(listener2);
 });
 };
