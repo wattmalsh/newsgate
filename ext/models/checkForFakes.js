@@ -41,7 +41,12 @@ var filterLinks = function(unfilteredLink) {
 var filterFakes = function(userlist, blacklist, whitelist, links) {
   var userlist_storage = {};
   var blacklist_storage = {};
-  var results = [];
+  var whitelist_storage = {};
+  var results = {
+    'blacklist': {},
+    'whitelist': {}
+  };
+  // { google.com: {bias: 'hrkdkd'}}
   userlist.forEach(function(link) {
     userlist_storage[link] = {
       url: link,
@@ -56,22 +61,27 @@ var filterFakes = function(userlist, blacklist, whitelist, links) {
     };
   });
 
-  // This might be able to be optimized?
-  links.forEach(function(href) {
-    if (href in userlist_storage && !_.contains(whitelist, href)) {
-      results.push(userlist_storage[href]);
-    }
-    if (href in blacklist_storage && !_.contains(whitelist, href)) {
-      results.push(blacklist_storage[href]);
-    }
-    // if (href in userlist_storage || href in blacklist_storage) {
-    //   if (!_.contains(whitelist, href)) {
-    //     results.push(href);
-    //   }
-    // }
+  whitelist.forEach(function(link) {
+    whitelist_storage[link] = {
+      url: link,
+      bias: 'whiteList'
+    };
   });
 
-  return results;
+  links.forEach(function(href) {
+    if (href in userlist_storage && !_.contains(whitelist, href)) {
+      results.blacklist[href] = userlist_storage[href].bias;
+    }
+    if (href in blacklist_storage && !_.contains(whitelist, href)) {
+      results.blacklist[href] = blacklist_storage[href].bias;
+    }
+    if (_.contains(whitelist, href)) {
+      results.whitelist[href] = whitelist_storage[href].bias;
+    }
+  });
+  // { blacklist: { google.com: 'evil' }, whitelist: { duckduckgo.com: 'whitelist'}}
+
+  return results; // results is an object { google.com: { url: google.com, bias: 'evil' }}
 };
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -95,10 +105,12 @@ function checkForFakes(request, callback) {
       getWhitelist(function(whitelistResults) {
         whitelist = whitelistResults;
         var fakeDOMLinks = filterFakes(userlist, blacklist, whitelist, request.data);
-        fakeDomains = fakeDOMLinks.length;
+        console.log('GOT HER#######', fakeDOMLinks);
+        fakeDomains = Object.keys(fakeDOMLinks['blacklist']).length;
+        // fakeDomains = fakeDOMLinks.length;
         setDomainCountDataTo(fakeDomains);
-        // fakeDOMLinks is an array of link objects [{ google.com: {url: 'google.com', bias: 'userAdded'}}]
-        callback({data: fakeDOMLinks});
+        // fakeDOMLinks is an object of link objects { google.com: {url: 'google.com', bias: 'userAdded'}}
+        callback({ data: fakeDOMLinks });
       })
       // console.log(blacklist, '...BLACKLIST');
       // console.log(userlist, '...USERLIST');

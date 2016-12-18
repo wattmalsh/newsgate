@@ -1,11 +1,11 @@
-.testTheme-fake {
-  background-color: 'red' !important;
+.defaultTheme-fake {
+  background-color: #DC143C;
 }
 
-.testTheme-satire {
-  background-color: #000000;
+.defaultTheme-satire {
+  background-color: #FFA500;
 }
 
-.testTheme-biased {
-  background-color: 'yellow' !important;
+.defaultTheme-biased {
+  background-color: #FFFF00;
 }

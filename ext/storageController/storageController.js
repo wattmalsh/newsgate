@@ -39,9 +39,9 @@ var initLocalStorage = function() {
   // Set the default theme -- this is also set in themes.js
   chrome.storage.sync.set({
     'theme': {
-      fake: 'testTheme-fake',
-      satire: 'testTheme-satire',
-      biased: 'testTheme-biased'
+      fake: 'defaultTheme-fake',
+      satire: 'defaultTheme-satire',
+      biased: 'defaultTheme-biased'
     }
   });
   chrome.storage.sync.set({ 'disabled' : false });

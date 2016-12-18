@@ -6,8 +6,8 @@
 
 var renderDom = function() {
 
+  // Inject themes.css into head of current website page
   var path = chrome.extension.getURL('styles/themes.css');
-  console.log('PATH::::::', path);
   $('head').append($('<link>')
       .attr("rel","stylesheet")
       .attr("type","text/css")
@@ -101,10 +101,6 @@ var renderDom = function() {
     // console.log(sites, 'SITES DATAS');
     // console.log(unfilteredSites, 'UNFILTERED SITES');
     chrome.runtime.sendMessage({data: sites}, function(response) {
-      // console.log('SENDING MESSAGE');
-      console.log('response: ', response);
-      // response is now in the format of {data: [{url: 'google.com', bias: 'fake'}]}
-      console.log(response.data[0], 'RESPONSE HERE')
       renderDOM(response, $('a[href]'));
       // return true;
     });
@@ -112,42 +108,31 @@ var renderDom = function() {
     // compares all links on page with what model returns
     function renderDOM(response, DOMLinks) {
       // console.log(response.data.length, "HAS LENGTH OF ?");
-      fakeDomains = response.data.length
+      fakeDomains = Object.keys(response.data['blacklist']).length;
+
       DOMLinks.each(function(index, element) {
         var href = $(element).attr('href');
         var domain = filterLinks(href);
 
-        if (response.data !== []) { // Check if there are any blacklisted URLs on page
-          // if link is in blacklist, change css
-          for (var i = 0; i < response.data.length; i++) {
-            if (response.data[i].url === domain) {
-              var bias = getHrefClassBasedOn(response.data[i].bias)
-              // console.log('type:::::', getHrefClassBasedOn(response.data[i].bias));
-              chrome.storage.sync.get('theme', function(syncStore) {
-                var cssClass = syncStore.theme[bias];
-                console.log('&&&&&&&', cssClass);
-                $(element).addClass(cssClass);
-                console.log('GOT HERE>....');
-              });
-            }
-          }
-          // if (response.data[0].url === domain) {
-          //   console.log('&&&&&&&&&&&&&', response);
-          //   // chrome.storage.sync.get('theme', function(syncStore) {
-          //   //   for (var prop in syncStore.theme) {
-          //   //     // Apply all css in theme to <a href> element
-          //   //     $(element).css(prop, syncStore.theme[prop]);
-          //   //   }
-          //   // });
-          // } else {
-          //   // console.log('HERE CHANGING BACKGROUND OCLOR TO NONE');
-          //   $(element).css({'background-color':'transparent'});
-          // }
+        // Check if the domain is in the blacklist, if so, inject css theme class
+        if (response.data['blacklist'][domain]) {
+          var bias = getHrefClassBasedOn(response.data.blacklist[domain]);
+          chrome.storage.sync.get('theme', function(syncStore) {
+            $(element).addClass(syncStore.theme[bias]); // Inject css theme class
+          });
         }
 
-
+        // If domain is in whitelist, remove the injected css classes
+        if (response.data['whitelist'][domain]) {
+          var bias = getHrefClassBasedOn(response.data.whitelist[domain]);
+          chrome.storage.sync.get('theme', function(syncStore) {
+            // Loop through possible bias types and remove those classes
+            for (var prop in syncStore.theme) {
+              $(element).removeClass(syncStore.theme[prop]);
+            }
+          });
+        }
       });
-      // console.log(response.data, 'response data');
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
