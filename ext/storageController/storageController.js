@@ -41,7 +41,8 @@ var initLocalStorage = function() {
     'theme': {
       fake: 'defaultTheme-fake',
       satire: 'defaultTheme-satire',
-      biased: 'defaultTheme-biased'
+      biased: 'defaultTheme-biased',
+      themeName: 'default'
     }
   });
   chrome.storage.sync.set({ 'disabled' : false });
@@ -203,7 +204,13 @@ var getDomainCountData = function(callback) {
   chrome.storage.sync.get('domainCount', function(result) {
     console.log('Returning domainCount: ', result.domainCount)
     callback(result.domainCount);
-  })
+  });
+};
+
+var getTheme = function(callback) {
+  chrome.storage.sync.get('theme', function(syncStore) {
+    callback(syncStore['theme']);
+  });
 }
 ////////////////////////////////////////////////////////////////////////////////
 //      _______. _______ .___________.___________. _______ .______          _______.
@@ -258,9 +265,12 @@ var setDisabledState = function(boolean, callback) {
 
 // Sets theme object in sync storage
 // @input1: Theme object that will be the theme
-var setThemeTo = function(theme) {
+var setThemeTo = function(theme, cb) {
   chrome.storage.sync.set(theme, function() {
     console.log('Theme successfully saved');
+    if (cb) {
+      cb();
+    }
   });
 };
 

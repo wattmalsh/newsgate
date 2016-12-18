@@ -104,18 +104,14 @@ function checkForFakes(request, callback) {
       userlist = userlistResults;
       getWhitelist(function(whitelistResults) {
         whitelist = whitelistResults;
+
         var fakeDOMLinks = filterFakes(userlist, blacklist, whitelist, request.data);
-        console.log('GOT HER#######', fakeDOMLinks);
         fakeDomains = Object.keys(fakeDOMLinks['blacklist']).length;
-        // fakeDomains = fakeDOMLinks.length;
+
         setDomainCountDataTo(fakeDomains);
-        // fakeDOMLinks is an object of link objects { google.com: {url: 'google.com', bias: 'userAdded'}}
+
         callback({ data: fakeDOMLinks });
       })
-      // console.log(blacklist, '...BLACKLIST');
-      // console.log(userlist, '...USERLIST');
-      // console.log(fakeDOMLinks, '...fakeDOMLINKS');
-      // callback({data: ['google.com']})
     });
   });
 };
