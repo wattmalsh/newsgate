@@ -66,6 +66,9 @@ $(document).ready(function() {
   $('body').on('click', '#enable', function(){
     toggleDisable();
     // image needs to be exactly 16x16
+    chrome.extension.getBackgroundPage().chrome.browserAction.setIcon({
+      path: "assets/turnip-white.png"
+    });
   });
 
     //POLLING FOR STATS
@@ -105,4 +108,3 @@ function toggleDisable() {
   console.log('ABOUT TO TOGGLE DISABLED STATE');
   chrome.extension.getBackgroundPage().toggleDisabledState();
 };
-
