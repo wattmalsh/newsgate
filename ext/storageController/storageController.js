@@ -135,8 +135,10 @@ var unBlacklist = function(url, cb) {
 // Toggles disabledState, does callback if any
 // @input1: (optional) callback
 var toggleDisabledState = function(callback) {
+  console.log('INSIDE TOGGLE DISABLED STATE')
   getDisabledState(function(isDisabled) {
     setDisabledState(!isDisabled, function() {
+      console.log('STATE WAS TOGGLED TO', !isDisabled);
       if (callback) {
         callback();
       }

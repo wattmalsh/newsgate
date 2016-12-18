@@ -102,6 +102,7 @@ function toggleDisable() {
   $('#disable').toggle();
   $('#enable').toggle();
   // change state to disabled / enabled
+  console.log('ABOUT TO TOGGLE DISABLED STATE');
   chrome.extension.getBackgroundPage().toggleDisabledState();
 };
 

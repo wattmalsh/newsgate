@@ -9,13 +9,30 @@
 // DISABLER /////////////////////////////////////////////////////////////////////////////
 // Tells content scripts to not kick off process if in disabled state
 /////////////////////////////////////////////////////////////////////////////////////////
-getDisabledState(function(isDisabled) {
-  if (!isDisabled) {
-    listener();
+var allListeners = [];
+
+chrome.tabs.onUpdated.addListener(function(tabid, loadInfo) {
+  getDisabledState(function(isDisabled) {
+    if (!isDisabled) {
+      console.log('LISTENER IS CALLED');
+      addListener();
+    } else {
+      removeListener();
+    }
+  });
+})
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.disabled === 'give') {
+    getDisabledState(function(isDisabled) {
+      sendResponse({disabled: isDisabled});
+    })
   }
+  return true;
 });
 
-var listener = function() {
+
+function addListener () {
 // Listen for any changes to a tab
 chrome.tabs.onUpdated.addListener(function listener2(loadTabId, loadChangeInfo) {
   // If it is a 'loading' change.
@@ -40,13 +57,21 @@ chrome.tabs.onUpdated.addListener(function listener2(loadTabId, loadChangeInfo) 
                   }, {fake: false}));
               });
             });
+          // Close the original listener to prevent duplicate responses.
+          // chrome.tabs.onUpdated.removeListener(listener);
+          allListeners.push(listener);
           });
-        // Close the original listener to prevent duplicate responses.
-        chrome.tabs.onUpdated.removeListener(listener);
-        });
-      }
-    });
-  }
-  // chrome.tabs.onUpdated.removeListener(listener2);
-});
+        }
+      });
+    }
+    // chrome.tabs.onUpdated.removeListener(listener2);
+  });
 };
+
+
+function removeListener () {
+  for (var i = 0; i < allListeners.length; i++) {
+    chrome.tabs.removeListener(allListeners[i]);
+  }
+  allListeners = [];
+}
