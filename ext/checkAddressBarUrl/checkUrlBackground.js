@@ -14,7 +14,6 @@ var allListeners = [];
 chrome.tabs.onUpdated.addListener(function(tabid, loadInfo) {
   getDisabledState(function(isDisabled) {
     if (!isDisabled) {
-      console.log('LISTENER IS CALLED');
       addListener();
     } else {
       removeListener();
@@ -34,39 +33,40 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 function addListener () {
 // Listen for any changes to a tab
-chrome.tabs.onUpdated.addListener(function listener2(loadTabId, loadChangeInfo) {
-  // If it is a 'loading' change.
-  if (loadChangeInfo.status === 'loading') {
-    // Listen again for any changes to a tab
-    chrome.tabs.onUpdated.addListener(function listener(completeTabId, completeChangeInfo) {
-      // If the tabId is the same from earlier and it is a 'complete' change.
-      if ( completeChangeInfo.status === 'complete' && loadTabId === completeTabId ) {
-        // Get the url of this tab.
-        chrome.tabs.get(completeTabId, function(tab) {
-          var url = filterLinks(tab.url);
-          // Grab data from blacklist, userlist and whitelist. Concat blacklist and userlist,
-          // filter out data from the whitelist, and check (reduce) if the url is in the
-          // resulting list. Send the result to the correct tab via checkUrlContentScript.
-          getBlacklist(function(blackList) {
-            getUserlist(function(userList) {
-             getWhitelist(function(whiteList) {
-                chrome.tabs.sendMessage(completeTabId, userList.concat(blackList)
-                  .filter(function(obj) {return whiteList.indexOf(obj) === -1;})
-                  .reduce(function(pre, cur) {
-                    return cur.url === url ? {fake: true, urlObj: cur} : pre;
-                  }, {fake: false}));
+  chrome.tabs.onUpdated.addListener(function listener2(loadTabId, loadChangeInfo) {
+    // If it is a 'loading' change.
+    if (loadChangeInfo.status === 'loading') {
+      // Listen again for any changes to a tab
+      chrome.tabs.onUpdated.addListener(function listener(completeTabId, completeChangeInfo) {
+        // If the tabId is the same from earlier and it is a 'complete' change.
+        if ( completeChangeInfo.status === 'complete' && loadTabId === completeTabId ) {
+          // Get the url of this tab.
+          chrome.tabs.get(completeTabId, function(tab) {
+            var url = filterLinks(tab.url);
+            // Grab data from blacklist, userlist and whitelist. Concat blacklist and userlist,
+            // filter out data from the whitelist, and check (reduce) if the url is in the
+            // resulting list. Send the result to the correct tab via checkUrlContentScript.
+            getBlacklist(function(blackList) {
+              getUserlist(function(userList) {
+               getWhitelist(function(whiteList) {
+                  chrome.tabs.sendMessage(completeTabId, userList.concat(blackList)
+                    .filter(function(obj) {return whiteList.indexOf(obj) === -1;})
+                    .reduce(function(pre, cur) {
+                      return cur.url === url ? {fake: true, urlObj: cur} : pre;
+                    }, {fake: false}));
+                });
               });
+            // Close the original listener to prevent duplicate responses.
+            // chrome.tabs.onUpdated.removeListener(listener);
+            allListeners.push(listener);
             });
-          // Close the original listener to prevent duplicate responses.
-          // chrome.tabs.onUpdated.removeListener(listener);
-          allListeners.push(listener);
-          });
-        }
+          })
+        };
       });
-    }
-    // chrome.tabs.onUpdated.removeListener(listener2);
+      // chrome.tabs.onUpdated.removeListener(listener2);
+    };
   });
-};
+}
 
 
 function removeListener () {

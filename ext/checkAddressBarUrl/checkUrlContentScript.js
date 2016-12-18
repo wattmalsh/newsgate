@@ -4,7 +4,6 @@
 // is a fake site or not. Create an alert banner or render the dom depending.
 ////////////////////////////////////////////////////////////////////////////////
 chrome.runtime.onMessage.addListener(function(message) {
-  console.log('THIS IS CHECKING IS MESSAGE IS FAKE');
   if ( message.fake ) {
     alertFakeSite(message.urlObj.rating.type);
   }
