@@ -10,11 +10,4 @@ general.controller('generalController', function($scope, General) {
     console.log('disable in controller called', minutes);
     General.disable(minutes);
   })
-
-  // Function for 30 min disable
-
-
-
-  // Function for 60 min disable
-
 });
