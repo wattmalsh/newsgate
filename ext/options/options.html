@@ -10,10 +10,12 @@
     <div class="options-wrapper">
       <nav class="navbar navbar-default navbar-fixed-top header-nav">
         <div class="container nav">
-          <ul class='nav'>
-            <li role='presentation'><a href="options.html#/general" class=''>General Settings</a></li>
-            <li role='presentation'><a href="options.html#/blacklist">Blacklist Options</a></li>
-            <li role='presentation'><a href="options.html#/themes">Themes</a></li>
+          <ul class='nav nav-tab'>
+            <a href="options.html#/general" class=''><li id='general'>General Settings
+            </li>
+            </a>
+            <a href="options.html#/blacklist"><li id='blacklist'>Blacklist Options</li></a>
+            <a href="options.html#/themes"><li id='themes'>Themes</li></a>
           </ul>
         </div>
       </nav>
@@ -25,8 +27,6 @@
     <script src="../lib/underscore.min.js"></script>
     <link rel='stylesheet' href='../lib/bootstrap/dist/css/bootstrap.min.css'/>
     <script src='../lib/bootstrap/dist/js/bootstrap.min.js'></script>
-    <script src='../lib/bootstrap/dist/js/dist/tab.js'></script>
-
     <script src="options.js"></script>
     <script src='../optionsView/general/general.js'></script>
     <script src='../optionsView/themes/themes.js'></script>
