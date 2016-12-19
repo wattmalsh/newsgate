@@ -8,6 +8,13 @@ MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 // CREATE THE PORT FOR THE SHORTLINKS
 var port = chrome.runtime.connect({ name: 'shorts' });
 
+$('a[href]').mouseover(function(event) {
+  reference = $(event.target).attr('href');
+  if (reference !== undefined) {
+    chrome.runtime.sendMessage({text: 'sending element', href: reference}, function(response) {
+    });
+  }
+});
 // DEFINES THE SHORTS TO CHECK AGAINST
 var shorts = {
     'bit.do': 'bit.do',
