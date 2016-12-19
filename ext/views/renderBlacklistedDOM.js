@@ -154,7 +154,9 @@ function renderDOM(response, DOMLinks) {
   DOMLinks.each(function(index, element) {
     var href = $(element).attr('href');
     var domain = filterLinks(href);
-
+    if (shorts[domain]) {
+      domain = href
+    }
     // Check if the domain is in the blacklist, if so, inject css theme class
     if (response.data['blacklist'][domain]) {
       var bias = getHrefClassBasedOn(response.data.blacklist[domain]);
@@ -185,7 +187,17 @@ function renderDOM(response, DOMLinks) {
 // expect back in piecemeal which we will modify specific elements of DOM with
 port.onMessage.addListener(function(response) {
   // console.log('response for shortener', response);
-  renderDOM(response, $(`a[href="${response.data}"]`));
+  var urlToCheck;
+  if (Object.keys(response.data.blacklist).length !== 0) {
+    for (key in response.data.blacklist) {
+      urlToCheck = key;
+    }
+  } else if (Object.keys(response.data.whitelist).length !== 0) {
+    for (key in response.data.whitelist) {
+      urlToCheck = key;
+    }
+  }
+  renderDOM(response, $(`a[href="${urlToCheck}"]`));
 });
 
 

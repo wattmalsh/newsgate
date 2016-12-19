@@ -79,8 +79,7 @@ var filterFakes = function(userlist, blacklist, whitelist, links) {
     }
   });
   // { blacklist: { google.com: 'evil' }, whitelist: { duckduckgo.com: 'whitelist'}}
-
-  return results; // results is an object { google.com: { url: google.com, bias: 'evil' }}
+  return results;
 };
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -127,22 +126,37 @@ var grabUnshortenedUrl = function(shortUrl, cb) {
     type: 'GET',
     url: 'https://unshorten.me/json/' + shortUrl,
     success: function(data) {
+      // console.log('RETURNING SHORTLY LINK DATA');
       cb(JSON.parse(data).resolvedURL); // located in updateStorage.js
     },
-    error: function(data) {
+    error: function(err) {
+      console.log(err, "THIS IS ERR");
     }
   });
 };
 
 chrome.runtime.onConnect.addListener(function(port) {
   console.assert(port.name === 'shorts');
-  port.onMessage.addListener(function(request) {
+  port.onMessage.addListener(function listener(request) {
+    // console.log('SHORTLY LINKS HERE');
     request.data.forEach(function(shortLink) {
       grabUnshortenedUrl(shortLink, function(longLink) {
         var filteredLongLink = filterLinks(longLink)
         checkForFakes({data: [filteredLongLink]}, function(fakeDOMLinks) {
-          if (fakeDOMLinks.data[0]) {
-            port.postMessage({ data: shortLink });
+          // console.log(fakeDOMLinks);
+          if (fakeDOMLinks.data) {
+            // console.log('SENDING MESSAGE BACK', console.log(fakeDOMLinks.data));
+            // console.log('SEINDING MESSAGE BACK WITH URL', fakeDOMLinks.data)
+            if (Object.keys(fakeDOMLinks.data.blacklist).length !== 0) {
+              var newObj = {data: {blacklist: {}, whitelist: {} } };
+              var arrKey = Object.keys(fakeDOMLinks.data.blacklist);
+              newObj.data.blacklist[shortLink] = fakeDOMLinks.data.blacklist[arrKey[0]];
+            } else if (Object.keys(fakeDOMLinks.data.whitelist).length !== 0) {
+              var newObj = {data: {blacklist: {}, whitelist: {} } };
+              var arrKey = Object.keys(fakeDOMLinks.data.whitelist);
+              newObj.data.whitelist[shortLink] = fakeDOMLinks.data.whitelist[arrKey[0]];
+            }
+            port.postMessage(newObj);
           }
         })
       });
