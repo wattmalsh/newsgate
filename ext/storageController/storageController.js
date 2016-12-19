@@ -13,34 +13,33 @@ var updateBlacklistRequest = function(dateObj) {
   xhr.open("POST", server, true);
 
   //Send header information about dateObj along with the request
-  xhr.setRequestHeader("Content-type", "application/json");
+  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
   xhr.onreadystatechange = function(data) { //Call a function when the state changes.
     if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-        // Request finished. Update the blacklist here.
-        var data = JSON.parse(xhr.responseText);
-        updateList(data, 'blackListedURLs', function() {
-          chrome.browserAction.setIcon({ path: "assets/turnip-white.png" });
-        });
+      // Request finished. Update the blacklist here.
+      var data = JSON.parse(xhr.responseText);
+      updateList(data, 'blackListedURLs', function() {
+        chrome.browserAction.setIcon({ path: "assets/turnip-white.png" });
+      });
     }
   };
-
   xhr.send(dateObj);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // UPDATE BLACKLIST IN USER'S LOCAL STORAGE
 ////////////////////////////////////////////////////////////////////////////////
-var updateBlackList = function() {
-  chrome.storage.local.get('blackListedURLs', function(blackListedURLs) {
-    if (blackListedURLs['blackListedURLs'].length === 0) {
+var updateBlacklist = function() {
+  chrome.storage.local.get('blackListedURLs', function(response) {
+    if (response.blackListedURLs.length === 0) {
       // send a post request for an arbitrary date before the extension was made
       var arbitraryDate = JSON.stringify({ date: "2012-12-21T00:57:22.959Z" });
       updateBlacklistRequest(arbitraryDate);
     } else {
       // Gets last URL that was pulled from server
       // get last url in currentURLs
-      var lastURLobj = currentURLs[currentURLs.length - 1];
+      var lastURLobj = response.blackListedURLs[response.blackListedURLs.length - 1];
       var lastURLdate = lastURLobj.createdAt;
       updateBlacklistRequest({ date: lastURLdate });
     }
@@ -84,17 +83,17 @@ chrome.runtime.onInstalled.addListener(initLocalStorage); // Initializes local s
 //    OPTIONS: 'blackListedURLs', 'userGeneratedBlacklist', or 'whiteListedURLs'
 ////////////////////////////////////////////////////////////////////////////////
 var updateList = function(newURLs, listToUpdate, callback) {
-  if (blackListToUpdate === 'blackListedURLs') {
+  if (listToUpdate === 'blackListedURLs') {
     getBlacklist(function(oldURLs) {
-      combineList(newURLs, oldURLs, blackListToUpdate, callback);
+      combineList(newURLs, oldURLs, listToUpdate, callback);
     });
-  } else if (blackListToUpdate === 'userGeneratedBlacklist') {
+  } else if (listToUpdate === 'userGeneratedBlacklist') {
     getUserlist(function(oldURLs) {
-      combineList(newURLs, oldURLs, blackListToUpdate, callback);
+      combineList(newURLs, oldURLs, listToUpdate, callback);
     });
-  } else if (blackListToUpdate === 'whiteListedURLs') {
+  } else if (listToUpdate === 'whiteListedURLs') {
     getWhitelist(function(oldURLs) {
-      combineList(newURLs, oldURLs, blackListToUpdate, callback);
+      combineList(newURLs, oldURLs, listToUpdate, callback);
     });
   } else {
     console.error('COULD NOT FIND BLACK LIST TO UPDATE');
@@ -252,6 +251,7 @@ var setUserlistTo = function(newUserlistArray, callback) {
 // @input1: An array that will be the new white list
 var setBlacklistTo = function(newBlacklistArray, callback) {
   chrome.storage.local.set({ 'blackListedURLs' : newBlacklistArray }, function() {
+    console.log('Successfully updated blackListedURLs in local storage');
     if (callback) {
       callback();
     }
