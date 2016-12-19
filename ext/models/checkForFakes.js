@@ -26,7 +26,6 @@ var shorts = {
   'x.co': 'x.co'
 };
 
-console.log(getBlacklist, 'getBlacklist FUNCTION');
 
 var filterLinks = function(unfilteredLink) {
   var domain = unfilteredLink.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
@@ -131,7 +130,6 @@ var grabUnshortenedUrl = function(shortUrl, cb) {
       cb(JSON.parse(data).resolvedURL); // located in updateStorage.js
     },
     error: function(data) {
-      // console.log('SHORT URL USED IN GRABBING...', shortUrl);
     }
   });
 };
@@ -142,9 +140,7 @@ chrome.runtime.onConnect.addListener(function(port) {
     request.data.forEach(function(shortLink) {
       grabUnshortenedUrl(shortLink, function(longLink) {
         var filteredLongLink = filterLinks(longLink)
-        // console.log('RUNNING CHECK FOR FAKES IN SHORT LINK');
         checkForFakes({data: [filteredLongLink]}, function(fakeDOMLinks) {
-          // check if link was fake (will only be one)
           if (fakeDOMLinks.data[0]) {
             port.postMessage({ data: shortLink });
           }
