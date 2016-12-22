@@ -1,4 +1,4 @@
-# newsgate
+# NewsGate
 Sniffing the news
 
 ## We created a tool that gives people insights about the news using NLP and social media. Input a URL and get back google trend data, a bubble chart using the Alchemy Language API's keyword extraction and the top tweets for that article. 
