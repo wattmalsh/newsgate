@@ -1,10 +1,10 @@
 # newsgate
 Sniffing the news
 
-## We created a tool that gives people insights about the news using NLP and social media. Input a URL and get back google trend data, a bubble chart using the Alchemy Language API's keyword extraction and the top tweets for that article. 
+ We created a tool that gives people insights about the news using NLP and social media. Input a URL and get back google trend data, a bubble chart using the Alchemy Language API's keyword extraction and the top tweets for that article. 
 
 ## Project Vision
-Create a convenient and insightful way for people to make decisions about the validity of news stories. We set out hoping to create an algorithm that would determine the quality of news stories and eliminate fake news. 
+Create a convenient and insightful way for people to make decisions about the validity of news stories. We set out hoping to create an algorithm that would determine the quality of news stories and eliminate fake news. The end goal is 
 
 ## Instructions
 ### Running the project
@@ -72,3 +72,4 @@ To make numerous requests to the Google Trends website, a cookie needs to be sup
 2) Rename 'server/watson/watson_api_key_example.js' to 'server/watson/watson_api_key.js'<br>
 3) Overwrite the 'watsonKey' value with your API key<br>
 4) Save 'watson_api_key.js' file
+
