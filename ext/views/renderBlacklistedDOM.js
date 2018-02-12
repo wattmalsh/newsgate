@@ -7,7 +7,11 @@ var renderBlacklist = function() {
   // Short links are handled through live-connection where short
   // links are sent to background scripts and the respective DOM
   // element is modified as responses are received
+<<<<<<< HEAD
+  console.log('RUNNING CONTEXT');
+=======
 
+>>>>>>> 68debf3... Merging
   var sites = [];
   var unfilteredSites = [];
 
